@@ -1,0 +1,16 @@
+{
+  "name": "prontuariobm",
+  "version": "1.0.0",
+  "description": "Prontuario Saúde bombeiro militar",
+  "main": "bin/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql2": "^1.7.0",
+    "sequelize": "^5.18.4"
+  }
+}
