@@ -1,6 +1,6 @@
 'use strict';
 
-const env = require('../../../config/env');
+const env = require('./../../config/env');
 
 const Sequelize = require('sequelize');
 const sequelize = new Sequelize(env.DB_DATABASE, env.DB_USERNAME, env.DB_PASSWORD, {
@@ -28,7 +28,7 @@ const Setor = sequelize.define('setor', {
         unique: false,
         references: {
             model: {
-                tableName: 'local'
+                tableName: 'batalhao'
             },
             key: 'id'
         }
@@ -41,4 +41,8 @@ const Setor = sequelize.define('setor', {
     tableName: 'setor'
 });
 
-Setor.sync({force: false});
+Setor.sync({
+    force: false
+});
+
+module.exports = Setor;

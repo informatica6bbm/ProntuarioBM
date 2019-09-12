@@ -34,3 +34,5 @@ const Batalhao = sequelize.define('batalhao', {
 Batalhao.sync({
     force: false
 });
+
+module.exports = Batalhao;

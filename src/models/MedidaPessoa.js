@@ -51,3 +51,5 @@ const MedidaPessoa = sequelize.define('medidaPessoa', {
 MedidaPessoa.sync({
     force: false
 });
+
+module.exports = MedidaPessoa;

@@ -74,8 +74,7 @@ const Pessoa = sequelize.define('pessoa', {
     },
     foto: {
         type: Sequelize.TEXT('medium'),
-        allowNull: false,
-        unique: true
+        allowNull: false
     },
     idHierarquia: {
         type: Sequelize.INTEGER,

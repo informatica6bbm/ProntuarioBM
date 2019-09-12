@@ -31,4 +31,8 @@ const Hierarquia = sequelize.define('hierarquia', {
   tableName: 'hierarquia'
 });
 
-Hierarquia.sync({force: false});
+Hierarquia.sync({
+    force: false
+});
+
+module.exports = Hierarquia;

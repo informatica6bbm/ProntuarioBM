@@ -1,10 +1,10 @@
 'use strict';
 
-const Pessoa = require('./../models/Pessoa');
+const Batalhao = require('./../models/Batalhao');
 
 exports.get = (req, res, next) => {
     // const id = req.params.id;
-    Pessoa.findAll().then(response => {
+    Batalhao.findAll().then(response => {
         res.status(200).json(response);
     });
 
@@ -12,7 +12,7 @@ exports.get = (req, res, next) => {
 
 exports.getAll = (req, res, next) => {
     // const id = req.params.id;
-    Pessoa.findAll().then(response => {
+    Batalhao.findAll().then(response => {
         res.status(200).json(response);
     });
 
