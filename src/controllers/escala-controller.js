@@ -3,12 +3,12 @@
 const Escala = require('./../models/Escala');
 
 exports.get = (req, res, next) => {
-    // const id = req.params.id;
+    const id = req.params.id;
     Escala.findAll().then(response => {
-        var find = "";
+        var find = [];
         var data = JSON.parse(JSON.stringify(response));
         for(var i = 0; i < data.length; i++){
-            if(data[i].id == 1) {
+            if(data[i].id == id) {
                 find = data[i] ;
                 break;
             }
