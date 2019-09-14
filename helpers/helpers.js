@@ -1,16 +1,9 @@
 function getDataHoraAtual() {
-    var data=new Date()
-    var dia=data.getDate();
-    var mes=data.getMonth();
-    var ano=data.getFullYear();
-    var hora= data.getHours();
-    var minutos=data.getMinutes();
-    var segundos=data.getSeconds();
+    var data = new Date();
+    let data2 = new Date(data.valueOf() - data.getTimezoneOffset() * 60000);
+    var data = data2.toISOString().replace(/\.\d{3}Z$/, '');
 
-    var dataAtual = ano + '-' + ((mes++) < 10 ? "0" + mes : mes) + '-' + dia + " ";
-    dataAtual = dataAtual +  hora +":"+(minutos < 10 ? "0" + minutos : minutos) + ":" + (segundos < 10 ? "0" + segundos : segundos );
-
-    return dataAtual;
+    return data;
 }
 
 const Helpers = {

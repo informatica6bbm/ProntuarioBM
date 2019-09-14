@@ -1,19 +1,13 @@
 'use strict';
 
-const Setor = require('./../models/Setor');
+const express = require('express');
+const router = express.Router();
+const controller = require('./../controllers/setor-controller');
 
-exports.get = (req, res, next) => {
-    // const id = req.params.id;
-    Setor.findAll().then(response => {
-        res.status(200).json(response);
-    });
+router.get('/',  controller.getAll);
+router.get('/:id',  controller.get);
+router.post('/',    controller.post);
+router.put('/',     controller.update);
+router.delete('/:id', controller.delete);
 
-}
-
-exports.getAll = (req, res, next) => {
-    // const id = req.params.id;
-    Setor.findAll().then(response => {
-        res.status(200).json(response);
-    });
-
-}
+module.exports = router;

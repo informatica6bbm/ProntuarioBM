@@ -24,5 +24,8 @@ app.use(function(req, res, next) {
 app.use('/', index);
 app.use('/pessoa', pessoa);
 app.use('/escala', escala);
+app.use('/batalhao', batalhao);
+app.use('/hierarquia', hierarquia);
+app.use('/setor', setor);
 
 module.exports = app;

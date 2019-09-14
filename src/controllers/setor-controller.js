@@ -1,10 +1,10 @@
 'use strict';
 const Helpers = require("./../../helpers/helpers");
-const Escala = require('./../models/Escala');
+const Setor = require('./../models/Setor');
 
 exports.get = (req, res, next) => {
     const id = req.params.id;
-    Escala.findAll().then(response => {
+    Setor.findAll().then(response => {
         var find = [];
         var data = JSON.parse(JSON.stringify(response));
         for(var i = 0; i < data.length; i++){
@@ -20,20 +20,21 @@ exports.get = (req, res, next) => {
 }
 
 exports.getAll = (req, res, next) => {
-    Escala.findAll().then(response => {
+    Setor.findAll().then(response => {
         res.status(200).json(JSON.parse(JSON.stringify(response)));
     });
 }
 
 exports.post = (req, res, next) => {
-    var escala = req.body.escala;
+    var setor = req.body.setor;
+    var descricao = req.body.descricao;
     var data = {
-        escala: escala,
+        setor: setor,
+        descricao: descricao,
         createdAt: Helpers.getDataHoraAtual()
     };
 
-    Escala.create(data).then(response => {
-
+    Setor.create(data).then(response => {
         res.status(200).json(response);
     });
 }
@@ -41,13 +42,16 @@ exports.post = (req, res, next) => {
 
 exports.update = (req, res, next) => {
     var id = req.body.id;
-    var escala = req.body.escala;
+    var setor = req.body.setor;
+    var descricao = req.body.descricao;
+
     var data = {
-        escala: escala,
-        updatedAt: Helpers.getDataHoraAtual()
+        setor: setor,
+        descricao: descricao,
+        createdAt: Helpers.getDataHoraAtual()
     };
 
-    Escala.update(data, {
+    Setor.update(data, {
         where: {
             id: id
         }
@@ -58,7 +62,7 @@ exports.update = (req, res, next) => {
 
 exports.delete = (req, res, next) => {
     var id = req.params.id;
-    Escala.destroy({
+    Setor.destroy({
         where: {
             id: id
         }
