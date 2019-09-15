@@ -29,6 +29,7 @@ function setupComponents(Vue){
   Vue.component('location-statistic', LocationStatistic);
   Vue.component('site-view-statistic', SiteViewStatistic);
   Vue.component('total-earnings-statistic', TotalEarningsStatistic);
+
 }
 
 
