@@ -154,6 +154,28 @@
             <template v-slot:no-data>
             <v-btn color="primary" @click="initialize">Reset</v-btn>
         </template>
+
+        <v-snackbar
+                v-model="snackbar"
+                :bottom="y === 'bottom'"
+                :color="color"
+                :left="x === 'left'"
+                :multi-line="mode === 'multi-line'"
+                :right="x === 'right'"
+                :timeout="timeout"
+                :top="y === 'top'"
+                :vertical="mode === 'vertical'"
+            >
+
+                {{ textoSnackbar }}
+                <v-btn
+                dark
+                text
+                @click="snackbar = false"
+                >
+                    Fechar
+                </v-btn>
+        </v-snackbar>
     </v-data-table>
 
 </template>
@@ -193,6 +215,13 @@ export default {
             "O-"
         ],
         imgSrc: null,
+        textoSnackbar: "",
+        color: '',
+        mode: '',
+        snackbar: false,
+        timeout: 6000,
+        x: null,
+        y: 'top',
         rowsPerPageItems: [8, 12, 15],
         pagination: {
             rowsPerPage: 20
@@ -214,14 +243,38 @@ export default {
         desserts: [],
         editedIndex: -1,
         editedItem: {
+            nome: "",
+            email: "",
+            matricula: "",
+            dataNascimento: "",
+            estadoCivil: null,
+            cartaoMunicipalSus: "",
+            cartaoNacionalSus: "",
+            sexo: "",
+            tipoSanguineo: "",
+            lts: "",
+            idHierarquia: null,
+            idBatalhao: null,
+            idSetor: null,
+            idEscala: null,
             foto: ""
         },
-            defaultItem: {
-            name: '',
-            calories: 0,
-            fat: 0,
-            carbs: 0,
-            protein: 0,
+        defaultItem: {
+            nome: "",
+            email: "",
+            matricula: "",
+            dataNascimento: "",
+            estadoCivil: null,
+            cartaoMunicipalSus: "",
+            cartaoNacionalSus: "",
+            sexo: "",
+            tipoSanguineo: "",
+            lts: "",
+            idHierarquia: null,
+            idBatalhao: null,
+            idSetor: null,
+            idEscala: null,
+            foto: ""
         },
     }),
 
@@ -293,13 +346,25 @@ export default {
                 this.editedIndex = -1
             }, 300);
         },
-
         save () {
-            console.log(this.editedItem);
             if (this.editedIndex > -1) {
                 Object.assign(this.desserts[this.editedIndex], this.editedItem);
             } else {
                 this.desserts.push(this.editedItem);
+                console.log(this.editedItem);
+                this.axios.post('http://localhost:3000/pessoa', this.editedItem).then(response => {
+                    if(response.data.id){
+                        this.textoSnackbar = "Pessoa inserida com sucesso!";
+                        this.snackbar = true;
+                        this.color = 'success';
+                        this.initialize();
+                    }else {
+                        this.snackbar = true;
+                        this.color = 'error';
+                        this.textoSnackbar = "Ocorreu um erro ao cadastrar!";
+                    }
+                });
+
             }
             this.close();
         },

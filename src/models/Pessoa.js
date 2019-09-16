@@ -69,10 +69,6 @@ const Pessoa = sequelize.define('pessoa', {
         type: Sequelize.STRING(8),
         allowNull: false
     },
-    altura: {
-        type: Sequelize.FLOAT,
-        allowNull: false
-    },
     tipoSanguineo: {
         type: Sequelize.STRING(8),
         allowNull: false

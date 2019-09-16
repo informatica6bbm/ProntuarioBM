@@ -1,5 +1,6 @@
 'use strict';
 
+const Helpers = require('./../../helpers/helpers');
 const Pessoa = require('./../models/Pessoa');
 
 exports.get = (req, res, next) => {
@@ -44,6 +45,7 @@ exports.post = (req, res, next) => {
     // var idEscala = req.body.idEscala;
 
     var data = {
+        nome: nome,
         usuario: getUsuarioEmail(email),
         email: email,
         matricula: matricula,
