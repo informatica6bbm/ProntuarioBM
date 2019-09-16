@@ -36,60 +36,155 @@
                             <v-container>
                                 <v-row>
                                     <v-col cols="12" sm="6" md="6">
-                                        <v-text-field v-model="editedItem.nome" label="Nome" outlined></v-text-field>
+                                        <v-text-field
+                                            v-model="editedItem.nome"
+                                            :rules="[v => !!v || 'Obrigatório prencher o nome!']"
+                                            label="Nome"
+                                            outlined
+                                        ></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="6">
-                                        <v-text-field v-model="editedItem.email" label="E-mail" outlined></v-text-field>
+                                        <v-text-field
+                                            v-model="editedItem.email"
+                                            :rules="[v => !!v || 'Obrigatório prencher o email!']"
+                                            label="E-mail"
+                                            outlined
+                                        ></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="3">
-                                        <v-text-field v-model="editedItem.matricula" label="Matrícula" outlined></v-text-field>
+                                        <v-text-field
+                                            v-model="editedItem.matricula"
+                                            :rules="[v => !!v || 'Obrigatório prencher o matrícula!']"
+                                            v-mask="['######-#', '######-#-##']"
+                                            label="Matrícula"
+                                            outlined
+                                        ></v-text-field>
                                     </v-col>
 
                                     <v-col cols="12" sm="6" md="3">
-                                        <v-text-field v-model="editedItem.dataNascimento" label="Data Nascimento" outlined></v-text-field>
+                                        <v-text-field
+                                            v-model="editedItem.dataNascimento"
+                                            :rules="[v => !!v || 'Obrigatório prencher a data nascimento!']"
+                                            v-mask="['##/##/####']"
+                                            label="Data Nascimento"
+                                            outlined
+                                        ></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="3">
-                                        <v-select :items="estadosCivils" v-model="editedItem.estadoCivil" label="Estado Civil" outlined></v-select>
+                                        <v-select
+                                            :items="estadosCivils"
+                                            v-model="editedItem.estadoCivil"
+                                            :rules="[v => !!v || 'Obrigatório prencher o estado civil!']"
+                                            label="Estado Civil"
+                                            outlined
+                                        ></v-select>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="3">
-                                        <v-text-field v-model="editedItem.dataIngresso" label="Data Ingresso" outlined></v-text-field>
+                                        <v-text-field
+                                            v-model="editedItem.dataIngresso"
+                                            :rules="[v => !!v || 'Obrigatório prencher a data de ingresso!']"
+                                            v-mask="['##/##/####']"
+                                            label="Data Ingresso"
+                                            outlined
+                                        ></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.cartaoMunicipalSus" label="Cartão Municipal SUS" outlined></v-text-field>
+                                        <v-text-field
+                                            v-model="editedItem.cartaoMunicipalSus"
+                                            :rules="[v => !!v || 'Obrigatório prencher o cartão municipal do SUS!']"
+                                            v-mask="['######']"
+                                            label="Cartão Municipal SUS"
+                                            outlined
+                                        ></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-text-field v-model="editedItem.cartaoNacionalSus" label="Cartão Nacional SUS" outlined></v-text-field>
+                                        <v-text-field
+                                            v-model="editedItem.cartaoNacionalSus"
+                                            :rules="[v => !!v || 'Obrigatório prencher o cartão nacional do SUS!']"
+                                            v-mask="['### #### #### ####']"
+                                            label="Cartão Nacional SUS"
+                                            outlined
+                                        ></v-text-field>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-select :items="sexos" v-model="editedItem.sexo" label="Sexo" outlined></v-select>
+                                        <v-select
+                                            :items="sexos"
+                                            v-model="editedItem.sexo"
+                                            :rules="[v => !!v || 'Obrigatório prencher o sexo!']"
+                                            label="Sexo"
+                                            outlined
+                                        ></v-select>
                                     </v-col>
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-select :items="tiposSanguineo" v-model="editedItem.tipoSanguineo" label="Tipo Sanguineo" outlined></v-select>
+                                        <v-select
+                                            :items="tiposSanguineo"
+                                            v-model="editedItem.tipoSanguineo"
+                                            :rules="[v => !!v || 'Obrigatório prencher o tipo sanguineo!']"
+                                            label="Tipo Sanguineo"
+                                            outlined
+                                        ></v-select>
                                     </v-col>
 
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-select :items="lts" v-model="editedItem.lts" label="LTS" outlined></v-select>
+                                        <v-select
+                                            :items="lts"
+                                            v-model="editedItem.lts"
+                                            :rules="[v => !!v || 'Obrigatório informar se possui LTS']"
+                                            label="LTS"
+                                            outlined
+                                        ></v-select>
                                     </v-col>
 
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-select :items="hierarquias" item-text="hierarquia" item-value="id" v-model="editedItem.idHierarquia" label="Hierarquia" outlined></v-select>
+                                        <v-select
+                                            :items="hierarquias"
+                                            item-text="hierarquia"
+                                            item-value="id"
+                                            v-model="editedItem.idHierarquia"
+                                            :rules="[v => !!v || 'Obrigatório informar Posto/Graduação!']"
+                                            label="Hierarquia"
+                                            outlined
+                                        ></v-select>
                                     </v-col>
 
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-select :items="obms" v-model="editedItem.idBatalhao" item-text="abreviacao" item-value="id" label="OBM" outlined></v-select>
+                                        <v-select
+                                            :items="obms"
+                                            v-model="editedItem.idBatalhao"
+                                            item-text="abreviacao"
+                                            item-value="id"
+                                            :rules="[v => !!v || 'Obrigatório prencher a OBM!']"
+                                            label="OBM"
+                                            outlined
+                                        ></v-select>
                                     </v-col>
 
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-select :items="setores" item-text="setor" item-value="id" v-model="editedItem.idSetor" label="Setor" outlined></v-select>
+                                        <v-select
+                                            :items="setores"
+                                            item-text="setor"
+                                            item-value="id"
+                                            v-model="editedItem.idSetor"
+                                            :rules="[v => !!v || 'Obrigatório prencher o setor!']"
+                                            label="Setor"
+                                            outlined
+                                        ></v-select>
                                     </v-col>
 
                                     <v-col cols="12" sm="6" md="4">
-                                        <v-select :items="escalas" v-model="editedItem.idEscala" item-text="escala" item-value="id"  label="Escala" outlined></v-select>
+                                        <v-select
+                                            :items="escalas"
+                                            v-model="editedItem.idEscala"
+                                            item-text="escala"
+                                            item-value="id"
+                                            :rules="[v => !!v || 'Obrigatório prencher a escala!']"
+                                            label="Escala"
+                                            outlined
+                                        ></v-select>
                                     </v-col>
 
                                     <v-col cols="12" sm="6" md="4">
                                         <v-file-input
-
                                             color="deep-purple accent-4"
                                             counter
                                             label="Foto"
@@ -185,8 +280,6 @@ export default {
     data: () => ({
         dialog: false,
         search: "",
-        date: new Date().toISOString().substr(0, 10),
-        menu: false,
         estadosCivils: [
             "SOLTEIRO",
             "CASADO",
@@ -248,6 +341,7 @@ export default {
             matricula: "",
             dataNascimento: "",
             estadoCivil: null,
+            dataIngresso: "",
             cartaoMunicipalSus: "",
             cartaoNacionalSus: "",
             sexo: "",
@@ -257,7 +351,10 @@ export default {
             idBatalhao: null,
             idSetor: null,
             idEscala: null,
-            foto: ""
+            foto: "",
+            mode: 'no-cors',
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json',
         },
         defaultItem: {
             nome: "",
@@ -265,6 +362,7 @@ export default {
             matricula: "",
             dataNascimento: "",
             estadoCivil: null,
+            dataIngresso: "",
             cartaoMunicipalSus: "",
             cartaoNacionalSus: "",
             sexo: "",
@@ -281,7 +379,7 @@ export default {
     computed: {
         formTitle () {
             return this.editedIndex === -1 ? 'Nova Pessoa' : 'Editar Pessoa'
-        },
+        }
     },
 
     watch: {
@@ -293,7 +391,6 @@ export default {
     created () {
         this.initialize()
     },
-
     methods: {
         initialize () {
             this.desserts = [
@@ -346,27 +443,71 @@ export default {
                 this.editedIndex = -1
             }, 300);
         },
+        isValidDate(date) {
+            var aux = [];
+            if(date != ''){
+                aux = date.split('/');
+                if(parseInt(aux[0]) > 0 && parseInt(aux[0]) < 31){
+                    if(parseInt(aux[1]) > 0 && parseInt(aux[1]) < 12){
+                        if(parseInt(aux[2]) > 1900 && parseInt(aux[2]) < 3000){
+                            return true;
+                        }else {
+                            return false;
+                        }
+                    }else {
+                        return false;
+                    }
+                }else {
+                    return false;
+                }
+            }else {
+                return false;
+            }
+        },
+        validaCampos() {
+            return  this.editedItem.nome != '' &&
+                    this.editedItem.email != '' &&
+                    this.editedItem.matricula != '' &&
+                    this.isValidDate(this.editedItem.dataNascimento) &&
+                    this.editedItem.estadoCivil != null &&
+                    this.isValidDate(this.editedItem.dataIngresso) &&
+                    this.editedItem.cartaoNacionalSus != '' &&
+                    this.editedItem.cartaoMunicipalSus != '' &&
+                    this.editedItem.sexo != '' &&
+                    this.editedItem.tipoSanguineo != "" &&
+                    this.editedItem.lts != '' &&
+                    this.editedItem.idHierarquia != null &&
+                    this.editedItem.idBatalhao != null &&
+                    this.editedItem.idSetor != null &&
+                    this.editedItem.idEscala != null &&
+                    this.editedItem.foto != '';
+        },
         save () {
             if (this.editedIndex > -1) {
                 Object.assign(this.desserts[this.editedIndex], this.editedItem);
             } else {
-                this.desserts.push(this.editedItem);
-                console.log(this.editedItem);
-                this.axios.post('http://localhost:3000/pessoa', this.editedItem).then(response => {
-                    if(response.data.id){
-                        this.textoSnackbar = "Pessoa inserida com sucesso!";
-                        this.snackbar = true;
-                        this.color = 'success';
-                        this.initialize();
-                    }else {
-                        this.snackbar = true;
-                        this.color = 'error';
-                        this.textoSnackbar = "Ocorreu um erro ao cadastrar!";
-                    }
-                });
-
+                if(this.validaCampos()){
+                    // this.desserts.push(this.editedItem);
+                    console.log(this.editedItem);
+                    this.axios.post('http://localhost:3000/pessoa', this.editedItem).then(response => {
+                        if(response.data.id){
+                            this.textoSnackbar = "Pessoa inserida com sucesso!";
+                            this.snackbar = true;
+                            this.color = 'success';
+                            this.initialize();
+                            this.close();
+                        }else {
+                            this.snackbar = true;
+                            this.color = 'error';
+                            this.textoSnackbar = "Ocorreu um erro ao cadastrar!";
+                        }
+                    });
+                }else {
+                    this.snackbar = true;
+                    this.color = 'error';
+                    this.textoSnackbar = "Existe campos vazios ou incorretos!";
+                }
             }
-            this.close();
         },
         setImage: function (e) {
             const file = e[0];
