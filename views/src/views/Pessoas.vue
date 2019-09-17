@@ -365,9 +365,14 @@ export default {
             idSetor: null,
             idEscala: null,
             foto: "",
+            method: 'GET',
             mode: 'no-cors',
-            'Access-Control-Allow-Origin': '*',
-            'Content-Type': 'application/json',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+            credentials: 'same-origin',
         },
         defaultItem: {
             nome: "",
@@ -445,8 +450,10 @@ export default {
         },
 
         deleteItem (item) {
-            const index = this.desserts.indexOf(item);
-            confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1);
+            console.log(item);
+            this.axios.delete('http://localhost:3000/pessoa/' + item.id).then(response => {
+                this.escalas = response.data;
+            });
         },
 
         close () {
@@ -482,7 +489,6 @@ export default {
         },
         isValidEmail() {
             var parse_email = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi;
-            console.log(parse_email.test(this.editedItem.email));
             return  parse_email.test(this.editedItem.email);
         },
         validaCampos() {

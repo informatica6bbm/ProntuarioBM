@@ -12,8 +12,8 @@ const hierarquia = require('./routes/hierarquia-routes');
 const setor = require('./routes/setor-routes');
 const pessoa = require('./routes/pessoa-routes');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 1000000}));
 
 app.use(function(req, res, next) {
      res.header("Access-Control-Allow-Origin", "*");
