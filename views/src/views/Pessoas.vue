@@ -9,22 +9,56 @@
             'items-per-page-options': [8,10,12,14]
         }"
     >
+
         <template v-slot:top>
             <v-toolbar flat color="white">
-                <v-text-field
-                    v-model="search"
-                    append-icon="mdi-magnify"
-                    label="Buscar"
-                    single-line
-                    hide-details
-                    outlined
-                ></v-text-field>
+
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" sm="12" md="5">
+                            <v-text-field
+                                v-model="search"
+                                append-icon="mdi-magnify"
+                                label="Buscar"
+                                single-line
+                                hide-details
+                                outlined
+                            ></v-text-field>
+                        </v-col>
+                    </v-row>
+                </v-container>
+                <v-snackbar
+                        v-model="snackbar"
+                        :bottom="y === 'bottom'"
+                        :color="color"
+                        :left="x === 'left'"
+                        :multi-line="mode === 'multi-line'"
+                        :right="x === 'right'"
+                        :timeout="timeout"
+                        :top="y === 'top'"
+                        :vertical="mode === 'vertical'"
+
+                        class="snackbar"
+                    >
+                        {{ textoSnackbar }}
+                        <v-btn
+                            dark
+                            text
+                            icon
+                            @click="snackbar = false"
+                        >
+                            <v-icon
+                                class="mr-2"
+                                @click="snackbar = false"
+                            >mdi-close</v-icon>
+                        </v-btn>
+                </v-snackbar>
                 <div class="flex-grow-1"></div>
 
                 <v-dialog v-model="dialog" max-width="1000px">
 
                     <template v-slot:activator="{ on }">
-                        <v-btn color="primary" class="mb-2" v-on="on">Nova</v-btn>
+                        <v-btn color="primary" class="mb-2"  v-on="on">Nova</v-btn>
                     </template>
 
                     <v-card>
@@ -250,27 +284,6 @@
             <v-btn color="primary" @click="initialize">Reset</v-btn>
         </template>
 
-        <v-snackbar
-                v-model="snackbar"
-                :bottom="y === 'bottom'"
-                :color="color"
-                :left="x === 'left'"
-                :multi-line="mode === 'multi-line'"
-                :right="x === 'right'"
-                :timeout="timeout"
-                :top="y === 'top'"
-                :vertical="mode === 'vertical'"
-            >
-
-                {{ textoSnackbar }}
-                <v-btn
-                dark
-                text
-                @click="snackbar = false"
-                >
-                    Fechar
-                </v-btn>
-        </v-snackbar>
     </v-data-table>
 
 </template>
@@ -309,7 +322,7 @@ export default {
         ],
         imgSrc: null,
         textoSnackbar: "",
-        color: '',
+        color: 'success',
         mode: '',
         snackbar: false,
         timeout: 6000,
@@ -464,13 +477,20 @@ export default {
                 return false;
             }
         },
+        isValidDateEntrance() {
+            return this.isValidDate(this.editedItem.dataIngresso) && this.isValidDate(this.editedItem.dataNascimento) ? parseInt(this.editedItem.dataIngresso.split('/')[2]) > parseInt(this.editedItem.dataNascimento.split('/')[2]) : false;
+        },
+        isValidEmail() {
+            var parse_email = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi;
+            console.log(parse_email.test(this.editedItem.email));
+            return  parse_email.test(this.editedItem.email);
+        },
         validaCampos() {
             return  this.editedItem.nome != '' &&
-                    this.editedItem.email != '' &&
+                    this.isValidEmail() &&
                     this.editedItem.matricula != '' &&
-                    this.isValidDate(this.editedItem.dataNascimento) &&
+                    this.isValidDateEntrance() &&
                     this.editedItem.estadoCivil != null &&
-                    this.isValidDate(this.editedItem.dataIngresso) &&
                     this.editedItem.cartaoNacionalSus != '' &&
                     this.editedItem.cartaoMunicipalSus != '' &&
                     this.editedItem.sexo != '' &&
@@ -487,8 +507,6 @@ export default {
                 Object.assign(this.desserts[this.editedIndex], this.editedItem);
             } else {
                 if(this.validaCampos()){
-                    // this.desserts.push(this.editedItem);
-                    console.log(this.editedItem);
                     this.axios.post('http://localhost:3000/pessoa', this.editedItem).then(response => {
                         if(response.data.id){
                             this.textoSnackbar = "Pessoa inserida com sucesso!";
@@ -500,12 +518,14 @@ export default {
                             this.snackbar = true;
                             this.color = 'error';
                             this.textoSnackbar = "Ocorreu um erro ao cadastrar!";
+                            this.close();
                         }
                     });
                 }else {
                     this.snackbar = true;
                     this.color = 'error';
                     this.textoSnackbar = "Existe campos vazios ou incorretos!";
+                    this.close();
                 }
             }
         },
@@ -532,3 +552,17 @@ export default {
     }
 }
 </script>
+
+<style>
+    @media only screen and (max-width: 640px) {
+        .snackbar {
+            margin-top: -10px;
+        }
+    }
+
+    @media only screen and (min-width: 640px) {
+        .snackbar {
+            margin-top: -50px;
+        }
+    }
+</style>

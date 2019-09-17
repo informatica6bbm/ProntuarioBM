@@ -5,7 +5,6 @@ import store from './store';
 import './plugins';
 import vuetify from './plugins/vuetify';
 import { sync } from 'vuex-router-sync';
-
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import VueTheMask from 'vue-the-mask';
