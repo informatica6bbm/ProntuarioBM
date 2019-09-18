@@ -39,25 +39,29 @@ exports.post = (req, res, next) => {
     var tipoSanguineo = req.body.tipoSanguineo;
     var lts = req.body.tipoSanguineo;
     var foto = req.body.foto;
-    // var idHierarquia = req.body.idHierarquia;
-    // var idSetor = req.body.idSetor;
-    // var idBatalhao = req.body.idBatalhao;
-    // var idEscala = req.body.idEscala;
+    var idHierarquia = req.body.idHierarquia;
+    var idSetor = req.body.idSetor;
+    var idBatalhao = req.body.idBatalhao;
+    var idEscala = req.body.idEscala;
 
     var data = {
         nome: nome,
         usuario: getUsuarioEmail(email),
         email: email,
         matricula: matricula,
-        dataNascimento: dataNascimento,
+        dataNascimento: dataNascimento.split("/").reverse().join("-") + " 00:00:00",
         estadoCivil: estadoCivil,
-        dataIngresso: dataIngresso,
+        dataIngresso: dataIngresso.split("/").reverse().join("-") + " 00:00:00",
         cartaoMunicipalSus: cartaoMunicipalSus,
         cartaoNacionalSus: cartaoNacionalSus,
         sexo: sexo,
         tipoSanguineo: tipoSanguineo,
         lts: lts,
         foto: foto,
+        idHierarquia: idHierarquia,
+        idSetor: idSetor,
+        idBatalhao: idBatalhao,
+        idEscala: idEscala,
         createdAt: Helpers.getDataHoraAtual()
     };
 
@@ -81,27 +85,32 @@ exports.update = (req, res, next) => {
     var tipoSanguineo = req.body.tipoSanguineo;
     var lts = req.body.tipoSanguineo;
     var foto = req.body.foto;
-    // var idHierarquia = req.body.idHierarquia;
-    // var idSetor = req.body.idSetor;
-    // var idBatalhao = req.body.idBatalhao;
-    // var idEscala = req.body.idEscala;
+    var idHierarquia = req.body.idHierarquia;
+    var idSetor = req.body.idSetor;
+    var idBatalhao = req.body.idBatalhao;
+    var idEscala = req.body.idEscala;
 
     var data = {
+        nome: nome,
         usuario: getUsuarioEmail(email),
         email: email,
         matricula: matricula,
-        dataNascimento: dataNascimento,
+        dataNascimento: dataNascimento.split("/").reverse().join("-") + " 00:00:00",
         estadoCivil: estadoCivil,
-        dataIngresso: dataIngresso,
+        dataIngresso: dataIngresso.split("/").reverse().join("-") + " 00:00:00",
         cartaoMunicipalSus: cartaoMunicipalSus,
         cartaoNacionalSus: cartaoNacionalSus,
         sexo: sexo,
         tipoSanguineo: tipoSanguineo,
         lts: lts,
         foto: foto,
+        idHierarquia: idHierarquia,
+        idSetor: idSetor,
+        idBatalhao: idBatalhao,
+        idEscala: idEscala,
         createdAt: Helpers.getDataHoraAtual()
     };
-
+    console.log(data);
     Pessoa.update(data, {
         where: {
             id: id

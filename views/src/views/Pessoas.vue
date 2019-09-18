@@ -162,6 +162,8 @@
                                     <v-col cols="12" sm="6" md="4">
                                         <v-select
                                             :items="lts"
+                                            item-text="text"
+                                            item-value="value"
                                             v-model="editedItem.lts"
                                             :rules="[v => !!v || 'Obrigatório informar se possui LTS']"
                                             label="LTS"
@@ -299,8 +301,14 @@ export default {
             "DIVORCIADO"
         ],
         lts: [
-            "SIM",
-            "NÃO"
+            {
+                text: "SIM",
+                value: true
+            },
+            {
+                text: "NÃO",
+                value: false
+            }
         ],
         hierarquias: [],
         obms: [],
@@ -360,10 +368,10 @@ export default {
             sexo: "",
             tipoSanguineo: "",
             lts: "",
-            idHierarquia: null,
-            idBatalhao: null,
-            idSetor: null,
-            idEscala: null,
+            idHierarquia: 0,
+            idBatalhao: 0,
+            idSetor: 0,
+            idEscala: 0,
             foto: "",
             method: 'GET',
             mode: 'no-cors',
@@ -386,10 +394,10 @@ export default {
             sexo: "",
             tipoSanguineo: "",
             lts: "",
-            idHierarquia: null,
-            idBatalhao: null,
-            idSetor: null,
-            idEscala: null,
+            idHierarquia: 0,
+            idBatalhao: 0,
+            idSetor: 0,
+            idEscala: 0,
             foto: ""
         },
     }),
@@ -424,6 +432,16 @@ export default {
 
             this.axios.get('http://localhost:3000/pessoa').then(response => {
                 this.desserts = response.data;
+                console.log(response.data);
+                for(var i = 0; i < response.data.length; i++){
+                    var data = new Date(response.data[i].dataNascimento);
+                    var dia  = data.getDate();
+                    var mes  = data.getMonth() + 1;
+                    var ano4 = data.getFullYear();
+                    // console.log(dia + "/" + mes + "/" + ano4);
+                    console.log(data);
+                }
+                this.desserts = response.data;
             });
 
             this.axios.get('http://localhost:3000/hierarquia').then(response => {
@@ -450,9 +468,18 @@ export default {
         },
 
         deleteItem (item) {
-            console.log(item);
-            this.axios.delete('http://localhost:3000/pessoa/' + item.id).then(response => {
-                this.escalas = response.data;
+
+            this.axios.delete('http://localhost:3000/pessoa/' + item.id + "/delete").then(response => {
+                if(response.data){
+                    this.snackbar = true;
+                    this.color = 'success';
+                    this.textoSnackbar = "Pessoa apagada com sucesso!";
+                    this.initialize();
+                }else {
+                    this.snackbar = true;
+                    this.color = 'error';
+                    this.textoSnackbar = "Ocorreu um erro ao tentar apagar o registro!";
+                }
             });
         },
 
@@ -509,8 +536,23 @@ export default {
                     this.editedItem.foto != '';
         },
         save () {
+            console.log(this.editedItem);
             if (this.editedIndex > -1) {
-                Object.assign(this.desserts[this.editedIndex], this.editedItem);
+                this.axios.put('http://localhost:3000/pessoa', this.editedItem).then(response => {
+                    console.log(response.data);
+                    if(response.data){
+                        this.textoSnackbar = "Registro atualizado com sucesso!";
+                        this.snackbar = true;
+                        this.color = 'success';
+                        this.initialize();
+                        this.close();
+                    }else {
+                        this.snackbar = true;
+                        this.color = 'error';
+                        this.textoSnackbar = "Ocorreu um erro ao atualizar!";
+                        this.close();
+                    }
+                });
             } else {
                 if(this.validaCampos()){
                     this.axios.post('http://localhost:3000/pessoa', this.editedItem).then(response => {
