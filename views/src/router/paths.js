@@ -15,21 +15,21 @@ export default [
     view: 'Pessoas'
   },
   {
-    path: '/table-list',
-    name: 'Table List',
-    view: 'TableList'
+    path: '/batalhoes',
+    name: 'Batalhões',
+    view: 'Batalhoes'
   },
   {
-    path: '/typography',
-    view: 'Typography'
+    path: '/escalas',
+    view: 'Escalas'
   },
   {
-    path: '/icons',
-    view: 'Icons'
+    path: '/hierarquias',
+    view: 'Hierarquia'
   },
   {
-    path: '/maps',
-    view: 'Maps'
+    path: '/setores',
+    view: 'Setores'
   },
   {
     path: '/notifications',

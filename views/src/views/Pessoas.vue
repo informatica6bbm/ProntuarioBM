@@ -303,11 +303,11 @@ export default {
         lts: [
             {
                 text: "SIM",
-                value: true
+                value: 'true'
             },
             {
                 text: "NÃO",
-                value: false
+                value: 'false'
             }
         ],
         hierarquias: [],
@@ -432,14 +432,10 @@ export default {
 
             this.axios.get('http://localhost:3000/pessoa').then(response => {
                 this.desserts = response.data;
-                console.log(response.data);
                 for(var i = 0; i < response.data.length; i++){
-                    var data = new Date(response.data[i].dataNascimento);
-                    var dia  = data.getDate();
-                    var mes  = data.getMonth() + 1;
-                    var ano4 = data.getFullYear();
-                    // console.log(dia + "/" + mes + "/" + ano4);
-                    console.log(data);
+                    response.data[i].dataNascimento = response.data[i].dataNascimento.split("T")[0].split('-').reverse().join('/');
+                    response.data[i].dataIngresso = response.data[i].dataIngresso.split("T")[0].split('-').reverse().join('/');
+                    response.data[i].lts == true ? response.data[i].lts = 'true' : response.data[i].lts = 'false';
                 }
                 this.desserts = response.data;
             });
@@ -536,10 +532,10 @@ export default {
                     this.editedItem.foto != '';
         },
         save () {
-            console.log(this.editedItem);
+
             if (this.editedIndex > -1) {
+                this.editedItem.lts == 'true' ? this.editedItem.lts = true : this.editedItem.lts = false;
                 this.axios.put('http://localhost:3000/pessoa', this.editedItem).then(response => {
-                    console.log(response.data);
                     if(response.data){
                         this.textoSnackbar = "Registro atualizado com sucesso!";
                         this.snackbar = true;
@@ -555,6 +551,7 @@ export default {
                 });
             } else {
                 if(this.validaCampos()){
+                    this.editedItem.lts == 'true' ? this.editedItem.lts = true : this.editedItem.lts = false;
                     this.axios.post('http://localhost:3000/pessoa', this.editedItem).then(response => {
                         if(response.data.id){
                             this.textoSnackbar = "Pessoa inserida com sucesso!";

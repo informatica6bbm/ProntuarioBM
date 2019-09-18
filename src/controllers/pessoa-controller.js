@@ -37,7 +37,7 @@ exports.post = (req, res, next) => {
     var cartaoNacionalSus = req.body.cartaoNacionalSus;
     var sexo = req.body.sexo;
     var tipoSanguineo = req.body.tipoSanguineo;
-    var lts = req.body.tipoSanguineo;
+    var lts = req.body.lts;
     var foto = req.body.foto;
     var idHierarquia = req.body.idHierarquia;
     var idSetor = req.body.idSetor;
@@ -83,7 +83,7 @@ exports.update = (req, res, next) => {
     var cartaoNacionalSus = req.body.cartaoNacionalSus;
     var sexo = req.body.sexo;
     var tipoSanguineo = req.body.tipoSanguineo;
-    var lts = req.body.tipoSanguineo;
+    var lts = req.body.lts;
     var foto = req.body.foto;
     var idHierarquia = req.body.idHierarquia;
     var idSetor = req.body.idSetor;
@@ -110,7 +110,6 @@ exports.update = (req, res, next) => {
         idEscala: idEscala,
         createdAt: Helpers.getDataHoraAtual()
     };
-    console.log(data);
     Pessoa.update(data, {
         where: {
             id: id

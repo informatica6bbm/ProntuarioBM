@@ -44,10 +44,12 @@ exports.update = (req, res, next) => {
     var id = req.body.id;
     var setor = req.body.setor;
     var descricao = req.body.descricao;
+    var idLocal = req.body.idLocal;
 
     var data = {
         setor: setor,
         descricao: descricao,
+        idLocal: idLocal,
         createdAt: Helpers.getDataHoraAtual()
     };
 
