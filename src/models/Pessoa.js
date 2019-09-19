@@ -82,6 +82,10 @@ const Pessoa = sequelize.define('pessoa', {
         type: Sequelize.TEXT('medium'),
         allowNull: false
     },
+    tipoPessoa: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false
+    },
     idHierarquia: {
         type: Sequelize.INTEGER,
         references: {

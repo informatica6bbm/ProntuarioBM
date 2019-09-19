@@ -220,6 +220,18 @@
                                     </v-col>
 
                                     <v-col cols="12" sm="6" md="4">
+                                        <v-select
+                                            :items="tipoPessoas"
+                                            v-model="editedItem.tipoPessoa"
+                                            item-text="tipo"
+                                            item-value="value"
+                                            :rules="[v => !!v || 'Obrigatório prencher o tipo do cadastro!']"
+                                            label="Tipo usuário"
+                                            outlined
+                                        ></v-select>
+                                    </v-col>
+
+                                    <v-col cols="12" sm="6" md="4">
                                         <v-file-input
                                             color="deep-purple accent-4"
                                             counter
@@ -328,6 +340,16 @@ export default {
             "O+",
             "O-"
         ],
+        tipoPessoas: [
+            {
+                tipo: "Administrador",
+                value: 'true'
+            },
+            {
+                tipo: "Normal",
+                value: 'false'
+            }
+        ],
         imgSrc: null,
         textoSnackbar: "",
         color: 'success',
@@ -373,6 +395,7 @@ export default {
             idSetor: 0,
             idEscala: 0,
             foto: "",
+            tipoPessoa: null,
             method: 'GET',
             mode: 'no-cors',
             headers: {
@@ -398,7 +421,8 @@ export default {
             idBatalhao: 0,
             idSetor: 0,
             idEscala: 0,
-            foto: ""
+            foto: "",
+            tipoPessoa: null
         },
     }),
 
@@ -419,16 +443,7 @@ export default {
     },
     methods: {
         initialize () {
-            this.desserts = [
-                {
-                    nome: "TESTE",
-                    matricula: "123456-7",
-                    cartaoMunicipalSus: "123456",
-                    cartaoNacionalSus: "123 4567 8912 345",
-                    sexo: "MASCULINO",
-                    tipoSanguineo: "+O"
-                }
-            ];
+            this.desserts = [];
 
             this.axios.get('http://localhost:3000/pessoa').then(response => {
                 this.desserts = response.data;
@@ -436,6 +451,7 @@ export default {
                     response.data[i].dataNascimento = response.data[i].dataNascimento.split("T")[0].split('-').reverse().join('/');
                     response.data[i].dataIngresso = response.data[i].dataIngresso.split("T")[0].split('-').reverse().join('/');
                     response.data[i].lts == true ? response.data[i].lts = 'true' : response.data[i].lts = 'false';
+                    response.data[i].tipoPessoa == true ? response.data[i].tipoPessoa = 'true' : response.data[i].tipoPessoa = 'false';
                 }
                 this.desserts = response.data;
             });
@@ -534,7 +550,8 @@ export default {
         save () {
 
             if (this.editedIndex > -1) {
-                this.editedItem.lts == 'true' ? this.editedItem.lts = true : this.editedItem.lts = false;
+                // this.editedItem.lts == 'true' ? this.editedItem.lts = true : this.editedItem.lts = false;
+                // this.editedItem.tipoCadastro == 'true' ? this.editedItem.tipoCadastro =  true : this.editedItem.tipoCadastro =  false;
                 this.axios.put('http://localhost:3000/pessoa', this.editedItem).then(response => {
                     if(response.data){
                         this.textoSnackbar = "Registro atualizado com sucesso!";
@@ -551,7 +568,8 @@ export default {
                 });
             } else {
                 if(this.validaCampos()){
-                    this.editedItem.lts == 'true' ? this.editedItem.lts = true : this.editedItem.lts = false;
+                    // this.editedItem.lts == 'true' ? this.editedItem.lts = true : this.editedItem.lts = false;
+                    // this.editedItem.tipoCadastro == 'true' ? this.editedItem.tipoCadastro =  true : this.editedItem.tipoCadastro =  false;
                     this.axios.post('http://localhost:3000/pessoa', this.editedItem).then(response => {
                         if(response.data.id){
                             this.textoSnackbar = "Pessoa inserida com sucesso!";

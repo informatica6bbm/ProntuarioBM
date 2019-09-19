@@ -39,6 +39,7 @@ exports.post = (req, res, next) => {
     var tipoSanguineo = req.body.tipoSanguineo;
     var lts = req.body.lts;
     var foto = req.body.foto;
+    var tipoPessoa = req.body.tipoPessoa;
     var idHierarquia = req.body.idHierarquia;
     var idSetor = req.body.idSetor;
     var idBatalhao = req.body.idBatalhao;
@@ -58,6 +59,7 @@ exports.post = (req, res, next) => {
         tipoSanguineo: tipoSanguineo,
         lts: lts,
         foto: foto,
+        tipoPessoa: tipoPessoa,
         idHierarquia: idHierarquia,
         idSetor: idSetor,
         idBatalhao: idBatalhao,
@@ -85,6 +87,7 @@ exports.update = (req, res, next) => {
     var tipoSanguineo = req.body.tipoSanguineo;
     var lts = req.body.lts;
     var foto = req.body.foto;
+    var tipoPessoa = req.body.tipoPessoa;
     var idHierarquia = req.body.idHierarquia;
     var idSetor = req.body.idSetor;
     var idBatalhao = req.body.idBatalhao;
@@ -104,6 +107,7 @@ exports.update = (req, res, next) => {
         tipoSanguineo: tipoSanguineo,
         lts: lts,
         foto: foto,
+        tipoPessoa: tipoPessoa,
         idHierarquia: idHierarquia,
         idSetor: idSetor,
         idBatalhao: idBatalhao,

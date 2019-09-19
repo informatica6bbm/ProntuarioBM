@@ -157,7 +157,7 @@ export default {
                 value: 'setor',
             },
             { text: 'Descrição', value: 'descricao' },
-            { text: 'OBM', value: 'idLocal' },
+            { text: 'OBM', value: 'obm' },
             { text: 'Ações', value: 'action', sortable: false },
         ],
         desserts: [],
@@ -199,6 +199,14 @@ export default {
 
             this.axios.get('http://localhost:3000/setor').then(response => {
                 this.desserts = response.data;
+
+                for(var i = 0; i < this.desserts.length; i++){
+                    for(var u = 0; u < this.obms.length; u++) {
+                        if(this.desserts[i].idLocal == this.obms[u].id) {
+                            this.desserts[i].obm = this.obms[u].abreviacao;
+                        }
+                    }
+                }
             });
         },
 
@@ -235,7 +243,6 @@ export default {
         },
         save () {
             if (this.editedIndex > -1) {
-                console.log(this.editedItem);
                 this.axios.put('http://localhost:3000/setor', this.editedItem).then(response => {
                     if(response.data){
                         this.textoSnackbar = "Registro atualizado com sucesso!";
