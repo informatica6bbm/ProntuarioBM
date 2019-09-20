@@ -32,12 +32,7 @@ export default [
     view: 'Setores'
   },
   {
-    path: '/notifications',
-    view: 'Notifications'
-  },
-  {
-    path: '/upgrade',
-    name: 'Upgrade to PRO',
-    view: 'Upgrade'
+    path: '/exames',
+    view: 'Exames'
   }
 ]

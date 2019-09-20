@@ -395,15 +395,7 @@ export default {
             idSetor: 0,
             idEscala: 0,
             foto: "",
-            tipoPessoa: null,
-            method: 'GET',
-            mode: 'no-cors',
-            headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Content-Type': 'application/json',
-            },
-            withCredentials: true,
-            credentials: 'same-origin',
+            tipoPessoa: null
         },
         defaultItem: {
             nome: "",

@@ -86,6 +86,11 @@
           text: 'Escalas'
         },
         {
+          to: '/exames',
+          icon: 'mdi-file-document',
+          text: 'Exames'
+        },
+        {
           to: '/hierarquias',
           icon: 'mdi-chart-bubble',
           text: 'Hierarquia'

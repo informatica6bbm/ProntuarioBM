@@ -8,6 +8,7 @@ const router = express.Router();
 const index = require('./routes/index');
 const batalhao = require('./routes/batalhao-routes');
 const escala = require('./routes/escala-routes');
+const exame = require('./routes/exame-routes');
 const hierarquia = require('./routes/hierarquia-routes');
 const setor = require('./routes/setor-routes');
 const pessoa = require('./routes/pessoa-routes');
@@ -26,10 +27,11 @@ app.use(function(req, res, next) {
 
 
 app.use('/', index);
-app.use('/pessoa', pessoa);
-app.use('/escala', escala);
 app.use('/batalhao', batalhao);
+app.use('/escala', escala);
+app.use('/exame', exame);
 app.use('/hierarquia', hierarquia);
+app.use('/pessoa', pessoa);
 app.use('/setor', setor);
 
 module.exports = app;
