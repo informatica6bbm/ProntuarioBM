@@ -5,6 +5,7 @@ const router = express.Router();
 const controller = require('./../controllers/parametroExame-controller');
 
 router.get('/',  controller.getAll);
+router.get('/getByIdExame/:id', controller.getByIdExame);
 router.get('/:id',  controller.get);
 router.post('/',    controller.post);
 router.put('/',     controller.update);

@@ -32,6 +32,16 @@ const ParametroExame = sequelize.define('parametroexame', {
     unidadeMedida: {
         type: Sequelize.STRING,
         allowNull: false
+    },
+    idExame: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+            model: {
+                tableName: 'exame'
+            },
+            key: 'id'
+        }
     }
 },
 {

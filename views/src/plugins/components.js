@@ -5,6 +5,10 @@ import ChartCard from '@/components/material/ChartCard';
 import Notification from '@/components/material/Notification';
 import StatsCard from '@/components/material/StatsCard';
 
+import ParametrosExame from '@/components/helper/ParametrosExame';
+
+Vue.component('parametros-exame-dialog', ParametrosExame);
+
 Vue.component(Offset.name, Offset);
 Vue.component(Card.name, Card);
 Vue.component(ChartCard.name, ChartCard);

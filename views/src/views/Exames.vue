@@ -24,6 +24,7 @@
                                 outlined
                             ></v-text-field>
                         </v-col>
+
                     </v-row>
                 </v-container>
                 <v-snackbar
@@ -53,6 +54,12 @@
                         </v-btn>
                 </v-snackbar>
                 <div class="flex-grow-1"></div>
+
+                <parametros-exame-dialog
+                    v-on:setFalseDialog="closeDialogParametros"
+                    v-bind:dialog="dialogParametros"
+                    v-bind:idExame="editedItem.id"
+                ></parametros-exame-dialog>
 
                 <v-dialog v-model="dialog" max-width="1000px">
 
@@ -95,6 +102,7 @@
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
+
             </v-toolbar>
         </template>
 
@@ -102,7 +110,7 @@
             <v-icon
                 small
                 class="mr-2"
-                @click="editItem(item)"
+                @click="openDialogParametros(item)"
             >
                 mdi-eye
             </v-icon>
@@ -143,6 +151,8 @@ export default {
         timeout: 6000,
         x: null,
         y: 'top',
+        dialogParametros: false,
+        dialogViewParametros: false,
         rowsPerPageItems: [8, 12, 15],
         pagination: {
             rowsPerPage: 20
@@ -192,7 +202,14 @@ export default {
                 this.desserts = response.data;
             });
         },
-
+        openDialogParametros(item) {
+            this.editedIndex = this.desserts.indexOf(item);
+            this.editedItem = Object.assign({}, item);
+            this.dialogParametros = true;
+        },
+        closeDialogParametros() {
+            this.dialogParametros = false;
+        },
         editItem (item) {
             this.editedIndex = this.desserts.indexOf(item);
             this.editedItem = Object.assign({}, item);
