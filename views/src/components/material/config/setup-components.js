@@ -3,8 +3,6 @@ import Toolbar from '../components/core/Toolbar.vue';
 import Navigation from '../components/core/NavigationDrawer.vue';
 import Breadcrumbs from '../components/core/Breadcrumbs.vue';
 
-import ParametrosExame from '../components/helper/ParametrosExame.vue';
-
 import Widget from '../components/Widget.vue';
 import SocialWidget from '../components/SocialWidget.vue';
 import DataTable from '../components/DataTable.vue';
@@ -17,7 +15,6 @@ import SiteViewStatistic from '../components/statistics/SiteViewStatistic.vue';
 import TotalEarningsStatistic from '../components/statistics/TotalEarningsStatistic.vue';
 
 function setupComponents(Vue){
-    Vue.component('parametros-exame-dialog', ParametrosExame);
 
     Vue.component('toolbar', Toolbar);
     Vue.component('navigation', Navigation);

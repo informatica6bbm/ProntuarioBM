@@ -27,32 +27,14 @@
 
                     </v-row>
                 </v-container>
-                <v-snackbar
-                        v-model="snackbar"
-                        :bottom="y === 'bottom'"
-                        :color="color"
-                        :left="x === 'left'"
-                        :multi-line="mode === 'multi-line'"
-                        :right="x === 'right'"
-                        :timeout="timeout"
-                        :top="y === 'top'"
-                        :vertical="mode === 'vertical'"
 
-                        class="snackbar"
-                    >
-                        {{ textoSnackbar }}
-                        <v-btn
-                            dark
-                            text
-                            icon
-                            @click="snackbar = false"
-                        >
-                            <v-icon
-                                class="mr-2"
-                                @click="snackbar = false"
-                            >mdi-close</v-icon>
-                        </v-btn>
-                </v-snackbar>
+                <snackbar
+                    :textoSnackbar="textoSnackbar"
+                    :color="color"
+                    :snackbar="snackbar"
+                    v-on:closeSnackbar="closeSnackbar"
+                ></snackbar>
+
                 <div class="flex-grow-1"></div>
 
                 <parametros-exame-dialog
@@ -146,11 +128,7 @@ export default {
         search: "",
         textoSnackbar: "",
         color: 'success',
-        mode: '',
         snackbar: false,
-        timeout: 6000,
-        x: null,
-        y: 'top',
         dialogParametros: false,
         dialogViewParametros: false,
         rowsPerPageItems: [8, 12, 15],
@@ -202,6 +180,9 @@ export default {
                 this.desserts = response.data;
             });
         },
+        closeSnackbar () {
+            this.snackbar = false;
+        },
         openDialogParametros(item) {
             this.editedIndex = this.desserts.indexOf(item);
             this.editedItem = Object.assign({}, item);
@@ -209,6 +190,8 @@ export default {
         },
         closeDialogParametros() {
             this.dialogParametros = false;
+            this.editedItem = Object.assign({}, this.defaultItem);
+            this.editedIndex = -1
         },
         editItem (item) {
             this.editedIndex = this.desserts.indexOf(item);
@@ -239,7 +222,7 @@ export default {
             }, 300);
         },
         validaCampos() {
-            return  this.editedItem.abreviacao != '' && this.editedItem.descricao != '';
+            return  this.editedItem.exame != '' && this.editedItem.descricao != '';
         },
         save () {
             if (this.editedIndex > -1) {

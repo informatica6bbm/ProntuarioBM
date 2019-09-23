@@ -327,8 +327,8 @@ export default {
         setores: [],
         escalas: [],
         sexos: [
-            "MASCULINO",
-            "FEMININO"
+            "FEMININO",
+            "MASCULINO"
         ],
         tiposSanguineo: [
             "A+",

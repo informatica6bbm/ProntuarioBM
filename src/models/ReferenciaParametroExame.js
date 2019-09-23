@@ -42,11 +42,11 @@ const ReferenciaParametroExame = sequelize.define('referenciaparametroexame', {
         allowNull: false
     },
     valorMinimo: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: false
     },
     valorMaximo: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.FLOAT,
         allowNull: false
     },
     sexo: {

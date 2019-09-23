@@ -24,12 +24,6 @@
                     }"
                 >
 
-                    <valores-referencia-parametro-dialog
-                        v-on:setFalseDialog="closeDialogValoresReferencia"
-                        v-bind:dialog="dialogValoreReferenciaParametros"
-                        v-bind:idParametro="editedItem.id"
-                    ></valores-referencia-parametro-dialog>
-
                     <template v-slot:top>
                         <v-toolbar flat color="white">
 
@@ -57,10 +51,10 @@
 
                             <div class="flex-grow-1"></div>
 
-                            <v-dialog v-model="dialogAddParametro" max-width="1000px">
+                            <v-dialog v-model="dialogAddValorReferencia" max-width="1000px">
 
                                 <template v-slot:activator="{ on }">
-                                    <v-btn color="primary" class="mb-2" @click="dialogAddParametro = true" >Adicionar</v-btn>
+                                    <v-btn color="primary" class="mb-2" @click="dialogAddValorReferencia = true" >Adicionar</v-btn>
                                 </template>
 
                                 <v-card>
@@ -71,24 +65,76 @@
                                     <v-card-text>
                                         <v-container>
                                             <v-row>
-                                                <v-col cols="12" sm="12" md="6">
+                                                <v-col cols="12" sm="12" md="4">
                                                     <v-text-field
-                                                        v-model="editedItem.parametro"
-                                                        :rules="[v => !!v || 'Obrigatório prencher o parâmetro!']"
-                                                        label="Parâmetro"
+                                                        v-model="editedItem.valorMinimo"
+                                                        :rules="[v => !!v || 'Obrigatório prencher o valor mínimo!']"
+                                                        label="Valor mínimo"
+                                                        outlined
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" sm="12" md="4">
+                                                    <v-select
+                                                        :items="comparacoes"
+                                                        v-model="editedItem.comparacao"
+                                                        :rules="[v => !!v || 'Obrigatório prencher a comparação!']"
+                                                        label="Comparação"
+                                                        outlined
+                                                    ></v-select>
+                                                </v-col>
+
+                                                <v-col cols="12" sm="12" md="4">
+                                                    <v-text-field
+                                                        v-model="editedItem.valorMaximo"
+                                                        :rules="[v => !!v || 'Obrigatório prencher o valor maximo!']"
+                                                        label="Valor maximo"
                                                         outlined
                                                     ></v-text-field>
                                                 </v-col>
 
-                                                <v-col cols="12" sm="12" md="6">
+                                            </v-row>
+
+                                            <v-row>
+                                                <v-col cols="12" sm="12" md="4">
                                                     <v-text-field
-                                                        v-model="editedItem.unidadeMedida"
-                                                        :rules="[v => !!v || 'Obrigatório prencher a unidade medida!']"
-                                                        label="Unidade Medida"
+                                                        v-model="editedItem.idadeMinimo"
+                                                        :rules="[v => !!v || 'Obrigatório prencher a idade mínimo!']"
+                                                        label="Idade mínima"
+                                                        outlined
+                                                    ></v-text-field>
+                                                </v-col>
+                                                <v-col cols="12" sm="12" md="4">
+                                                    <v-select
+                                                        :items="comparacoes"
+                                                        v-model="editedItem.idade"
+                                                        :rules="[v => !!v || 'Obrigatório prencher a comparação idade!']"
+                                                        label="Comparação"
+                                                        outlined
+                                                    ></v-select>
+                                                </v-col>
+
+                                                <v-col cols="12" sm="12" md="4">
+                                                    <v-text-field
+                                                        v-model="editedItem.idadeMaximo"
+                                                        :rules="[v => !!v || 'Obrigatório prencher a idade maxima!']"
+                                                        label="Idade maxima"
                                                         outlined
                                                     ></v-text-field>
                                                 </v-col>
                                             </v-row>
+
+                                            <v-row>
+                                                <v-col cols="12" sm="12" md="4">
+                                                    <v-select
+                                                        :items="sexos"
+                                                        v-model="editedItem.sexo"
+                                                        :rules="[v => !!v || 'Obrigatório selecionar o sexo!']"
+                                                        label="Sexo"
+                                                        outlined
+                                                    ></v-select>
+                                                </v-col>
+                                            </v-row>
+
                                         </v-container>
                                     </v-card-text>
 
@@ -103,15 +149,6 @@
                     </template>
 
                     <template v-slot:item.action="{ item }">
-
-                        <v-icon
-                            small
-                            class="mr-2"
-                            @click="openDialogValoresReferencia(item)"
-                        >
-                            mdi-eye
-                        </v-icon>
-
                         <v-icon
                             small
                             class="mr-2"
@@ -125,11 +162,11 @@
                         >
                             mdi-delete
                         </v-icon>
-                        </template>
+                    </template>
 
-                        <template v-slot:no-data>
-                            <v-btn color="primary" @click="initialize">Reset</v-btn>
-                        </template>
+                    <template v-slot:no-data>
+                        <v-btn color="primary" @click="initialize">Reset</v-btn>
+                    </template>
 
                 </v-data-table>
 
@@ -141,11 +178,28 @@
 <script>
 
     export default {
-        props: ['dialog', 'idExame'],
+        props: ['dialog', 'idParametro'],
         data: () => ({
-            exame: "",
-            dialogAddParametro: false,
-            dialogValoreReferenciaParametros: false,
+            parametro: "",
+            dialogAddValorReferencia: false,
+            comparacoes: [
+                {
+                    text: "< (Menor que minimo)",
+                    value: "<"
+                },
+                {
+                    text: "> (Maior que maximo)",
+                    value: ">"
+                },
+                {
+                    text: "<> (Entre o minimo e maximo)",
+                    value: "<>"
+                }
+            ],
+            sexos: [
+                "FEMININO",
+                "MASCULINO"
+            ],
             headers: [
                 {
                     text: 'Parâmetro',
@@ -164,16 +218,26 @@
             },
             editedIndex: -1,
             editedItem: {
-                parametro: "",
-                unidadeMedida: "",
-                idExame: null,
+                comparacao: "",
+                idade: "",
+                idadeMinima: "",
+                idadeMaxima: "",
+                valorMinimo: 0,
+                valorMaximo: 0,
+                sexo: "",
+                idParametro: null,
                 createdAt: "",
                 updatedAt: ""
             },
             defaultItem: {
-                parametro: "",
-                unidadeMedida: "",
-                idExame: null,
+                comparacao: "",
+                idade: "",
+                idadeMinima: "",
+                idadeMaxima: "",
+                valorMinimo: 0,
+                valorMaximo: 0,
+                sexo: "",
+                idParametro: null,
                 createdAt: "",
                 updatedAt: ""
             },
@@ -191,50 +255,41 @@
         },
         watch: {
             dialog() {
-                this.axios.get('http://localhost:3000/exame/' + this.idExame).then(response => {
-                    this.exame = response.data;
+                this.axios.get('http://localhost:3000/referenciaParametroExame/getByIdParametro/' + this.idParametro).then(response => {
+                    this.parametro = response.data;
                 });
 
-                this.atualizaParametros();
+                this.atualizaValoresReferencia();
             },
-            dialogAddParametro (val) {
+            dialogAddValorReferencia (val) {
                 val || this.close()
             },
         },
         methods: {
             initialize () {
+                this.dialog = false;
+            },
 
-            },
-            openDialogValoresReferencia(item){
-                this.editedIndex = this.desserts.indexOf(item);
-                this.editedItem = Object.assign({}, item);
-                this.dialogValoreReferenciaParametros = true;
-            },
-            closeDialogValoresReferencia() {
-                this.dialogParametros = false;
-                this.editedItem = Object.assign({}, this.defaultItem);
-                this.dialogValoreReferenciaParametros = false;
-            },
             closeSnackbar () {
                 this.snackbar = false;
             },
-            atualizaParametros() {
-                this.axios.get('http://localhost:3000/parametroExame/getByIdExame/' + this.idExame ).then(response => {
+            atualizaValoresReferencia() {
+                this.axios.get('http://localhost:3000/valoresReferenciaParametroExame/getByIdParametro/' + this.idExame ).then(response => {
                     this.desserts = response.data;
                 });
             },
             editItem (item) {
                 this.editedIndex = this.desserts.indexOf(item);
                 this.editedItem = Object.assign({}, item);
-                this.dialogAddParametro = true;
+                this.dialogAddValorReferencia = true;
             },
             deleteItem (item) {
-                this.axios.delete('http://localhost:3000/parametroExame/' + item.id + "/delete").then(response => {
+                this.axios.delete('http://localhost:3000/valoresReferenciaParametroExame/' + item.id + "/delete").then(response => {
                     if(response.data){
                         this.snackbar = true;
                         this.color = 'success';
                         this.textoSnackbar = "Parâmetro apagado com sucesso!";
-                        this.initialize();
+                        this.atualizaValoresReferencia()
                     }else {
                         this.snackbar = true;
                         this.color = 'error';
@@ -243,24 +298,24 @@
                 });
             },
             close () {
-                this.dialogAddParametro = false;
+                this.dialogAddValorReferencia = false;
                 setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
-                    this.editedIndex = -1
+                    this.editedItem = Object.assign({}, this.defaultItem);
+                    this.editedIndex = -1;
                 }, 300);
             },
             validaCampos() {
-                return  this.editedItem.parametro != '' && this.editedItem.unidadeMedida != '';
+                return  this.editedItem.escala != '';
             },
             save () {
                 if (this.editedIndex > -1) {
-                    this.editedItem.idExame = this.idExame;
-                    this.axios.put('http://localhost:3000/parametroExame', this.editedItem).then(response => {
+                    this.editedItem.idParametro = this.idParametro;
+                    this.axios.put('http://localhost:3000/valoresReferenciaParametroExame', this.editedItem).then(response => {
                         if(response.data){
                             this.textoSnackbar = "Registro atualizado com sucesso!";
                             this.snackbar = true;
                             this.color = 'success';
-                            this.atualizaParametros();
+                            this.atualizaValoresReferencia();
                             this.dialogAddParametro = false;
                         }else {
                             this.snackbar = true;
@@ -272,12 +327,12 @@
                 } else {
                     if(this.validaCampos()){
                         this.editedItem.idExame = this.idExame;
-                        this.axios.post('http://localhost:3000/parametroExame', this.editedItem).then(response => {
+                        this.axios.post('http://localhost:3000/valoresReferenciaParametroExame', this.editedItem).then(response => {
                             if(response.data.id){
-                                this.textoSnackbar = "Parâmetro inserida com sucesso!";
+                                this.textoSnackbar = "Escala inserida com sucesso!";
                                 this.snackbar = true;
                                 this.color = 'success';
-                                this.atualizaParametros();
+                                this.atualizaValoresReferencia();
                                 this.dialogAddParametro = false;
                             }else {
                                 this.snackbar = true;

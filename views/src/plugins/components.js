@@ -6,8 +6,12 @@ import Notification from '@/components/material/Notification';
 import StatsCard from '@/components/material/StatsCard';
 
 import ParametrosExame from '@/components/helper/ParametrosExame';
+import ValorReferenciaParametro from '@/components/helper/ValoresReferencia';
+import Snackbar from '@/components/helper/Snackbar';
 
 Vue.component('parametros-exame-dialog', ParametrosExame);
+Vue.component('valores-referencia-parametro-dialog', ValorReferenciaParametro);
+Vue.component('snackbar', Snackbar);
 
 Vue.component(Offset.name, Offset);
 Vue.component(Card.name, Card);

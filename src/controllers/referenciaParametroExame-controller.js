@@ -5,7 +5,7 @@ const ReferenciaParametroExame = require('./../models/ReferenciaParametroExame')
 exports.get = (req, res, next) => {
     const id = req.params.id;
     ReferenciaParametroExame.findAll().then(response => {
-        var find = [];
+        var find = "";
         var data = JSON.parse(JSON.stringify(response));
         for(var i = 0; i < data.length; i++){
             if(data[i].id == id) {
@@ -16,7 +16,23 @@ exports.get = (req, res, next) => {
 
         res.status(200).json(find);
     });
+}
 
+exports.getByIdParametro = (req, res, next) => {
+    const id = req.params.id;
+    ReferenciaParametroExame.findAll().then(response => {
+        var find = [];
+        var counter = 0;
+        var data = JSON.parse(JSON.stringify(response));
+        for(var i = 0; i < data.length; i++){
+            if(data[i].idParametro == id) {
+                find[counter] = data[i] ;
+                counter++;
+            }
+        }
+
+        res.status(200).json(find);
+    });
 }
 
 exports.getAll = (req, res, next) => {
