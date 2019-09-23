@@ -52,7 +52,7 @@ exports.post = (req, res, next) => {
     var idParametro = req.body.idParametro;
 
     var data = {
-        comparacao: parametro,
+        comparacao: comparacao,
         idade: idade,
         idadeMinima: idadeMinima,
         idadeMaxima: idadeMaxima,
