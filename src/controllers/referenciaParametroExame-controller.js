@@ -46,7 +46,7 @@ exports.post = (req, res, next) => {
     var idade = req.body.idade
     var idadeMinima = req.body.idadeMinima;
     var idadeMaxima = req.body.idadeMaxima;
-    var valorMinima = req.body.valorMinimo;
+    var valorMinimo = req.body.valorMinimo;
     var valorMaximo = req.body.valorMaximo;
     var sexo = req.body.sexo;
     var idParametro = req.body.idParametro;
@@ -56,13 +56,13 @@ exports.post = (req, res, next) => {
         idade: idade,
         idadeMinima: idadeMinima,
         idadeMaxima: idadeMaxima,
-        valorMinima: valorMinima,
+        valorMinimo: valorMinimo,
         valorMaximo: valorMaximo,
         sexo: sexo,
         idParametro: idParametro,
         createdAt: Helpers.getDataHoraAtual()
     };
-
+    console.log(data);
     ReferenciaParametroExame.create(data).then(response => {
         res.status(200).json(response);
     });

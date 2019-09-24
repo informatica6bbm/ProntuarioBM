@@ -93,36 +93,22 @@
                                     <v-data-table
                                         :headers="headersValoresRerefencia"
                                         :items="dessertsValoresRerefencia"
-                                        :search="searchValoresRerefencia"
                                         class="elevation-1 ma-2"
                                         :footer-props="{
                                             'items-per-page-options': [8,10,12,14]
                                         }"
+
+                                        v-if="mostraTabelaValoresReferencia"
                                     >
 
                                         <template v-slot:top>
                                             <v-toolbar flat color="white">
 
-                                                <v-container>
-                                                    <v-row>
-                                                        <v-col cols="12" sm="12" md="5">
-                                                            <v-text-field
-                                                                v-model="search"
-                                                                append-icon="mdi-magnify"
-                                                                label="Buscar"
-                                                                single-line
-                                                                hide-details
-                                                                outlined
-                                                            ></v-text-field>
-                                                        </v-col>
-                                                    </v-row>
-                                                </v-container>
-
                                                 <snackbar
                                                     :textoSnackbar="textoSnackbarValoresReferencia"
                                                     :color="colorValoresReferencia"
                                                     :snackbar="snackbarValoresReferencia"
-                                                    v-on:closeSnackbar="closeSnackbar"
+                                                    v-on:closeSnackbar="closeSnackbarValoresReferencia"
                                                 ></snackbar>
 
                                                 <div class="flex-grow-1"></div>
@@ -173,7 +159,7 @@
                                                                 <v-row>
                                                                     <v-col cols="12" sm="12" md="4">
                                                                         <v-text-field
-                                                                            v-model="editedItemValoresReferencia.idadeMinimo"
+                                                                            v-model="editedItemValoresReferencia.idadeMinima"
                                                                             :rules="[v => !!v || 'Obrigatório prencher a idade mínimo!']"
                                                                             label="Idade mínima"
                                                                             outlined
@@ -191,7 +177,7 @@
 
                                                                     <v-col cols="12" sm="12" md="4">
                                                                         <v-text-field
-                                                                            v-model="editedItemValoresReferencia.idadeMaximo"
+                                                                            v-model="editedItemValoresReferencia.idadeMaxima"
                                                                             :rules="[v => !!v || 'Obrigatório prencher a idade maxima!']"
                                                                             label="Idade maxima"
                                                                             outlined
@@ -219,7 +205,7 @@
                                                         <v-card-actions>
                                                             <div class="flex-grow-1"></div>
                                                             <v-btn color="blue darken-1" text @click="closeValoresReferencia">Cancelar</v-btn>
-                                                            <v-btn color="blue darken-1" text @click="saveValoresReferencia">Salvar</v-btn>
+                                                            <v-btn color="blue darken-1" text @click="saveValoresReferencia()">Salvar</v-btn>
                                                         </v-card-actions>
                                                     </v-card>
                                                 </v-dialog>
@@ -255,14 +241,6 @@
                     </template>
 
                     <template v-slot:item.action="{ item }">
-
-                        <v-icon
-                            small
-                            class="mr-2"
-                            @click="dialogValoreReferenciaParametros = true"
-                        >
-                            mdi-eye
-                        </v-icon>
 
                         <v-icon
                             small
@@ -327,8 +305,6 @@
             textoSnackbar: "",
             color: 'success',
             snackbar: false,
-
-            dialogAddValorReferencia: false,
             comparacoes: [
                 {
                     text: "< (Menor que minimo)",
@@ -359,15 +335,14 @@
                 { text: 'sexo', value: 'sexo' },
                 { text: 'Ações', value: 'action', sortable: false },
             ],
-            searchValoresRerefencia: "",
             editedIndexValoresReferencia: -1,
             editedItemValoresReferencia: {
                 comparacao: "",
                 idade: "",
                 idadeMinima: "",
                 idadeMaxima: "",
-                valorMinimo: 0,
-                valorMaximo: 0,
+                valorMinimo: "",
+                valorMaximo: "",
                 sexo: "",
                 idParametro: null,
                 createdAt: "",
@@ -378,8 +353,8 @@
                 idade: "",
                 idadeMinima: "",
                 idadeMaxima: "",
-                valorMinimo: 0,
-                valorMaximo: 0,
+                valorMinimo: "",
+                valorMaximo: "",
                 sexo: "",
                 idParametro: null,
                 createdAt: "",
@@ -388,7 +363,8 @@
             textoSnackbarValoresReferencia: "",
             colorValoresReferencia: 'success',
             snackbarValoresReferencia: false,
-            dialogValoresReferencia: false
+            dialogValoresReferencia: false,
+            mostraTabelaValoresReferencia: false
         }),
         created () {
             this.initialize()
@@ -413,7 +389,8 @@
                 this.axios.get('http://localhost:3000/referenciaParametroExame/getByIdParametro/' + this.editedItem.id).then(response => {
                     this.dessertsValoresReferencia = response.data;
                 });
-                val || this.close()
+                // this.mostraTabelaValoresReferencia = false;
+                val || this.close();
             },
         },
         methods: {
@@ -431,6 +408,8 @@
             editItem (item) {
                 this.editedIndex = this.desserts.indexOf(item);
                 this.editedItem = Object.assign({}, item);
+                this.atualizaValoresReferencia();
+                this.mostraTabelaValoresReferencia = true;
                 this.dialogAddParametro = true;
             },
             deleteItem (item) {
@@ -449,6 +428,7 @@
             },
             close () {
                 this.dialogAddParametro = false;
+                this.mostraTabelaValoresReferencia = false;
                 setTimeout(() => {
                     this.editedItem = Object.assign({}, this.defaultItem)
                     this.editedIndex = -1
@@ -503,8 +483,14 @@
                 this.snackbarValoresReferencia = false;
             },
             atualizaValoresReferencia() {
-                this.axios.get('http://localhost:3000/referenciaParametroExame/getByIdParametro/' + this.idExame ).then(response => {
-                    this.desserts = response.data;
+                this.axios.get('http://localhost:3000/referenciaParametroExame/getByIdParametro/' + this.editedItem.id).then(response => {
+                    this.dessertsValoresRerefencia = response.data;
+
+                    for(var i = 0; i < response.data.length; i++){
+                        this.dessertsValoresRerefencia[i].valor = (parseInt(response.data[i].valorMinimo) == 0 ? " " : response.data[i].valorMinimo) + " " + response.data[i].comparacao + " " + (parseInt(response.data[i].valorMaximo) == 0 ? " " : response.data[i].valorMaximo);
+                        this.dessertsValoresRerefencia[i].idade = (parseInt(response.data[i].idadeMinima) == 0 ? " " : response.data[i].idadeMinima) + " " + response.data[i].idade + " " + (parseInt(response.data[i].idadeMaxima) == 0 ? " " : response.data[i].idadeMaxima);
+                    }
+
                 });
             },
             editItemValorReferencia (item) {
@@ -515,10 +501,11 @@
             deleteItemValorReferencia (item) {
                 this.axios.delete('http://localhost:3000/referenciaParametroExame/' + item.id + "/delete").then(response => {
                     if(response.data){
-                        this.snackbar = true;
-                        this.color = 'success';
-                        this.textoSnackbar = "Parâmetro apagado com sucesso!";
-                        this.atualizaValoresReferencia()
+                        this.textoSnackbarValoresReferencia = "Valor refência apagado com sucesso!";
+                        this.snackbarValoresReferencia = true;
+                        this.colorValoresReferencia = 'success';
+
+                        this.atualizaValoresReferencia();
                     }else {
                         this.snackbar = true;
                         this.color = 'error';
@@ -528,49 +515,63 @@
             },
             closeValoresReferencia () {
                 this.dialogValoresReferencia = false;
-                setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem);
-                    this.editedIndex = -1;
-                }, 300);
+            },
+            validaCamposValoresReferencia() {
+                var valores = false;
+                var idade = false;
+                if((this.editedIndexValoresReferencia.valorMinimo != "" && this.editedIndexValoresReferencia.comparacao != "" && this.editedIndexValoresReferencia.valorMaximo != "")
+                    || (this.editedIndexValoresReferencia.valorMinimo == "" && this.editedIndexValoresReferencia.comparacao != "" && this.editedIndexValoresReferencia.valorMaximo != "")
+                    || (this.editedIndexValoresReferencia.valorMinimo != "" && this.editedIndexValoresReferencia.comparacao != "" && this.editedIndexValoresReferencia.valorMaximo == "")){
+                        valores = true;
+                }
+
+                if((this.editedIndexValoresReferencia.idadeMinima != "" && this.editedIndexValoresReferencia.idade != "" && this.editedIndexValoresReferencia.idadeMaxima != "")
+                    || (this.editedIndexValoresReferencia.idadeMinima == "" && this.editedIndexValoresReferencia.idade != "" && this.editedIndexValoresReferencia.idadeMaxima != "")
+                    || (this.editedIndexValoresReferencia.idadeMinima != "" && this.editedIndexValoresReferencia.idade != "" && this.editedIndexValoresReferencia.idadeMaxima == "")){
+                        idade = true;
+                }
+
+                return valores && idade && this.editedIndexValoresReferencia.sexo != "";
             },
             saveValoresReferencia () {
                 if (this.editedIndexValoresReferencia > -1) {
-                    this.editedItemValoresReferencia.idParametro = this.idParametro;
+                    this.editedItemValoresReferencia.idParametro = this.editedItem.id;
                     this.axios.put('http://localhost:3000/referenciaParametroExame', this.editedItemValoresReferencia).then(response => {
                         if(response.data){
-                            this.textoSnackbar = "Registro atualizado com sucesso!";
-                            this.snackbar = true;
-                            this.color = 'success';
+                            this.textoSnackbarValoresReferencia = "Registro atualizado com sucesso!";
+                            this.snackbarValoresReferencia = true;
+                            this.colorValoresReferencia = 'success';
                             this.atualizaValoresReferencia();
-                            this.dialogAddParametro = false;
+                            this.closeValoresReferencia();
                         }else {
-                            this.snackbar = true;
-                            this.color = 'error';
-                            this.textoSnackbar = "Ocorreu um erro ao atualizar!";
-                            this.dialogAddParametro = false;
+                            this.textoSnackbarValoresReferencia = "Ocorreu um erro ao atualizar!";
+                            this.snackbarValoresReferencia = true;
+                            this.colorValoresReferencia = 'error';
+                            this.closeValoresReferencia();
                         }
                     });
                 } else {
-                    if(true){
+                    if(this.validaCamposValoresReferencia()){
+                        this.editedItemValoresReferencia.idParametro = this.editedItem.id;
                         this.axios.post('http://localhost:3000/referenciaParametroExame', this.editedItemValoresReferencia).then(response => {
                             if(response.data.id){
-                                this.textoSnackbar = "Escala inserida com sucesso!";
-                                this.snackbar = true;
-                                this.color = 'success';
+                                this.textoSnackbarValoresReferencia = "Valor refêrencia inserido com sucesso!";
+                                this.snackbarValoresReferencia = true;
+                                this.colorValoresReferencia = 'success';
                                 this.atualizaValoresReferencia();
-                                this.dialogAddParametro = false;
+                                this.closeValoresReferencia();
                             }else {
                                 this.snackbar = true;
                                 this.color = 'error';
                                 this.textoSnackbar = "Ocorreu um erro ao cadastrar!";
-                                this.dialogAddParametro = false;
+                                this.closeValoresReferencia();
                             }
                         });
                     }else {
-                        this.snackbar = true;
-                        this.color = 'error';
-                        this.textoSnackbar = "Existe campos vazios ou incorretos!";
-                        this.dialogAddParametro = false;
+                        this.textoSnackbarValoresReferencia =  "Existe campos vazios ou incorretos!";
+                        this.colorValoresReferencia = 'success',
+                        this.snackbarValoresReferencia = true;
+                        this.closeValoresReferencia();
                     }
                 }
             },
