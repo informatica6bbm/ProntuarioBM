@@ -418,7 +418,7 @@
                         this.snackbar = true;
                         this.color = 'success';
                         this.textoSnackbar = "Parâmetro apagado com sucesso!";
-                        this.initialize();
+                        this.atualizaParametros();
                     }else {
                         this.snackbar = true;
                         this.color = 'error';
@@ -427,6 +427,7 @@
                 });
             },
             close () {
+                this.snackbarValoresReferencia = false;
                 this.dialogAddParametro = false;
                 this.mostraTabelaValoresReferencia = false;
                 setTimeout(() => {
@@ -438,6 +439,7 @@
                 return  this.editedItem.parametro != '' && this.editedItem.unidadeMedida != '';
             },
             save () {
+                this.snackbarValoresReferencia = false;
                 if (this.editedIndex > -1) {
                     this.editedItem.idExame = this.idExame;
                     this.axios.put('http://localhost:3000/parametroExame', this.editedItem).then(response => {
@@ -507,9 +509,9 @@
 
                         this.atualizaValoresReferencia();
                     }else {
-                        this.snackbar = true;
-                        this.color = 'error';
-                        this.textoSnackbar = "Ocorreu um erro ao tentar apagar o registro!";
+                        this.textoSnackbarValoresReferencia = "Ocorreu um erro ao tentar apagar o registro!";
+                        this.snackbarValoresReferencia = true;
+                        this.colorValoresReferenciar = 'error';
                     }
                 });
             },
@@ -561,9 +563,9 @@
                                 this.atualizaValoresReferencia();
                                 this.closeValoresReferencia();
                             }else {
-                                this.snackbar = true;
-                                this.color = 'error';
-                                this.textoSnackbar = "Ocorreu um erro ao cadastrar!";
+                                this.textoSnackbarValoresReferencia = "Ocorreu um erro ao cadastrar!";
+                                this.snackbarValoresReferencia = true;
+                                this.colorValoresReferencia = 'error';
                                 this.closeValoresReferencia();
                             }
                         });

@@ -209,7 +209,7 @@ export default {
                 }else {
                     this.snackbar = true;
                     this.color = 'error';
-                    this.textoSnackbar = "Ocorreu um erro ao tentar apagar o registro!";
+                    this.textoSnackbar = "Ocorreu um erro, o exame parâmetros associado a ele!";
                 }
             });
         },

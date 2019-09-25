@@ -69,5 +69,8 @@ exports.delete = (req, res, next) => {
         }
     }).then(response => {
         res.status(200).json(response);
+    }).catch(err => {
+        console.log(`Erro: ${ err }`);
+        res.status(200).json(false);
     });
 }
