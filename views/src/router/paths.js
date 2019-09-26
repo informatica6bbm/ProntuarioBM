@@ -3,6 +3,8 @@
  * for more information on routes, see the
  * official documentation https://router.vuejs.org/en/
  */
+import auth from './../middleware/auth.js';
+
 export default [
   {
     path: '',
@@ -12,7 +14,10 @@ export default [
   {
     path: '/pessoas',
     name: 'Pessoas',
-    view: 'Pessoas'
+    view: 'Pessoas',
+    meta: {
+        middleware: auth
+    }
   },
   {
     path: '/batalhoes',
