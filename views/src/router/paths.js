@@ -3,12 +3,13 @@
  * for more information on routes, see the
  * official documentation https://router.vuejs.org/en/
  */
-import auth from './../middleware/auth.js';
+// import auth from './../middleware/auth';
 
 export default [
   {
     path: '',
     // Relative to /src/views
+    name: 'dashboard',
     view: 'Dashboard'
   },
   {
@@ -16,13 +17,16 @@ export default [
     name: 'Pessoas',
     view: 'Pessoas',
     meta: {
-        middleware: auth
+        requiresAuth: true
     }
   },
   {
     path: '/batalhoes',
     name: 'Batalhões',
-    view: 'Batalhoes'
+    view: 'Batalhoes',
+    meta: {
+        requiresAuth: true
+    }
   },
   {
     path: '/escalas',

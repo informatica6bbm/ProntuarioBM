@@ -1,14 +1,5 @@
-/**
- * Vue Router
- *
- * @library
- *
- * https://router.vuejs.org/en/
- */
-
 // Lib imports
 import Vue from 'vue'
-import VueAnalytics from 'vue-analytics'
 import Router from 'vue-router'
 import Meta from 'vue-meta'
 
@@ -30,7 +21,7 @@ Vue.use(Router)
 // Create a new router
 const router = new Router({
     mode: 'history',
-    routes: paths.map(path => route(path.path, path.view, path.name)).concat([
+    routes: paths.map(path => route(path.path, path.view, path.name, path.meta)).concat([
         { path: '*', redirect: '/' }
     ]),
     scrollBehavior (to, from, savedPosition) {
@@ -45,46 +36,20 @@ const router = new Router({
 
 });
 
+router.afterEach((to, from, next) => {
+    console.log(to);
+    if (to.meta.requiresAuth) {
+        next({
+            name: 'dashboard'
+        });
+    }
 
-router.beforeEach((to, from, next) => {
-  // if (to.matched.some(record => record.meta.requiresAuth)) {
-  //   if (USER DOES NOT EXIST IN LOCAL STORAGE) {
-  //     next({
-  //       path: '/login',
-  //       query: {
-  //         redirect: to.fullPath,
-  //       },
-  //     });
-  //   } else {
-  //     next();
-  //   }
-  // } else {
-  //   next();
-  // }
-
-  next({
-      path: '/',
-      query: {
-       redirect: to.fullPath,
-     },
-  });
-  // console.log("Teste");
+    next({
+        path: ''
+    });
 });
 
 
 Vue.use(Meta)
-
-// Bootstrap Analytics
-// Set in .env
-// https://github.com/MatteoGabriele/vue-analytics
-if (process.env.GOOGLE_ANALYTICS) {
-  Vue.use(VueAnalytics, {
-    id: process.env.GOOGLE_ANALYTICS,
-    router,
-    autoTracking: {
-      page: process.env.NODE_ENV !== 'development'
-    }
-  })
-}
 
 export default router
