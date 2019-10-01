@@ -36,16 +36,19 @@ const router = new Router({
 
 });
 
-router.afterEach((to, from, next) => {
-    console.log(to);
-    if (to.meta.requiresAuth) {
-        next({
-            name: 'dashboard'
-        });
+router.beforeEach((to, from, next) => {
+    console.log(localStorage.getItem('login'));
+    if(localStorage.getItem('login')){
+        return next();
+    }else {
+        localStorage.setItem('login', 'true');
     }
 
     next({
-        path: ''
+        path: '',
+        query: {
+            redirect: to.fullPath
+        }
     });
 });
 
