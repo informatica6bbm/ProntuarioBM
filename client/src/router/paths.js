@@ -13,35 +13,11 @@ export default [
     view: 'Dashboard'
   },
   {
-    path: '/pessoas',
-    name: 'Pessoas',
-    view: 'Pessoas',
+    path: '/cadastros',
+    name: 'Cadastro',
+    view: 'Cadastros',
     meta: {
         requiresAuth: true
     }
-  },
-  {
-    path: '/batalhoes',
-    name: 'Batalhões',
-    view: 'Batalhoes',
-    meta: {
-        requiresAuth: true
-    }
-  },
-  {
-    path: '/escalas',
-    view: 'Escalas'
-  },
-  {
-    path: '/hierarquias',
-    view: 'Hierarquia'
-  },
-  {
-    path: '/setores',
-    view: 'Setores'
-  },
-  {
-    path: '/exames',
-    view: 'Exames'
   }
 ]
