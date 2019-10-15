@@ -14,6 +14,8 @@ const setor = require('./routes/setor-routes');
 const pessoa = require('./routes/pessoa-routes');
 const parametroExame = require('./routes/parametroExame-routes');
 const referenciaParametroExame = require('./routes/referenciaParametroExame-routes');
+const resultadoExame = require('./routes/resultadoExame-routes');
+const resultadoParametroExame = require('./routes/resultadoParametroExame-routes');
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 1000000}));
@@ -34,7 +36,9 @@ app.use('/escala', escala);
 app.use('/exame', exame);
 app.use('/hierarquia', hierarquia);
 app.use('/parametroExame', parametroExame);
-app.use('/referenciaParametroExame',referenciaParametroExame);
+app.use('/referenciaParametroExame', referenciaParametroExame);
+app.use('/resultadoexame', resultadoExame);
+app.use('/resultadoParametroExame', resultadoParametroExame);
 app.use('/pessoa', pessoa);
 app.use('/setor', setor);
 

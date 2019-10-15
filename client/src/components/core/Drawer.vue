@@ -79,6 +79,11 @@
           to: '/cadastros',
           icon: 'mdi-clipboard-outline',
           text: 'Cadastro'
+        },
+        {
+          to: '/resultadosExames',
+          icon: 'mdi-clipboard-outline',
+          text: 'Resultados Exames'
         }
       ]
     }),

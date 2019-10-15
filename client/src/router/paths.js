@@ -19,5 +19,13 @@ export default [
     meta: {
         requiresAuth: true
     }
+  },
+  {
+    path: '/resultadosExames',
+    name: 'Resultados Exames',
+    view: 'ResultadosExames',
+    meta: {
+        requiresAuth: true
+    }
   }
 ]

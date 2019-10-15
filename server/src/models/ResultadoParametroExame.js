@@ -24,16 +24,25 @@ sequelize.authenticate().then(function() {
     console.log("error: " + erro);
 });
 
-const ResultadoExame = sequelize.define('resultadoexame', {
-    data: {
-        type: Sequelize.DATE,
-        allowNull: false
-    },
-    idPessoa: {
+const ResultadoParametroExame = sequelize.define('resultadoparametroexame', {
+    idResultadoExame: {
         type: Sequelize.INTEGER,
         references: {
             model: {
-                tableName: 'pessoa'
+                tableName: 'resultadoexame'
+            },
+            key: 'id'
+        }
+    },
+    valor: {
+        type: Sequelize.STRING,
+        allowNull: false
+    },
+    idParametro: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: {
+                tableName: 'resultadoparametroexame'
             },
             key: 'id'
         }
@@ -52,18 +61,18 @@ const ResultadoExame = sequelize.define('resultadoexame', {
   charset: 'utf8',
   collate: 'utf8_general_ci',
   freezeTableName: true,
-  tableName: 'resultadoexame'
+  tableName: 'resultadoparametroexame'
 });
 
-ResultadoExame.addHook('beforeValidate', (resultadoexame, options) => {
+ResultadoParametroExame.addHook('beforeValidate', (resultadoParametroExame, options) => {
     var data = new Date();
     let data2 = new Date(data.valueOf() - data.getTimezoneOffset() * 60000);
     var data = data2.toISOString().replace(/\.\d{3}Z$/, '');
-    resultadoexame.updatedAt = data;
+    resultadoParametroExame.updatedAt = data;
 });
 
-ResultadoExame.sync({
+ResultadoParametroExame.sync({
     force: false
 });
 
-module.exports = ResultadoExame;
+module.exports = ResultadoParametroExame;
