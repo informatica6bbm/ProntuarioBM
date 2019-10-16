@@ -69,12 +69,67 @@
                             <v-container>
                                 <v-row>
                                     <v-col cols="12" sm="12" md="12">
+                                        <v-autocomplete
+                                            v-model="editedItem.idPessoa"
+                                            :items="pessoas"
+                                            :filter="customFilterPessoa"
+                                            item-text="nome"
+                                            item-value="id"
+                                            label="Pessoa"
+                                            outlined
+                                        ></v-autocomplete>
+                                    </v-col>
+                                </v-row>
+
+                                <v-row>
+                                    <v-col cols="9" sm="12" md="9">
+                                        <v-autocomplete
+                                            v-model="editedItem.idExame"
+                                            :items="exames"
+                                            :filter="customFilterExame"
+                                            item-text="exame"
+                                            item-value="id"
+                                            label="Exame"
+                                            outlined
+                                        ></v-autocomplete>
+                                    </v-col>
+
+                                    <v-col cols="3" sm="12" md="3">
                                         <v-text-field
-                                            v-model="editedItem.escala"
-                                            :rules="[v => !!v || 'Obrigatório prencher a escala!']"
-                                            label="Abreviação"
+                                            v-model="editedItem.data"
+                                            :rules="[v => !!v || 'Obrigatório prencher a data do exame!']"
+                                            v-mask="['##/##/####']"
+                                            label="Data Realização exame"
                                             outlined
                                         ></v-text-field>
+                                    </v-col>
+                                </v-row>
+
+                                <v-row>
+                                    <v-col cols="12" sm="12" md="12">
+                                        <v-simple-table dense>
+                                            <template v-slot:default>
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-left">Parâmetro</th>
+                                                        <th class="text-left">Valor</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for="item in parametrosExame" :key="item.id">
+                                                        <td :style="{ width: '40%' }">{{ item.parametro }}</td>
+                                                        <td>
+                                                            <v-text-field
+                                                                v-model="item.valor"
+                                                                :style="{'margin-bottom': '-22px', 'margin-top': '2px', 'margin-left': '0px','margin-right': '0px', heigth: '100%'}"
+                                                                outlined
+                                                                dense
+                                                            ></v-text-field>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </template>
+                                        </v-simple-table>
                                     </v-col>
                                 </v-row>
                             </v-container>
@@ -144,11 +199,13 @@ export default {
         ],
         editedIndex: -1,
         editedItem: {
-            nome: " ",
-            exame: " ",
-            data: " ",
-            createdAt: " ",
-            updatedAt: " "
+            nome: "",
+            idPessoa: "",
+            exame: "",
+            idExame: "",
+            data: "",
+            createdAt: "",
+            updatedAt: ""
         },
         defaultItem: {
             nome: " ",
@@ -157,6 +214,9 @@ export default {
             createdAt: " ",
             updatedAt: " "
         },
+        pessoas: [],
+        exames: [],
+        parametrosExame: []
     }),
 
     computed: {
@@ -168,17 +228,45 @@ export default {
         dialog (val) {
             val || this.close()
         },
+        'editedItem.idExame'(val) {
+            var id = val;
+            console.log(id);
+
+            this.axios.get('http://localhost:3000/parametroExame/getByIdExame/' + id).then(response => {
+                this.parametrosExame = response.data;
+                console.log(this.parametrosExame);
+            });
+        }
     },
     created () {
         this.initialize()
     },
     methods: {
         initialize () {
-            this.axios.get('http://localhost:3000/escala').then(response => {
+            this.axios.get('http://localhost:3000/resultadoExame').then(response => {
                 this.desserts = response.data;
             });
-        },
 
+            this.axios.get('http://localhost:3000/pessoa').then(response => {
+                this.pessoas = response.data;
+            });
+
+            this.axios.get('http://localhost:3000/exame').then(response => {
+                this.exames = response.data;
+            });
+        },
+        customFilterPessoa (item, queryText) {
+            const textOne = item.nome.toLowerCase();
+            const searchText = queryText.toLowerCase();
+
+            return textOne.indexOf(searchText) > -1;
+        },
+        customFilterExame (item, queryText) {
+            const textOne = item.exame.toLowerCase();
+            const searchText = queryText.toLowerCase();
+
+            return textOne.indexOf(searchText) > -1;
+        },
         editItem (item) {
             this.editedIndex = this.desserts.indexOf(item);
             this.editedItem = Object.assign({}, item);
