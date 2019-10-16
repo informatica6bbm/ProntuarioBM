@@ -28,7 +28,7 @@ exports.get = (req, res, next) => {
 
 exports.getAll = (req, res, next) => {
     var item = {
-        nomePessoa: "",
+        nome: "",
         idPessoa: "",
         data: "",
         exame: "",
@@ -37,7 +37,7 @@ exports.getAll = (req, res, next) => {
     };
 
     var itemDefault = {
-        nomePessoa: "",
+        nome: "",
         idPessoa: "",
         data: "",
         exame: "",
@@ -61,6 +61,7 @@ exports.getAll = (req, res, next) => {
         var resultados = response;
         ResultadoParametroExame.findAll().then(response => {
             var resultadoParametroExame = response;
+
             Exame.findAll().then(response => {
                 var exames = response;
                 ParametroExame.findAll().then(response => {
@@ -72,7 +73,7 @@ exports.getAll = (req, res, next) => {
                         var j = 0;
                         var k = 0;
                         for(i in resultados){
-                            item.data = resultados[i].data;
+                            item.data = Helpers.formatDate(resultados[i].data);
 
                             for(j in exames){
                                 if(exames[j].id == resultados[i].idExame){
@@ -84,7 +85,7 @@ exports.getAll = (req, res, next) => {
                             j = 0;
                             for(j in pessoas){
                                 if(pessoas[j].id == resultados[i].idPessoa) {
-                                    item.nomePessoa = pessoas[j].nome;
+                                    item.nome = pessoas[j].nome;
                                     item.idPessoa  = pessoas[j].id;
                                 }
                             }
@@ -92,16 +93,14 @@ exports.getAll = (req, res, next) => {
 
                             for(j in resultadoParametroExame){
                                 if(resultadoParametroExame[j].idResultadoExame == resultados[i].id && resultadoParametroExame[j].idExame ==  resultados[i].idExame) {
-                                    for(k in parametros) {
-                                        console.log(parametros[0].parametro);
-                                        console.log(parametros[1].parametro);
-                                        if(parametros[k].id = resultadoParametroExame[j].idParametro) {
+                                    for(k in parametros){
+                                        if(parametros[k].id == resultadoParametroExame[j].idParametro) {
                                             parametro.id =  resultadoParametroExame[j].idParametro;
                                             parametro.parametro = parametros[k].parametro;
                                             parametro.valor = resultadoParametroExame[j].valor;
                                             break;
                                         }
-                                    }
+                                    };
                                     item.parametros.push(parametro);
                                     parametro = parametroDefault;
                                 }

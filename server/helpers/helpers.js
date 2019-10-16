@@ -6,8 +6,20 @@ function getDataHoraAtual() {
     return data;
 }
 
+function formatDate(date) {
+    var data = new Date(date);
+    var dia = data.getDate().toString();
+    var diaF = (dia.length == 1) ? '0'+dia : dia;
+    var mes  = (data.getMonth()+1).toString();
+    var mesF = (mes.length == 1) ? '0'+mes : mes;
+    var anoF = data.getFullYear();
+
+    return diaF + "/" + mesF + "/" + anoF;
+}
+
 const Helpers = {
-    getDataHoraAtual
+    getDataHoraAtual,
+    formatDate
 };
 
 module.exports = Helpers;
