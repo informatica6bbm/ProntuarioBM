@@ -42,7 +42,7 @@ const ResultadoParametroExame = sequelize.define('resultadoparametroexame', {
         type: Sequelize.INTEGER,
         references: {
             model: {
-                tableName: 'resultadoparametroexame'
+                tableName: 'parametroexame'
             },
             key: 'id'
         }

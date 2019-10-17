@@ -1,6 +1,6 @@
 'use strict';
 const Helpers = require("./../../helpers/helpers");
-const ResultadoExame = require('./../models/ResultadoParametroExame');
+const ResultadoParametroExame = require('./../models/ResultadoParametroExame');
 
 exports.get = (req, res, next) => {
     const id = req.params.id;
@@ -25,22 +25,39 @@ exports.getAll = (req, res, next) => {
     });
 }
 
+exports.getByIdResultadoExame = (req, res, next) => {
+    const id = req.params.id;
+
+    ResultadoParametroExame.findAll().then(response => {
+        var find = [];
+        var data = JSON.parse(JSON.stringify(response));
+        console.log(data);
+        for(var i = 0; i < data.length; i++){
+            if(data[i].idExame == id) {
+                find.push(data[i]);
+            }
+        }
+
+        res.status(200).json(find);
+    });
+}
+
 exports.post = (req, res, next) => {
     var data = req.body.data;
     var valor = req.body.valor
     var idPessoa = req.body.idPessoa;
     var idExame = req.body.idExame;
     var idParametro = req.body.idParametro;
+    var idResultadoExame = req.params.idResultadoExame;
 
     var data = {
-        data: data,
+        idResultadoExame: idResultadoExame,
         valor: valor,
-        idPessoa: idPessoa,
-        idExame: idExame,
         idParametro: idParametro,
+        idExame: idExame,
         createdAt: Helpers.getDataHoraAtual()
     };
-
+    
     ResultadoParametroExame.create(data).then(response => {
         res.status(200).json(response);
     });

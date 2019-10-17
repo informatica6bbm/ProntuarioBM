@@ -6,7 +6,8 @@ const controller = require('./../controllers/resultadoParametroExame-controller'
 
 router.get('/',  controller.getAll);
 router.get('/:id',  controller.get);
-router.post('/',    controller.post);
+router.get('/getByIdResultadoExame/:id',  controller.getByIdResultadoExame);
+router.post('/:idResultadoExame',    controller.post);
 router.put('/',     controller.update);
 router.delete('/:id/delete', controller.delete);
 

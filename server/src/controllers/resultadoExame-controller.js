@@ -127,9 +127,10 @@ exports.post = (req, res, next) => {
     var idPessoa = req.body.idPessoa;
     var idExame = req.body.idExame;
     var idParametro = req.body.idParametro;
+    var resultadoParametros = req.body.resultadoParametros;
 
     var data = {
-        data: data,
+        data: data.split("/").reverse().join('-') + " 00:00:00",
         valor: valor,
         idPessoa: idPessoa,
         idExame: idExame,

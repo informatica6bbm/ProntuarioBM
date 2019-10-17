@@ -116,7 +116,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr v-for="item in parametrosExame" :key="item.id">
+                                                    <tr v-for="item in parametros" :key="item.idParametro">
                                                         <td :style="{ width: '40%' }">{{ item.parametro }}</td>
                                                         <td>
                                                             <v-text-field
@@ -199,24 +199,43 @@ export default {
         ],
         editedIndex: -1,
         editedItem: {
-            nome: "",
             idPessoa: "",
-            exame: "",
             idExame: "",
             data: "",
+            resultadoParametros: [],
             createdAt: "",
             updatedAt: ""
         },
         defaultItem: {
-            nome: " ",
-            exame: " ",
-            data: " ",
-            createdAt: " ",
-            updatedAt: " "
+            idPessoa: "",
+            idExame: "",
+            data: "",
+            resultadoParametros: [],
+            createdAt: "",
+            updatedAt: ""
+        },
+        itemresultado: {
+            parametro: "",
+            idResultadoExame: "",
+            valor: "",
+            idParametro: "",
+            idExame: "",
+            createdAt: "",
+            updatedAt: ""
+        },
+        itemresultadoDefault: {
+            parametro: "",
+            idResultadoExame: "",
+            valor: "",
+            idParametro: "",
+            idExame: "",
+            createdAt: "",
+            updatedAt: ""
         },
         pessoas: [],
         exames: [],
-        parametrosExame: []
+        parametrosExame: [],
+        parametros: []
     }),
 
     computed: {
@@ -230,11 +249,17 @@ export default {
         },
         'editedItem.idExame'(val) {
             var id = val;
-            console.log(id);
-
             this.axios.get('http://localhost:3000/parametroExame/getByIdExame/' + id).then(response => {
                 this.parametrosExame = response.data;
-                console.log(this.parametrosExame);
+                var i = 0;
+                this.parametros = [];
+                for(i in this.parametrosExame){
+                    this.itemresultado.idParametro = this.parametrosExame[i].id;
+                    this.itemresultado.parametro = this.parametrosExame[i].parametro;
+                    this.itemresultado.idExame = id;
+                    this.parametros.push(this.itemresultado);
+                    this.itemresultado = this.itemresultadoDefault;
+                }
             });
         }
     },
@@ -270,6 +295,8 @@ export default {
         editItem (item) {
             this.editedIndex = this.desserts.indexOf(item);
             this.editedItem = Object.assign({}, item);
+            this.parametros = [];
+            this.editedItem.resultadoParametros = [];
             this.dialog = true;
         },
 
@@ -296,11 +323,28 @@ export default {
             }, 300);
         },
         validaCampos() {
-            return  this.editedItem.escala != '';
+            return  this.editedItem.idPessoa != "" &&
+                    this.editedItem.idExame != "" &&
+                    this.editedItem.data != "";
+        },
+        validaValoresExame() {
+            var camposValidos = false;
+            var i = 0;
+            for(i in this.parametros){
+                if(this.parametros[i].valor != "") {
+                    camposValidos = true;
+                }else {
+                    camposValidos = false;
+                    break;
+                }
+            }
+
+            return camposValidos;
         },
         save () {
             if (this.editedIndex > -1) {
-                this.axios.put('http://localhost:3000/escala', this.editedItem).then(response => {
+                this.editedItem.resultadoParametros = this.parametros;
+                this.axios.put('http://localhost:3000/resultadoexame', this.editedItem).then(response => {
                     if(response.data){
                         this.textoSnackbar = "Registro atualizado com sucesso!";
                         this.snackbar = true;
@@ -315,30 +359,41 @@ export default {
                     }
                 });
             } else {
-                if(this.validaCampos()){
-                    this.axios.post('http://localhost:3000/escala', this.editedItem).then(response => {
+                if(this.validaCampos() && this.validaValoresExame()){
+                    this.editedItem.resultadoParametros = this.parametros;
+                    this.axios.post('http://localhost:3000/resultadoexame', this.editedItem).then(response => {
                         if(response.data.id){
-                            this.textoSnackbar = "Escala inserida com sucesso!";
+                            this.textoSnackbar = "Registro inserido com sucesso!";
                             this.snackbar = true;
                             this.color = 'success';
                             this.initialize();
                             this.close();
+
+                            this.saveResultadosParametros(response.data.id);
+                            this.parametros = [];
+                            this.itemresultado = this.itemresultadoDefault;
                         }else {
                             this.snackbar = true;
                             this.color = 'error';
                             this.textoSnackbar = "Ocorreu um erro ao cadastrar!";
-                            this.close();
+                            // this.close();
                         }
                     });
                 }else {
                     this.snackbar = true;
                     this.color = 'error';
                     this.textoSnackbar = "Existe campos vazios ou incorretos!";
-                    this.close();
+                    // this.close();
                 }
             }
         },
+        saveResultadosParametros(idResultadoExame) {
+            var i = 0;
+            for(i in this.parametros) {
+                this.axios.post('http://localhost:3000/resultadoParametroExame/' + idResultadoExame, this.parametros[i]);
+            }
 
+        }
     }
 }
 </script>
