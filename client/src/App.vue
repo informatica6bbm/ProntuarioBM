@@ -1,8 +1,8 @@
 <template>
     <v-app>
-        <core-app-bar />
+        <core-app-bar v-if="this.$route.name != 'Login'"/>
 
-        <core-drawer />
+        <core-drawer v-if="this.$route.name != 'Login'" />
 
         <core-view />
     </v-app>
@@ -17,3 +17,7 @@
         }
     }
 </script>
+
+<style>
+
+</style>

@@ -6,26 +6,34 @@
 // import auth from './../middleware/auth';
 
 export default [
-  {
-    path: '',
-    // Relative to /src/views
-    name: 'dashboard',
-    view: 'Dashboard'
-  },
-  {
-    path: '/cadastros',
-    name: 'Cadastro',
-    view: 'Cadastros',
-    meta: {
-        requiresAuth: true
+    {
+        path: '',
+        // Relative to /src/views
+        name: 'dashboard',
+        view: 'Dashboard'
+    },
+    {
+        path: '/cadastros',
+        name: 'Cadastro',
+        view: 'Cadastros',
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/resultadosExames',
+        name: 'Resultados Exames',
+        view: 'ResultadosExames',
+        meta: {
+            requiresAuth: true
+        }
+    },
+    {
+        path: '/login',
+        name: 'Login',
+        view: 'Login',
+        meta: {
+            requiresAuth: true
+        }
     }
-  },
-  {
-    path: '/resultadosExames',
-    name: 'Resultados Exames',
-    view: 'ResultadosExames',
-    meta: {
-        requiresAuth: true
-    }
-  }
 ]
