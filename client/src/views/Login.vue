@@ -120,7 +120,7 @@ export default {
             // console.log(this.login);
             this.axios.post('http://localhost:3000/login', this.login).then(response => {
                 console.log(response.data);
-                if(response.data != false){
+                if(response.data){
                     if (typeof(Storage) !== "undefined") {
                         if(localStorage.getItem("tokenlogin")){
                             localStorage.removeItem("tokenlogin");

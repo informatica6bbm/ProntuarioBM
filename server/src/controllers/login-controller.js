@@ -2,8 +2,7 @@
 const Helpers = require("./../../helpers/helpers");
 const Login = require('./../models/Login');
 const Sha256 = require('js-sha256');
-
-
+const axios = require('axios');
 
 exports.get = (req, res, next) => {
     // const id = req.params.id;
@@ -36,7 +35,13 @@ exports.post = (req, res, next) => {
 
     Login.create(data).then(response => {
         if(response){
-            res.status(200).json(token);
+            axios.get('http://localhost:9000?usuario=' + usuario + '&passwd=' + senha).then(response => {
+                if(response.data){
+                    res.status(200).json(token);
+                }else {
+                    res.status(200).json(false);
+                }
+            });
         }else {
             res.status(200).json(false);
         }
