@@ -117,7 +117,6 @@ export default {
     },
     methods: {
         loginUsuario() {
-            // console.log(this.login);
             this.axios.post('http://localhost:3000/login', this.login).then(response => {
                 console.log(response.data);
                 if(response.data){

@@ -36,21 +36,29 @@ const router = new Router({
 
 });
 
-// router.beforeEach((to, from, next) => {
-//     console.log(localStorage.getItem('login'));
-//     if(localStorage.getItem('login')){
-//         return next();
-//     }else {
-//         localStorage.setItem('login', 'true');
-//     }
-//
-//     next({
-//         path: '',
-//         query: {
-//             redirect: to.fullPath
-//         }
-//     });
-// });
+function validAuth() {
+    if(localStorage.getItem("tokenlogin") === null){
+        return true;
+    }else {
+        return false;
+    }
+}
+
+router.beforeEach((to, from, next) => {
+    console.log(to.fullPath);
+    console.log(validAuth());
+    if(to.path != '/login'){
+        if (validAuth()) {
+            return next({
+                path: '/login'
+            });
+        }
+    }
+    // else {
+    //     next();
+    // }
+    next();
+});
 
 
 Vue.use(Meta)
