@@ -2,7 +2,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Meta from 'vue-meta'
-
+import axios from 'axios';
 // Routes
 import paths from './paths'
 
@@ -36,28 +36,60 @@ const router = new Router({
 
 });
 
-function validAuth() {
+// async function validAuth(){
+//     if(localStorage.getItem("tokenlogin") === null){
+//         return true;
+//     }else {
+//         var dataToken = {
+//             token: localStorage.getItem("tokenlogin")
+//         }
+//         let res = await axios.post("http://localhost:3000/login/validToken", dataToken);
+//         let { data } = res;
+//         // console.log(data);
+//         return data === true ? false : true;
+//     }
+// }
+
+ async function validAuth(){
     if(localStorage.getItem("tokenlogin") === null){
         return true;
     }else {
-        return false;
+        var dataToken = {
+            token: localStorage.getItem("tokenlogin")
+        }
+        let res = await axios.post("http://localhost:3000/login/validToken", dataToken);
+
+        return res;
     }
 }
 
 router.beforeEach((to, from, next) => {
-    console.log(to.fullPath);
-    console.log(validAuth());
-    if(to.path != '/login'){
-        if (validAuth()) {
-            return next({
-                path: '/login'
-            });
+    
+    validAuth().then(response => {
+        var res = response.data;
+        console.log(response.data);
+        if(to.path != '/login'){
+            if (!res) {
+                return next({
+                    path: '/login'
+                });
+            }else {
+
+            }
+        }else {
+            if(res) {
+                if(to.path === '/login') {
+                    return next({
+                        path: '/'
+                    });
+                }
+            }
         }
-    }
-    // else {
-    //     next();
-    // }
-    next();
+
+        next();
+    });
+
+    
 });
 
 

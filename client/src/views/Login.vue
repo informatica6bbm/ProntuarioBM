@@ -32,6 +32,14 @@
                         <v-container>
                             <v-row>
                                 <v-col cols="12" sm="12" md="12" class="campos" >
+                                    <v-alert
+                                        dense
+                                        outlined
+                                        type="error"
+                                        v-if="erroLogin"
+                                    >
+                                        {{ mensagem }}
+                                    </v-alert>
                                     <v-text-field
                                         v-model="login.usuario"
                                         label="Nome de usuário!"
@@ -90,18 +98,19 @@ export default {
             usuario: null,
             senha: null,
             lembrar: false
-        }
+        },
+        erroLogin: false,
+        mensagem: ""
     }),
     computed: {
 
     },
     watch: {
-        'user.lembrar'(val){
+        'login.lembrar'(val){
             if (typeof(Storage) !== "undefined") {
                 if(val) {
                     localStorage.setItem("login", true);
                 }else {
-                    localStorage.setItem("login", true);
                     localStorage.removeItem("login");
                 }
             }
@@ -110,27 +119,56 @@ export default {
     created () {
         // console.log(this.$route.name);
         if (typeof(Storage) !== "undefined") {
-            if(localStorage.getItem("login")){
+            if(localStorage.getItem("login")) {
                 this.login.lembrar = localStorage.getItem("login");
+
+                if(this.login.lembrar){
+                    if(localStorage.getItem("usuario")) {
+                        this.login.usuario = localStorage.getItem("usuario");
+                    }
+                }
             }
         }
     },
     methods: {
+        validFielsLogin(){
+            if(this.login.usuario != null && this.login.senha != null){
+                return true;
+            }else {
+                return false;
+            }
+        },
         loginUsuario() {
-            this.axios.post('http://localhost:3000/login', this.login).then(response => {
-                console.log(response.data);
-                if(response.data){
-                    if (typeof(Storage) !== "undefined") {
-                        if(localStorage.getItem("tokenlogin")){
-                            localStorage.removeItem("tokenlogin");
-                            localStorage.setItem("tokenlogin", response.data);
+            if(this.validFielsLogin()) {
+                this.axios.post('http://localhost:3000/login', this.login).then(response => {
+                    if(response.data.response){
+                        if (typeof(Storage) !== "undefined") {
+                            if(localStorage.getItem("tokenlogin")){
+                                localStorage.removeItem("tokenlogin");
+                                localStorage.setItem("tokenlogin", response.data.token);
+                            }else {
+                                localStorage.setItem("tokenlogin", response.data.token);
+                            }
+                            localStorage.setItem("tokenlogin", response.data.token);
+                            if(this.login.lembrar) {
+                                localStorage.setItem("usuario", this.login.usuario);
+                            }
+                            window.location.replace("http://localhost:8080/");
                         }else {
-                            localStorage.setItem("tokenlogin", response.data);
+                            this.mensagem = "Seu navegador não é compatível com o sitema!";
+                            this.erroLogin = true;
                         }
-                        window.location.replace("http://localhost:8080/");
+                    }else {
+                        this.mensagem = response.data.mensage;
+                        this.erroLogin = true;
                     }
-                }
-            });
+
+                });
+            }else {
+                this.mensagem = 'Obrigatório informar usuário e senha!';
+                this.erroLogin = true;  
+            }
+            
         }
     }
 }

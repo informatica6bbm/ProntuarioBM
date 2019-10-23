@@ -36,9 +36,8 @@
         }else{
             $resposta = false;
         }
-        // $resposta = true;
         return $resposta;
-    }
+    }  
 
-    echo ldap($usuario, $passwd);
+    echo ldap($usuario, $passwd);    
 ?>
