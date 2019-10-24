@@ -36,20 +36,6 @@ const router = new Router({
 
 });
 
-// async function validAuth(){
-//     if(localStorage.getItem("tokenlogin") === null){
-//         return true;
-//     }else {
-//         var dataToken = {
-//             token: localStorage.getItem("tokenlogin")
-//         }
-//         let res = await axios.post("http://localhost:3000/login/validToken", dataToken);
-//         let { data } = res;
-//         // console.log(data);
-//         return data === true ? false : true;
-//     }
-// }
-
  async function validAuth(){
     if(localStorage.getItem("tokenlogin") === null){
         return true;
@@ -64,20 +50,23 @@ const router = new Router({
 }
 
 router.beforeEach((to, from, next) => {
-    
+
     validAuth().then(response => {
         var res = response.data;
-        console.log(response.data);
         if(to.path != '/login'){
             if (!res) {
+                if(localStorage.getItem("tokenlogin")){
+                    localStorage.removeItem("tokenlogin");
+                }
                 return next({
                     path: '/login'
                 });
-            }else {
-
             }
         }else {
             if(res) {
+                if(localStorage.getItem("tokenlogin")){
+                    localStorage.removeItem("tokenlogin")
+                }
                 if(to.path === '/login') {
                     return next({
                         path: '/'
@@ -89,7 +78,7 @@ router.beforeEach((to, from, next) => {
         next();
     });
 
-    
+
 });
 
 

@@ -26,7 +26,6 @@ exports.post = (req, res, next) => {
     var senha = req.body.senha;
 
     var token = Helpers.generateToken();
-    console.log(token);
 
     var data = {
         usuario: usuario,
@@ -86,28 +85,34 @@ exports.validToken = (req, res, next) => {
         var logins = response;
         var i = 0, resposta = false;
         for(i in logins) {
-
-            console.log(logins[i].createdAt);
-            var dataSessao = new Date(logins[i].createdAt);
-            var horaInicioSessao = dataSessao.getUTCHours();
-            var minutosInicioSessao = dataSessao.getUTCMinutes();
-
-            var dataAtual = new Date();
-            var horaAtual = dataAtual.getHours();
-            var minutosAtual = dataAtual.getMinutes();
-
-            var tempoLogadoMinutos = ((horaAtual - horaInicioSessao) * 60) + ((minutosAtual - minutosInicioSessao) < 0 ? (minutosAtual - minutosInicioSessao) * -1 : minutosAtual - minutosInicioSessao)
-            console.log(tempoLogadoMinutos);
+            var segundos = Helpers.calculaSegundosSessao(logins[i].createdAt);
 
             if(token.localeCompare(logins[i].token) == 0 && logins[i].sessaoValida == true) {
-
                 resposta = true;
+                segundos.then(response => {
+                    if(response > 7200){
+                        resposta = false;
+                        revogaSessao(logins[i].id);
+                    }
+                })
+
                 break;
             }
         }
-        console.log(resposta);
         res.status(200).json(resposta);
     });
+
+    async function revogaSessao(id) {
+        var data = {
+            sessaoValida: false,
+        };
+
+        Login.update(data, {
+            where: {
+                id: id
+            }
+        });
+    }
 }
 
 exports.loginoff = (req, res, next) => {
@@ -116,6 +121,7 @@ exports.loginoff = (req, res, next) => {
     Login.findAll().then(response => {
         var logins = response;
         var i = 0;
+        var resposta = false;
         for(i in logins) {
             if(token.localeCompare(logins[i].token) == 0 && logins[i].sessaoValida == true) {
                 var data = {
@@ -127,11 +133,13 @@ exports.loginoff = (req, res, next) => {
                     }
                 });
 
-                res.status(200).json(true);
+                resposta = false;
             }else {
-                res.status(200).json(false);
+
             }
         }
+
+        res.status(200).json(resposta);
     });
 }
 
