@@ -37,7 +37,7 @@
             $resposta = false;
         }
         return $resposta;
-    }  
+    }
 
-    echo ldap($usuario, $passwd);    
+    echo !ldap($usuario, $passwd);
 ?>

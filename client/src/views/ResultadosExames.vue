@@ -54,10 +54,64 @@
                 </v-snackbar>
                 <div class="flex-grow-1"></div>
 
+                <v-dialog v-model="dialogImportar" max-width="500px">
+                    <v-card>
+                        <v-card-title>
+                            <span class="headline">Importar resultados</span>
+                        </v-card-title>
+
+                        <v-card-text>
+                            <v-container>
+                                <v-row>
+                                    <v-col cols="12" sm="12" md="12">
+                                        <v-file-input
+                                            color="deep-purple accent-4"
+                                            counter
+                                            label="Arquivo CSV"
+                                            multiple
+                                            placeholder=""
+                                            prepend-icon="mdi-package-up"
+                                            outlined
+                                            :show-size="1000"
+                                            v-model="arquivo"
+                                            @change="getResults"
+                                        >
+                                            <template v-slot:selection="{ index, text }">
+                                                <v-chip
+                                                    v-if="index < 2"
+                                                    color="deep-purple accent-4"
+                                                    dark
+                                                    label
+                                                    small
+                                                >
+                                                    {{ text }}
+                                                </v-chip>
+
+                                                <span
+                                                    v-else-if="index === 2"
+                                                        class="overline grey--text text--darken-3 mx-2"
+                                                    >
+                                                    +{{ foto.length - 2 }} Arquivo
+                                                </span>
+                                            </template>
+                                        </v-file-input>
+                                    </v-col>
+                                </v-row>
+                            </v-container>
+                        </v-card-text>
+
+                        <v-card-actions>
+                            <div class="flex-grow-1"></div>
+                            <v-btn color="blue darken-1" text @click="dialogImportar = false">Cancelar</v-btn>
+                            <v-btn color="blue darken-1" text @click="importaResultadosExames">Importar</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
                 <v-dialog v-model="dialog" max-width="1000px">
 
                     <template v-slot:activator="{ on }">
                         <v-btn color="primary" class="mb-2"  v-on="on">Nova</v-btn>
+                        <v-btn color="primary" class="mb-2" @click="openDialogImportResults"  :style="{ 'margin-right': '20px', 'margin-left': '-30px' }">Importar</v-btn>
                     </template>
 
                     <v-card>
@@ -173,6 +227,7 @@
 export default {
     data: () => ({
         dialog: false,
+        dialogImportar: false,
         search: "",
         textoSnackbar: "",
         color: 'success',
@@ -235,7 +290,9 @@ export default {
         pessoas: [],
         exames: [],
         parametrosExame: [],
-        parametros: []
+        parametros: [],
+        resultadosExames: null,
+        arquivo: null
     }),
 
     computed: {
@@ -299,7 +356,6 @@ export default {
             this.editedItem.resultadoParametros = [];
             this.dialog = true;
         },
-
         deleteItem (item) {
             this.axios.delete('http://localhost:3000/escala/' + item.id + "/delete").then(response => {
                 if(response.data){
@@ -321,6 +377,41 @@ export default {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
             }, 300);
+        },
+        getResults(e) {
+
+
+        },
+        importaResultadosExames(e) {
+            const file = this.arquivo[0];
+            const vm = this;
+            if(file){
+                if (!file.type.includes('text/csv')) {
+                    alert('Por favor selecione o arquivo CSV!');
+                    return;
+                }
+                if (typeof FileReader === 'function') {
+                    const reader = new FileReader();
+                    reader.onload = function() {
+                        const linhas = reader.result.split("\n").map(function(line) {
+                            return line.split(',');
+                        });
+                        var data = {
+                            resultados: linhas
+                        };
+
+                        vm.axios.post('http://localhost:3000/resultadoexame/importarResultado', data).then(response => {
+                            console.log(response);
+                        });
+                    }
+                    reader.readAsText(file);
+                } else {
+                    alert('Sorry, FileReader API not supported');
+                }
+            }
+        },
+        openDialogImportResults(){
+            this.dialogImportar = true;
         },
         validaCampos() {
             return  this.editedItem.idPessoa != "" &&
@@ -376,14 +467,12 @@ export default {
                             this.snackbar = true;
                             this.color = 'error';
                             this.textoSnackbar = "Ocorreu um erro ao cadastrar!";
-                            // this.close();
                         }
                     });
                 }else {
                     this.snackbar = true;
                     this.color = 'error';
                     this.textoSnackbar = "Existe campos vazios ou incorretos!";
-                    // this.close();
                 }
             }
         },

@@ -57,12 +57,11 @@ exports.post = (req, res, next) => {
         idExame: idExame,
         createdAt: Helpers.getDataHoraAtual()
     };
-    
+
     ResultadoParametroExame.create(data).then(response => {
         res.status(200).json(response);
     });
 }
-
 
 exports.update = (req, res, next) => {
     var id = req.body.id;

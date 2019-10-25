@@ -143,6 +143,10 @@ exports.post = (req, res, next) => {
     });
 }
 
+exports.importaResultadosExames = (req, res, next) => {
+    console.log(req.body.resultados);
+    res.status(200).json(req.body.resultados);
+};
 
 exports.update = (req, res, next) => {
     var id = req.body.id;
