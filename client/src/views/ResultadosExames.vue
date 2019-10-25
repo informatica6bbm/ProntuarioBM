@@ -74,7 +74,6 @@
                                             outlined
                                             :show-size="1000"
                                             v-model="arquivo"
-                                            @change="getResults"
                                         >
                                             <template v-slot:selection="{ index, text }">
                                                 <v-chip
@@ -378,11 +377,7 @@ export default {
                 this.editedIndex = -1
             }, 300);
         },
-        getResults(e) {
-
-
-        },
-        importaResultadosExames(e) {
+        importaResultadosExames() {
             const file = this.arquivo[0];
             const vm = this;
             if(file){
