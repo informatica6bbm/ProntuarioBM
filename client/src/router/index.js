@@ -18,7 +18,6 @@ function route (path, view, name) {
 
 Vue.use(Router)
 
-// Create a new router
 const router = new Router({
     mode: 'history',
     routes: paths.map(path => route(path.path, path.view, path.name, path.meta)).concat([
@@ -39,18 +38,16 @@ const router = new Router({
  async function validAuth(){
     if(localStorage.getItem("tokenlogin") === null){
         return true;
-    }else {
-        var dataToken = {
-            token: localStorage.getItem("tokenlogin")
-        }
-        let res = await axios.post("http://localhost:3000/login/validToken", dataToken);
-
-        return res;
     }
+    var dataToken = {
+        token: localStorage.getItem("tokenlogin")
+    }
+    let res = await axios.post(process.env.VUE_APP_URL_API + "/login/validToken", dataToken);
+
+    return res;
 }
 
-router.beforeEach((to, from, next) => {
-
+router.beforeEach((to, from, next) =>{
     validAuth().then(response => {
         var res = response.data;
         if(to.path != '/login'){
@@ -63,17 +60,13 @@ router.beforeEach((to, from, next) => {
                 });
             }
         }
-
         if(res && to.path == '/login'){
            return next({
                path: '/'
            });
        }
-
-        next();
+       next();
     });
-
-
 });
 
 

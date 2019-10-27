@@ -58,7 +58,7 @@
             },
             idExame(val) {
                 var id = val;
-                this.axios.get('http://localhost:3000/parametroExame/getByIdExame/' + id).then(response => {
+                this.axios.get(process.env.VUE_APP_URL_API + '/parametroExame/getByIdExame/' + id).then(response => {
                     this.parametrosExame = response.data;
                     var i = 0;
                     this.parametros = [];
@@ -94,7 +94,7 @@
                 if(this.validaValoresExame()){
                     var i = 0;
                     for(i in this.parametros) {
-                        this.axios.post('http://localhost:3000/resultadoParametroExame/' + this.idResultadoExame, this.parametros[i]);
+                        this.axios.post(process.env.VUE_APP_URL_API + '/resultadoParametroExame/' + this.idResultadoExame, this.parametros[i]);
                     }
                     this.salvaParametros = false;
                 }

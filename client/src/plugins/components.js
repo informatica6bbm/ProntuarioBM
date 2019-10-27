@@ -13,6 +13,8 @@ import Escalas from '@/components/material/Escalas';
 import Exames from '@/components/material/Exames';
 import Hierarquia from '@/components/material/Hierarquia';
 import Pessoa from '@/components/material/Pessoas';
+import NovaPessoa from '@/components/material/NovaPessoa';
+import EditPessoa from '@/components/material/EditPessoa';
 import Setores from '@/components/material/Setores';
 
 import DialogAddResultadoExames from '@/components/material/DialogAddResultadosExames';
@@ -25,8 +27,9 @@ Vue.component('escalas' , Escalas);
 Vue.component('exames', Exames);
 Vue.component('hierarquia' , Hierarquia);
 Vue.component('pessoa', Pessoa);
+Vue.component('nova-pessoa', NovaPessoa);
+Vue.component('editar-pessoa', EditPessoa);
 Vue.component('setores', Setores);
-
 Vue.component('parametros-exame-dialog', ParametrosExame);
 Vue.component('snackbar', Snackbar);
 

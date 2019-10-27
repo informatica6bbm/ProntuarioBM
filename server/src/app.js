@@ -31,17 +31,17 @@ app.use(function(req, res, next) {
  });
 
 
-app.use('/', index);
-app.use('/batalhao', batalhao);
-app.use('/escala', escala);
-app.use('/exame', exame);
-app.use('/hierarquia', hierarquia);
-app.use('/login', login);
-app.use('/parametroExame', parametroExame);
-app.use('/referenciaParametroExame', referenciaParametroExame);
-app.use('/resultadoexame', resultadoExame);
-app.use('/resultadoParametroExame', resultadoParametroExame);
-app.use('/pessoa', pessoa);
-app.use('/setor', setor);
+app.use('/api', index);
+app.use('/api/batalhao', batalhao);
+app.use('/api/escala', escala);
+app.use('/api/exame', exame);
+app.use('/api/hierarquia', hierarquia);
+app.use('/api/login', login);
+app.use('/api/parametroExame', parametroExame);
+app.use('/api/referenciaParametroExame', referenciaParametroExame);
+app.use('/api/resultadoexame', resultadoExame);
+app.use('/api/resultadoParametroExame', resultadoParametroExame);
+app.use('/api/pessoa', pessoa);
+app.use('/api/setor', setor);
 
 module.exports = app;

@@ -113,11 +113,11 @@
         },
         methods: {
             initialize () {
-                this.axios.get('http://localhost:3000/pessoa').then(response => {
+                this.axios.get(process.env.VUE_APP_URL_API + '/pessoa').then(response => {
                     this.pessoas = response.data;
                 });
 
-                this.axios.get('http://localhost:3000/exame').then(response => {
+                this.axios.get(process.env.VUE_APP_URL_API + '/exame').then(response => {
                     this.exames = response.data;
                 });
             },
@@ -143,7 +143,7 @@
             save () {
                 if (this.editedIndex > -1) {
                     this.editedItem.resultadoParametros = this.parametros;
-                    this.axios.put('http://localhost:3000/resultadoexame', this.editedItem).then(response => {
+                    this.axios.put(process.env.VUE_APP_URL_API + '/resultadoexame', this.editedItem).then(response => {
                         if(response.data){
                             this.textoSnackbar = "Registro atualizado com sucesso!";
                             this.snackbar = true;
@@ -162,7 +162,7 @@
                 if(this.editedIndex === -1) {
                     if(this.validaCampos()){
                         this.editedItem.resultadoParametros = this.parametros;
-                        this.axios.post('http://localhost:3000/resultadoexame', this.editedItem).then(response => {
+                        this.axios.post(process.env.VUE_APP_URL_API + '/resultadoexame', this.editedItem).then(response => {
                             if(response.data.id){
                                 this.textoSnackbar = "Registro inserido com sucesso!";
                                 this.snackbar = true;

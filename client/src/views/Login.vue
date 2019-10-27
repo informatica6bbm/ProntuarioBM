@@ -117,7 +117,6 @@ export default {
         }
     },
     created () {
-        // console.log(this.$route.name);
         if (typeof(Storage) !== "undefined") {
             if(localStorage.getItem("login")) {
                 this.login.lembrar = localStorage.getItem("login");
@@ -140,7 +139,7 @@ export default {
         },
         loginUsuario() {
             if(this.validFielsLogin()) {
-                this.axios.post('http://localhost:3000/login', this.login).then(response => {
+                this.axios.post(process.env.VUE_APP_URL_API + '/login', this.login).then(response => {
                     if(response.data.response){
                         if (typeof(Storage) !== "undefined") {
                             if(localStorage.getItem("tokenlogin")){
@@ -153,7 +152,7 @@ export default {
                             if(this.login.lembrar) {
                                 localStorage.setItem("usuario", this.login.usuario);
                             }
-                            window.location.replace("http://localhost:8080/");
+                            window.location.replace(process.env.VUE_APP_URL);
                         }else {
                             this.mensagem = "Seu navegador não é compatível com o sitema!";
                             this.erroLogin = true;
@@ -166,9 +165,9 @@ export default {
                 });
             }else {
                 this.mensagem = 'Obrigatório informar usuário e senha!';
-                this.erroLogin = true;  
+                this.erroLogin = true;
             }
-            
+
         }
     }
 }

@@ -17,11 +17,10 @@
                 dark
                 text
                 icon
-                @click="snackbar = false"
+                @click="close"
             >
                 <v-icon
                     class="mr-2"
-                    @click="$emit('closeSnackbar')"
                 >mdi-close</v-icon>
             </v-btn>
     </v-snackbar>
@@ -37,11 +36,25 @@
             x: null,
             y: 'top',
         }),
-        watch: {
-            snackbar(val) {
-                val;
+        methods: {
+            close() {
+                this.$emit('closeSnackbar');
             }
         }
     }
 
 </script>
+
+<style>
+    @media only screen and (max-width: 640px) {
+        .snackbar {
+            margin-top: -10px;
+        }
+    }
+
+    @media only screen and (min-width: 640px) {
+        .snackbar {
+            margin-top: -50px;
+        }
+    }
+</style>

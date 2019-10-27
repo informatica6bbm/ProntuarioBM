@@ -177,15 +177,15 @@ export default {
     },
     methods: {
         initialize () {
-            this.axios.get('http://localhost:3000/resultadoExame').then(response => {
+            this.axios.get(process.env.VUE_APP_URL_API + '/resultadoExame').then(response => {
                 this.desserts = response.data;
             });
 
-            this.axios.get('http://localhost:3000/pessoa').then(response => {
+            this.axios.get(process.env.VUE_APP_URL_API + '/pessoa').then(response => {
                 this.pessoas = response.data;
             });
 
-            this.axios.get('http://localhost:3000/exame').then(response => {
+            this.axios.get(process.env.VUE_APP_URL_API + '/exame').then(response => {
                 this.exames = response.data;
             });
         },
@@ -204,7 +204,7 @@ export default {
             this.dialog = true;
         },
         deleteItem (item) {
-            this.axios.delete('http://localhost:3000/escala/' + item.id + "/delete").then(response => {
+            this.axios.delete(process.env.VUE_APP_URL_API + '/escala/' + item.id + "/delete").then(response => {
                 if(response.data){
                     this.snackbar = true;
                     this.color = 'success';
@@ -243,8 +243,8 @@ export default {
                             resultados: linhas
                         };
 
-                        vm.axios.post('http://localhost:3000/resultadoexame/importarResultado', data).then(response => {
-                            // console.log(response);
+                        vm.axios.post(process.env.VUE_APP_URL_API + '/resultadoexame/importarResultado', data).then(response => {
+                            
                         });
                     }
                     reader.readAsText(file);
