@@ -106,95 +106,9 @@
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
-                <v-dialog v-model="dialog" max-width="1000px">
 
-                    <template v-slot:activator="{ on }">
-                        <v-btn color="primary" class="mb-2"  v-on="on">Nova</v-btn>
-                        <v-btn color="primary" class="mb-2" @click="openDialogImportResults"  :style="{ 'margin-right': '20px', 'margin-left': '-30px' }">Importar</v-btn>
-                    </template>
+                <dialog-add-resultado-exame></dialog-add-resultado-exame>
 
-                    <v-card>
-                        <v-card-title>
-                            <span class="headline">{{ formTitle }}</span>
-                        </v-card-title>
-
-                        <v-card-text>
-                            <v-container>
-                                <v-row>
-                                    <v-col cols="12" sm="12" md="12">
-                                        <v-autocomplete
-                                            v-model="editedItem.idPessoa"
-                                            :items="pessoas"
-                                            :filter="customFilterPessoa"
-                                            item-text="nome"
-                                            item-value="id"
-                                            label="Pessoa"
-                                            outlined
-                                        ></v-autocomplete>
-                                    </v-col>
-                                </v-row>
-
-                                <v-row>
-                                    <v-col cols="9" sm="12" md="9">
-                                        <v-autocomplete
-                                            v-model="editedItem.idExame"
-                                            :items="exames"
-                                            :filter="customFilterExame"
-                                            item-text="exame"
-                                            item-value="id"
-                                            label="Exame"
-                                            outlined
-                                        ></v-autocomplete>
-                                    </v-col>
-
-                                    <v-col cols="3" sm="12" md="3">
-                                        <v-text-field
-                                            v-model="editedItem.data"
-                                            :rules="[v => !!v || 'Obrigatório prencher a data do exame!']"
-                                            v-mask="['##/##/####']"
-                                            label="Data Realização exame"
-                                            outlined
-                                        ></v-text-field>
-                                    </v-col>
-                                </v-row>
-
-                                <v-row>
-                                    <v-col cols="12" sm="12" md="12">
-                                        <v-simple-table dense>
-                                            <template v-slot:default>
-                                                <thead>
-                                                    <tr>
-                                                        <th class="text-left">Parâmetro</th>
-                                                        <th class="text-left">Valor</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr v-for="item in parametros" :key="item.idParametro">
-                                                        <td :style="{ width: '40%' }">{{ item.parametro }}</td>
-                                                        <td>
-                                                            <v-text-field
-                                                                v-model="item.valor"
-                                                                :style="{'margin-bottom': '-22px', 'margin-top': '2px', 'margin-left': '0px','margin-right': '0px', heigth: '100%'}"
-                                                                outlined
-                                                                dense
-                                                            ></v-text-field>
-                                                        </td>
-                                                    </tr>
-                                                </tbody>
-                                            </template>
-                                        </v-simple-table>
-                                    </v-col>
-                                </v-row>
-                            </v-container>
-                        </v-card-text>
-
-                        <v-card-actions>
-                            <div class="flex-grow-1"></div>
-                            <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                            <v-btn color="blue darken-1" text @click="save">Salvar</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
             </v-toolbar>
         </template>
 
@@ -251,41 +165,6 @@ export default {
             { text: 'Data', value: 'data', sortable: true },
             { text: 'Ações', value: 'action', sortable: false },
         ],
-        editedIndex: -1,
-        editedItem: {
-            idPessoa: "",
-            idExame: "",
-            data: "",
-            resultadoParametros: [],
-            createdAt: "",
-            updatedAt: ""
-        },
-        defaultItem: {
-            idPessoa: "",
-            idExame: "",
-            data: "",
-            resultadoParametros: [],
-            createdAt: "",
-            updatedAt: ""
-        },
-        itemresultado: {
-            parametro: "",
-            idResultadoExame: "",
-            valor: "",
-            idParametro: "",
-            idExame: "",
-            createdAt: "",
-            updatedAt: ""
-        },
-        itemresultadoDefault: {
-            parametro: "",
-            idResultadoExame: "",
-            valor: "",
-            idParametro: "",
-            idExame: "",
-            createdAt: "",
-            updatedAt: ""
-        },
         pessoas: [],
         exames: [],
         parametrosExame: [],
@@ -293,32 +172,6 @@ export default {
         resultadosExames: null,
         arquivo: null
     }),
-
-    computed: {
-        formTitle () {
-            return this.editedIndex === -1 ? 'Nova Resultado' : 'Editar Resultado'
-        }
-    },
-    watch: {
-        dialog (val) {
-            val || this.close()
-        },
-        'editedItem.idExame'(val) {
-            var id = val;
-            this.axios.get('http://localhost:3000/parametroExame/getByIdExame/' + id).then(response => {
-                this.parametrosExame = response.data;
-                var i = 0;
-                this.parametros = [];
-                for(i in this.parametrosExame){
-                    this.itemresultado.idParametro = this.parametrosExame[i].id;
-                    this.itemresultado.parametro = this.parametrosExame[i].parametro;
-                    this.itemresultado.idExame = id;
-                    this.parametros.push(this.itemresultado);
-                    this.itemresultado = this.itemresultadoDefault;
-                }
-            });
-        }
-    },
     created () {
         this.initialize()
     },
@@ -342,12 +195,7 @@ export default {
 
             return textOne.indexOf(searchText) > -1;
         },
-        customFilterExame (item, queryText) {
-            const textOne = item.exame.toLowerCase();
-            const searchText = queryText.toLowerCase();
 
-            return textOne.indexOf(searchText) > -1;
-        },
         editItem (item) {
             this.editedIndex = this.desserts.indexOf(item);
             this.editedItem = Object.assign({}, item);
@@ -396,7 +244,7 @@ export default {
                         };
 
                         vm.axios.post('http://localhost:3000/resultadoexame/importarResultado', data).then(response => {
-                            console.log(response);
+                            // console.log(response);
                         });
                     }
                     reader.readAsText(file);
@@ -404,14 +252,6 @@ export default {
                     alert('Sorry, FileReader API not supported');
                 }
             }
-        },
-        openDialogImportResults(){
-            this.dialogImportar = true;
-        },
-        validaCampos() {
-            return  this.editedItem.idPessoa != "" &&
-                    this.editedItem.idExame != "" &&
-                    this.editedItem.data != "";
         },
         validaValoresExame() {
             var camposValidos = false;
@@ -426,57 +266,6 @@ export default {
             }
 
             return camposValidos;
-        },
-        save () {
-            if (this.editedIndex > -1) {
-                this.editedItem.resultadoParametros = this.parametros;
-                this.axios.put('http://localhost:3000/resultadoexame', this.editedItem).then(response => {
-                    if(response.data){
-                        this.textoSnackbar = "Registro atualizado com sucesso!";
-                        this.snackbar = true;
-                        this.color = 'success';
-                        this.initialize();
-                        this.close();
-                    }else {
-                        this.snackbar = true;
-                        this.color = 'error';
-                        this.textoSnackbar = "Ocorreu um erro ao atualizar!";
-                        this.close();
-                    }
-                });
-            } else {
-                if(this.validaCampos() && this.validaValoresExame()){
-                    this.editedItem.resultadoParametros = this.parametros;
-                    this.axios.post('http://localhost:3000/resultadoexame', this.editedItem).then(response => {
-                        if(response.data.id){
-                            this.textoSnackbar = "Registro inserido com sucesso!";
-                            this.snackbar = true;
-                            this.color = 'success';
-                            this.initialize();
-                            this.close();
-
-                            this.saveResultadosParametros(response.data.id);
-                            this.parametros = [];
-                            this.itemresultado = this.itemresultadoDefault;
-                        }else {
-                            this.snackbar = true;
-                            this.color = 'error';
-                            this.textoSnackbar = "Ocorreu um erro ao cadastrar!";
-                        }
-                    });
-                }else {
-                    this.snackbar = true;
-                    this.color = 'error';
-                    this.textoSnackbar = "Existe campos vazios ou incorretos!";
-                }
-            }
-        },
-        saveResultadosParametros(idResultadoExame) {
-            var i = 0;
-            for(i in this.parametros) {
-                this.axios.post('http://localhost:3000/resultadoParametroExame/' + idResultadoExame, this.parametros[i]);
-            }
-
         }
     }
 }

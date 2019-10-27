@@ -15,6 +15,11 @@ import Hierarquia from '@/components/material/Hierarquia';
 import Pessoa from '@/components/material/Pessoas';
 import Setores from '@/components/material/Setores';
 
+import DialogAddResultadoExames from '@/components/material/DialogAddResultadosExames';
+import TabelaResultadoExameParametros from '@/components/material/TabelaResultadoExameParametros';
+
+Vue.component('tabela-resultado-exame-parametros', TabelaResultadoExameParametros);
+Vue.component('dialog-add-resultado-exame', DialogAddResultadoExames);
 Vue.component('obm' , Batalhoes);
 Vue.component('escalas' , Escalas);
 Vue.component('exames', Exames);
