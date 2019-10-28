@@ -1,11 +1,5 @@
 <template>
-    <v-dialog v-model="dialog" max-width="1000px">
-
-        <template v-slot:activator="{ on }">
-            <v-btn color="primary" class="mb-2"  v-on="on">Nova</v-btn>
-            <v-btn color="primary" class="mb-2" @click="openDialogImportResults"  :style="{ 'margin-right': '20px', 'margin-left': '-30px' }">Importar</v-btn>
-        </template>
-
+    <v-dialog v-model="dialogNovo" max-width="1000px">
         <v-card>
             <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
@@ -16,7 +10,7 @@
                     <v-row>
                         <v-col cols="12" sm="12" md="12">
                             <v-autocomplete
-                                v-model="editedItem.idPessoa"
+                                v-model="exame.idPessoa"
                                 :items="pessoas"
                                 :filter="customFilterPessoa"
                                 item-text="nome"
@@ -30,7 +24,7 @@
                     <v-row>
                         <v-col cols="9" sm="12" md="9">
                             <v-autocomplete
-                                v-model="editedItem.idExame"
+                                v-model="exame.idExame"
                                 :items="exames"
                                 :filter="customFilterExame"
                                 item-text="exame"
@@ -42,7 +36,7 @@
 
                         <v-col cols="3" sm="12" md="3">
                             <v-text-field
-                                v-model="editedItem.data"
+                                v-model="exame.data"
                                 :rules="[v => !!v || 'Obrigatório prencher a data do exame!']"
                                 v-mask="['##/##/####']"
                                 label="Data Realização exame"
@@ -75,7 +69,6 @@
 <script>
     export default {
         data: () => ({
-            dialog: false,
             pessoas: [],
             exames: [],
             parametros: [],
@@ -83,7 +76,7 @@
             idExame: null,
             salvaParametros: false,
             editedIndex: -1,
-            editedItem: {
+            exame: {
                 idPessoa: "",
                 idExame: "",
                 data: "",
@@ -100,6 +93,9 @@
                 updatedAt: ""
             }
         }),
+        props: [
+            'dialogNovo'
+        ],
         created () {
             this.initialize()
         },
@@ -107,7 +103,7 @@
             dialog (val) {
                 val || this.close()
             },
-            'editedItem.idExame'(val) {
+            'exame.idExame'(val) {
                 this.idExame = val;
             }
         },
@@ -121,6 +117,9 @@
                     this.exames = response.data;
                 });
             },
+            close () {
+                this.$emit('closeNovo');
+            },
             customFilterPessoa (item, queryText) {
                 const textOne = item.nome.toLowerCase();
                 const searchText = queryText.toLowerCase();
@@ -130,74 +129,60 @@
             customFilterExame (item, queryText) {
                 const textOne = item.exame.toLowerCase();
                 const searchText = queryText.toLowerCase();
-
                 return textOne.indexOf(searchText) > -1;
             },
-            close () {
-                this.dialog = false;
-                setTimeout(() => {
-                    this.editedItem = Object.assign({}, this.defaultItem)
-                    this.editedIndex = -1
-                }, 300);
-            },
             save () {
-                if (this.editedIndex > -1) {
-                    this.editedItem.resultadoParametros = this.parametros;
-                    this.axios.put(process.env.VUE_APP_URL_API + '/resultadoexame', this.editedItem).then(response => {
-                        if(response.data){
-                            this.textoSnackbar = "Registro atualizado com sucesso!";
+                if(this.validaCampos()){
+                    this.exame.resultadoParametros = this.parametros;
+                    this.axios.post(process.env.VUE_APP_URL_API + '/resultadoexame', this.exame).then(response => {
+                        if(response.data.id){
+                            this.textoSnackbar = "Registro inserido com sucesso!";
                             this.snackbar = true;
                             this.color = 'success';
+                            this.idResultadoExame = response.data.id;
                             this.initialize();
                             this.close();
+
+                            this.salvaParametros = true;
+                            this.parametros = [];
+                            this.itemresultado = this.itemresultadoDefault;
                         }
-                        if(!response.data) {
+
+                        if(!response.data.id) {
                             this.snackbar = true;
                             this.color = 'error';
-                            this.textoSnackbar = "Ocorreu um erro ao atualizar!";
-                            this.close();
+                            this.textoSnackbar = "Ocorreu um erro ao cadastrar!";
                         }
                     });
                 }
-                if(this.editedIndex === -1) {
-                    if(this.validaCampos()){
-                        this.editedItem.resultadoParametros = this.parametros;
-                        this.axios.post(process.env.VUE_APP_URL_API + '/resultadoexame', this.editedItem).then(response => {
-                            if(response.data.id){
-                                this.textoSnackbar = "Registro inserido com sucesso!";
-                                this.snackbar = true;
-                                this.color = 'success';
-                                this.idResultadoExame = response.data.id;
-                                this.initialize();
-                                this.close();
 
-                                this.salvaParametros = true;
-                                this.parametros = [];
-                                this.itemresultado = this.itemresultadoDefault;
-                            }
-
-                            if(!response.data.id) {
-                                this.snackbar = true;
-                                this.color = 'error';
-                                this.textoSnackbar = "Ocorreu um erro ao cadastrar!";
-                            }
-                        });
-                    }
-
-                    if(!this.validaCampos()) {
-                        this.snackbar = true;
-                        this.color = 'error';
-                        this.textoSnackbar = "Existe campos vazios ou incorretos!";
+                if(!this.validaCampos()) {
+                    this.snackbar = true;
+                    this.color = 'error';
+                    this.textoSnackbar = "Existe campos vazios ou incorretos!";
+                }
+            },
+            validaValoresExame() {
+                var camposValidos = false;
+                var i = 0;
+                for(i in this.parametros){
+                    if(this.parametros[i].valor != "") {
+                        camposValidos = true;
+                    }else {
+                        camposValidos = false;
+                        break;
                     }
                 }
+
+                return camposValidos;
             },
             openDialogImportResults(){
                 this.dialogImportar = true;
             },
             validaCampos() {
-                return  this.editedItem.idPessoa != "" &&
-                        this.editedItem.idExame != "" &&
-                        this.editedItem.data != "";
+                return  this.exame.idPessoa != "" &&
+                        this.exame.idExame != "" &&
+                        this.exame.data != "";
             }
         },
         computed: {

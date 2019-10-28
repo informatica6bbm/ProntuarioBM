@@ -184,6 +184,7 @@ export default {
             });
         },
         close () {
+            this.initialize();
             this.dialog = false;
             setTimeout(() => {
                 this.pessoa = Object.assign({}, new Object())

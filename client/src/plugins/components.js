@@ -17,11 +17,14 @@ import NovaPessoa from '@/components/material/NovaPessoa';
 import EditPessoa from '@/components/material/EditPessoa';
 import Setores from '@/components/material/Setores';
 
-import DialogAddResultadoExames from '@/components/material/DialogAddResultadosExames';
+import ImportarResultadosExames from '@/components/material/ImportarResultadosExames';
+
+import NovoResultadoExames from '@/components/material/NovoResultadoExames';
 import TabelaResultadoExameParametros from '@/components/material/TabelaResultadoExameParametros';
 
+Vue.component('importar-resultados-exames', ImportarResultadosExames);
 Vue.component('tabela-resultado-exame-parametros', TabelaResultadoExameParametros);
-Vue.component('dialog-add-resultado-exame', DialogAddResultadoExames);
+Vue.component('novo-resultado-exame', NovoResultadoExames);
 Vue.component('obm' , Batalhoes);
 Vue.component('escalas' , Escalas);
 Vue.component('exames', Exames);
