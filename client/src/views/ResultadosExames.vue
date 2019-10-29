@@ -37,7 +37,7 @@
 
                 <v-dialog max-width="500px">
                     <template v-slot:activator="{ on }">
-                        <v-btn color="primary" class="mb-2" @click="dialogNovo = true" >Nova</v-btn>
+                        <v-btn color="primary" class="mb-2" @click="nova" >Nova</v-btn>
                         <v-btn color="primary" class="mb-2" @click="dialogImportar = true"  :style="{ 'margin-right': '20px', 'margin-left': '-30px' }">Importar</v-btn>
                     </template>
                 </v-dialog>
@@ -46,12 +46,12 @@
 
                 <importar-resultados-exames
                     v-bind:dialogImportar="dialogImportar"
-                    @closeImportar="closeImportar"
+                    @close="closeImportar"
                 ></importar-resultados-exames>
 
                 <novo-resultado-exame
                     v-bind:dialogNovo="dialogNovo"
-                    @closeNovo="closeNovo"
+                    @close="closeNovo"
                 ></novo-resultado-exame>
 
             </v-toolbar>
@@ -82,6 +82,7 @@
 </template>
 
 <script>
+
 export default {
     data: () => ({
         dialog: false,
@@ -115,6 +116,9 @@ export default {
     created () {
         this.initialize()
     },
+    computed: {
+
+    },
     methods: {
         initialize () {
             this.axios.get(process.env.VUE_APP_URL_API + '/resultadoExame').then(response => {
@@ -129,11 +133,11 @@ export default {
                 this.exames = response.data;
             });
         },
-        closeSnackbar() {
-            this.snackbar = false;
-        },
         closeImportar() {
             this.dialogImportar = false;
+        },
+        closeSnackbar() {
+            this.snackbar = false;
         },
         closeNovo(){
             this.dialogNovo = false;
@@ -157,21 +161,10 @@ export default {
                     this.textoSnackbar = "Ocorreu um erro ao tentar apagar o registro!";
                 }
             });
+        },
+        nova() {
+            this.dialogNovo = true;
         }
     }
 }
 </script>
-
-<style>
-    @media only screen and (max-width: 640px) {
-        .snackbar {
-            margin-top: -10px;
-        }
-    }
-
-    @media only screen and (min-width: 640px) {
-        .snackbar {
-            margin-top: -50px;
-        }
-    }
-</style>

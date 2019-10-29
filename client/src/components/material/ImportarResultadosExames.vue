@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialogImportar" max-width="500px">
+    <v-dialog v-model="dialog" max-width="500px">
         <v-card>
             <v-card-title>
                 <span class="headline">Importar resultados</span>
@@ -58,13 +58,15 @@ export default {
     data: () => ({
         arquivo: null,
         resultadosExames: null,
+        dialog: false,
     }),
     props: [
         'dialogImportar',
     ],
     methods: {
         close() {
-            this.$emit('closeImportar');
+            this.dialog = false;
+            this.$emit('close');
         },
         importaResultadosExames() {
             const file = this.arquivo[0];
@@ -84,6 +86,12 @@ export default {
                             resultados: linhas
                         };
 
+                        var i = 3;
+                        for(i in data.resultados){
+                            if(data.resultados[i][15] != undefined) {
+                                data.resultados[i][15] = buscaCaracter(data.resultados[i][15]);
+                            }
+                        }
                         vm.axios.post(process.env.VUE_APP_URL_API + '/resultadoexame/importarResultado', data).then(response => {
 
                         });
@@ -93,7 +101,34 @@ export default {
                     alert('Sorry, FileReader API not supported');
                 }
             }
+
+
+            function buscaCaracter(texto) {
+                if(texto != "") {
+                    for(var i = 0; i < texto.length; i++){
+                        if(texto[i] == 'º'){
+                            console.log('º');
+                            texto = texto.split("º").join('°');
+
+                        }
+                    }
+                }
+                console.log(texto);
+                return texto;
+            }
+        }
+    },
+    watch: {
+        dialog(val) {
+            if(!val) {
+                this.$emit('close');
+            }
         },
+        dialogImportar(val){
+            if(val) {
+                this.dialog = true;
+            }
+        }
     }
 }
 </script>

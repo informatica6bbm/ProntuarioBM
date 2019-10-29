@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="dialogNovo" max-width="1000px">
+    <v-dialog v-model="dialog" max-width="1000px">
         <v-card>
             <v-card-title>
                 <span class="headline">{{ formTitle }}</span>
@@ -69,6 +69,7 @@
 <script>
     export default {
         data: () => ({
+            dialog: false,
             pessoas: [],
             exames: [],
             parametros: [],
@@ -100,12 +101,20 @@
             this.initialize()
         },
         watch: {
-            dialog (val) {
-                val || this.close()
+            dialog(val) {
+                if(!val) {
+                    this.$emit('close');
+                }
+            },
+            dialogNovo(val) {
+                if(val) {
+                    this.dialog = true;
+                }
             },
             'exame.idExame'(val) {
                 this.idExame = val;
-            }
+            },
+
         },
         methods: {
             initialize () {
@@ -118,7 +127,8 @@
                 });
             },
             close () {
-                this.$emit('closeNovo');
+                this.dialog = false;
+                this.$emit('close');
             },
             customFilterPessoa (item, queryText) {
                 const textOne = item.nome.toLowerCase();
@@ -175,9 +185,6 @@
                 }
 
                 return camposValidos;
-            },
-            openDialogImportResults(){
-                this.dialogImportar = true;
             },
             validaCampos() {
                 return  this.exame.idPessoa != "" &&
