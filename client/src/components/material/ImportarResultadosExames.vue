@@ -13,31 +13,30 @@
                                 color="deep-purple accent-4"
                                 counter
                                 label="Arquivo CSV"
-                                multiple
-                                placeholder=""
                                 prepend-icon="mdi-package-up"
+                                multiple
                                 outlined
                                 :show-size="1000"
                                 v-model="arquivo"
                             >
                                 <template v-slot:selection="{ index, text }">
-                                    <v-chip
-                                        v-if="index < 2"
-                                        color="deep-purple accent-4"
-                                        dark
-                                        label
-                                        small
-                                    >
-                                        {{ text }}
-                                    </v-chip>
-
-                                    <span
-                                        v-else-if="index === 2"
-                                            class="overline grey--text text--darken-3 mx-2"
+                                        <v-chip
+                                            v-if="index < 2"
+                                            color="deep-purple accent-4"
+                                            dark
+                                            label
+                                            small
                                         >
-                                        +{{ foto.length - 2 }} Arquivo
-                                    </span>
-                                </template>
+                                            {{ text }}
+                                        </v-chip>
+
+                                        <span
+                                            v-else-if="index === 2"
+                                                class="overline grey--text text--darken-3 mx-2"
+                                            >
+                                            +{{ foto.length - 2 }} Arquivo
+                                        </span>
+                                    </template>
                             </v-file-input>
                         </v-col>
                     </v-row>
@@ -58,24 +57,35 @@ export default {
     data: () => ({
         arquivo: null,
         resultadosExames: null,
-        dialog: false,
     }),
-    props: [
-        'dialogImportar',
-    ],
+    computed: {
+        dialog: {
+            get() {
+                return this.dialogImportar;
+            },
+            set() {
+                this.$emit('close',false);
+            }
+        }
+    },
+    props:{
+        dialogImportar: {
+            type: Boolean
+        }
+    },
     methods: {
         close() {
-            this.dialog = false;
-            this.$emit('close');
+            this.$emit('close',false);
         },
         importaResultadosExames() {
             const file = this.arquivo[0];
-            const vm = this;
+
             if(file){
                 if (!file.type.includes('text/csv')) {
                     alert('Por favor selecione o arquivo CSV!');
                     return;
                 }
+
                 if (typeof FileReader === 'function') {
                     const reader = new FileReader();
                     reader.onload = function() {
@@ -92,9 +102,9 @@ export default {
                                 data.resultados[i][15] = buscaCaracter(data.resultados[i][15]);
                             }
                         }
-                        vm.axios.post(process.env.VUE_APP_URL_API + '/resultadoexame/importarResultado', data).then(response => {
-
-                        });
+                        // this.axios.post(process.env.VUE_APP_URL_API + '/resultadoexame/importarResultado', data).then(response => {
+                        //
+                        // });
                     }
                     reader.readAsText(file);
                 } else {
@@ -102,31 +112,19 @@ export default {
                 }
             }
 
-
             function buscaCaracter(texto) {
                 if(texto != "") {
                     for(var i = 0; i < texto.length; i++){
                         if(texto[i] == 'º'){
-                            console.log('º');
+                            // console.log('º');
                             texto = texto.split("º").join('°');
+                            console.log(texto);
 
                         }
                     }
                 }
-                console.log(texto);
+
                 return texto;
-            }
-        }
-    },
-    watch: {
-        dialog(val) {
-            if(!val) {
-                this.$emit('close');
-            }
-        },
-        dialogImportar(val){
-            if(val) {
-                this.dialog = true;
             }
         }
     }

@@ -38,7 +38,7 @@
                 <v-dialog max-width="500px">
                     <template v-slot:activator="{ on }">
                         <v-btn color="primary" class="mb-2" @click="nova" >Nova</v-btn>
-                        <v-btn color="primary" class="mb-2" @click="dialogImportar = true"  :style="{ 'margin-right': '20px', 'margin-left': '-30px' }">Importar</v-btn>
+                        <v-btn color="primary" class="mb-2" @click="importar"  :style="{ 'margin-right': '20px', 'margin-left': '-30px' }">Importar</v-btn>
                     </template>
                 </v-dialog>
 
@@ -161,6 +161,9 @@ export default {
                     this.textoSnackbar = "Ocorreu um erro ao tentar apagar o registro!";
                 }
             });
+        },
+        importar(){
+            this.dialogImportar = true;
         },
         nova() {
             this.dialogNovo = true;
