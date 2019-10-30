@@ -221,7 +221,8 @@
             estadosCivils: [
                 "SOLTEIRO",
                 "CASADO",
-                "DIVORCIADO"
+                "DIVORCIADO",
+                "UNIÃO ESTÁVEL"
             ],
             editedIndex: -1,
             foto: "",

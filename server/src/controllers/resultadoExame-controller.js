@@ -149,7 +149,6 @@ exports.post = (req, res, next) => {
 exports.importaResultadosExames = (req, res, next) => {
     const resultados = req.body.resultados;
     const cabecalho = resultados[1];
-    console.log(cabecalho[90]);
 
     var pessoa = {
         usuario: "",
@@ -164,6 +163,7 @@ exports.importaResultadosExames = (req, res, next) => {
         sexo: "",
         tipoSanguineo: "",
         lts: null,
+        foto: "",
         tipoPessoa: false,
         idHierarquia: null,
         idSetor: null,
@@ -172,21 +172,21 @@ exports.importaResultadosExames = (req, res, next) => {
     }
 
     var numeroColunasPessoa = {
-        email: getNumeroColuna('EMAIL',cabecalho),
-        nome: getNumeroColuna('NOME',cabecalho),
-        matricula: getNumeroColuna('MATRÍCULA',cabecalho),
-        dataNascimento: getNumeroColuna('DATA_NASCIMENTO',cabecalho),
-        estadoCivil: getNumeroColuna('ESTADO_CIVIL',cabecalho),
-        dataIngresso: getNumeroColuna('DATA_INGRESSO',cabecalho),
-        cartaoNacionalSus: getNumeroColuna('CARTÃO_NACIONAL_SUS',cabecalho),
-        cartaoMunicipalSus: getNumeroColuna('CARTÃO_MUNICIPAL_SUS',cabecalho),
-        sexo: getNumeroColuna('SEXO',cabecalho),
-        tipoSanguineo: getNumeroColuna('CARTÃO_MUNICIPAL_SUS',cabecalho),
-        lts: getNumeroColuna('LTS',cabecalho),
-        hierarquia: getNumeroColuna('HIERARQUIA',cabecalho),
-        setor: getNumeroColuna('SETOR',cabecalho),
-        batalhao: getNumeroColuna('BATALHÃO',cabecalho),
-        escala: getNumeroColuna('ESCALA',cabecalho)
+        email:              Helpers.getNumeroColuna('EMAIL',cabecalho),
+        nome:               Helpers.getNumeroColuna('NOME',cabecalho),
+        matricula:          Helpers.getNumeroColuna('MATRÍCULA',cabecalho),
+        dataNascimento:     Helpers.getNumeroColuna('DATA_NASCIMENTO',cabecalho),
+        estadoCivil:        Helpers.getNumeroColuna('ESTADO_CIVIL',cabecalho),
+        dataIngresso:       Helpers.getNumeroColuna('DATA_INGRESSO',cabecalho),
+        cartaoNacionalSus:  Helpers.getNumeroColuna('CARTÃO_NACIONAL_SUS',cabecalho),
+        cartaoMunicipalSus: Helpers.getNumeroColuna('CARTÃO_MUNICIPAL_SUS',cabecalho),
+        sexo:               Helpers.getNumeroColuna('SEXO',cabecalho),
+        tipoSanguineo:      Helpers.getNumeroColuna('TIPO_SANGUÍNEO',cabecalho),
+        lts:                Helpers.getNumeroColuna('LTS',cabecalho),
+        hierarquia:         Helpers.getNumeroColuna('HIERARQUIA',cabecalho),
+        setor:              Helpers.getNumeroColuna('SETOR',cabecalho),
+        batalhao:           Helpers.getNumeroColuna('BATALHÃO',cabecalho),
+        escala:             Helpers.getNumeroColuna('ESCALA',cabecalho)
     }
 
     Batalhao.findAll().then(response => {
@@ -197,40 +197,48 @@ exports.importaResultadosExames = (req, res, next) => {
                 var hierarquias = response;
                 Escala.findAll().then(response => {
                     const escalas = response;
-
-                    for(var k = 2; k < resultados.length; k++) {
-                        pessoa.usuario = getUsuarioEmail(resultados[k][numeroColunasPessoa.email]);
-                        pessoa.email =              resultados[k][numeroColunasPessoa.email];
-                        pessoa.nome =               resultados[k][numeroColunasPessoa.nome];
-                        pessoa.matricula =          resultados[k][numeroColunasPessoa.matricula];
-                        pessoa.dataNascimento =     resultados[k][numeroColunasPessoa.dataNascimento];
-                        pessoa.estadoCivil =        resultados[k][numeroColunasPessoa.estadoCivil];
-                        pessoa.dataIngresso =       resultados[k][numeroColunasPessoa.dataIngresso];
-                        pessoa.cartaoNacionalSus =  resultados[k][numeroColunasPessoa.cartaoNacionalSus];
-                        pessoa.cartaoMunicipalSus = resultados[k][numeroColunasPessoa.cartaoMunicipalSus];
-                        pessoa.sexo =               resultados[k][numeroColunasPessoa.sexo];
-                        pessoa.tipoSanguineo =      resultados[k][numeroColunasPessoa.tipoSanguineo];
-                        pessoa.lts =                resultados[k][numeroColunasPessoa.lts];
-                        pessoa.idHierarquia =       getIdHierarquia(resultados[k][numeroColunasPessoa.hierarquia]);
-                        pessoa.idSetor =            resultados[k][numeroColunasPessoa.setor];
-                        pessoa.idBatalhao =         resultados[k][numeroColunasPessoa.batalhao];
-                        pessoa.idEscala =           resultados[k][numeroColunasPessoa.escala];
-
-                        console.log(pessoa.idHierarquia);
+                    var numeroPessoasImportadas = 0;
+                    var numeroPessoasNaoImportadas = 0;
+                    var i = 3;
+                    for(i in resultados){
+                        if(resultados[i][numeroColunasPessoa.hierarquia] != undefined) {
+                            resultados[i][numeroColunasPessoa.hierarquia] = Helpers.buscaCaracter(resultados[i][numeroColunasPessoa.hierarquia]);
+                        }
                     }
+                    var pessoas = [];
+                    for(var k = 2; k < resultados.length; k++) {
+                        if(resultados[k] != "") {
+                            pessoa.usuario =            Helpers.getUsuarioEmail(resultados[k][numeroColunasPessoa.email]);
+                            pessoa.email =              resultados[k][numeroColunasPessoa.email];
+                            pessoa.nome =               resultados[k][numeroColunasPessoa.nome];
+                            pessoa.matricula =          resultados[k][numeroColunasPessoa.matricula];
+                            pessoa.dataNascimento =     resultados[k][numeroColunasPessoa.dataNascimento];
+                            pessoa.estadoCivil =        resultados[k][numeroColunasPessoa.estadoCivil].toUpperCase();
+                            pessoa.dataIngresso =       resultados[k][numeroColunasPessoa.dataIngresso];
+                            pessoa.cartaoNacionalSus =  resultados[k][numeroColunasPessoa.cartaoNacionalSus];
+                            pessoa.cartaoMunicipalSus = resultados[k][numeroColunasPessoa.cartaoMunicipalSus];
+                            pessoa.sexo =               resultados[k][numeroColunasPessoa.sexo].toUpperCase();
+                            pessoa.tipoSanguineo =      resultados[k][numeroColunasPessoa.tipoSanguineo];
+                            pessoa.lts =                resultados[k][numeroColunasPessoa.lts];
+                            pessoa.idHierarquia =       Helpers.getIdHierarquia(resultados[k][numeroColunasPessoa.hierarquia], hierarquias);
+                            pessoa.idSetor =            Helpers.getIdSetor(setores, resultados[k][numeroColunasPessoa.setor]);
+                            pessoa.idBatalhao =         Helpers.getIdObm(batalhoes, resultados[k][numeroColunasPessoa.batalhao]);
+                            pessoa.idEscala =           Helpers.getIdEscala(escalas, resultados[k][numeroColunasPessoa.escala]);
 
-                    // console.log(resultados[6]);
-                    console.log(typeof hierarquias[2].hierarquia);
-                    console.log(typeof resultados[6][numeroColunasPessoa.hierarquia]);
-                    function getIdHierarquia(abreviacao) {
-                        var i = 0;
-                        for(i in hierarquias) {
-                            if(hierarquias[i].hierarquia.toUpperCase().localeCompare(abreviacao.toUpperCase()) == 0){
-                                return hierarquias[i].id;
+                            if(Helpers.validaPessoa(pessoa)){
+                                pessoas.push(pessoa);
+                                // console.log(pessoa.nome);
+                            }else {
+                                // console.log(pessoa.nome);
                             }
                         }
                     }
-
+                    for(var e in pessoas) {
+                        console.log(pessoas[e].nome);
+                    }
+                    // Pessoa.bulkCreate(pessoas, { validate: true }).then(response => {
+                    //     console.log(response);
+                    // });
                 });
             });
         });
@@ -241,31 +249,8 @@ exports.importaResultadosExames = (req, res, next) => {
         ParametroExame.findAll().then(response => {
             var parametros = response;
 
-
-
         });
     });
-
-    function getUsuarioEmail(email) {
-        var usuario = "";
-        for(var i = 0; i < email.length; i++){
-            if(email[i] != "@") {
-                usuario += email[i];
-            }else {
-                break;
-            }
-        }
-
-        return usuario;
-    }
-
-    function getNumeroColuna(nomeColuna, cabecalho){
-        for(var i in cabecalho) {
-            if(cabecalho[i].toUpperCase() == nomeColuna) {
-                return i;
-            }
-        }
-    }
 
     res.status(200).json(req.body.resultados);
 };

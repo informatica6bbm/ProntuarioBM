@@ -219,7 +219,8 @@
             estadosCivils: [
                 "SOLTEIRO",
                 "CASADO",
-                "DIVORCIADO"
+                "DIVORCIADO",
+                "UNIÃO ESTÁVEL"
             ],
             foto: "",
             lts: [

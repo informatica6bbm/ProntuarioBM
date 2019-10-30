@@ -78,10 +78,10 @@ export default {
             this.$emit('close',false);
         },
         importaResultadosExames() {
-            const file = this.arquivo[0];
-
-            if(file){
-                if (!file.type.includes('text/csv')) {
+            const arquivoCsv = this.arquivo[0];
+            const vm = this;
+            if(arquivoCsv){
+                if (!arquivoCsv.type.includes('text/csv')) {
                     alert('Por favor selecione o arquivo CSV!');
                     return;
                 }
@@ -89,42 +89,29 @@ export default {
                 if (typeof FileReader === 'function') {
                     const reader = new FileReader();
                     reader.onload = function() {
-                        const linhas = reader.result.split("\n").map(function(line) {
-                            return line.split(',');
+                        const linhas = reader.result.split("\n").map(function(linha) {
+                            return linha.split(',');
                         });
                         var data = {
                             resultados: linhas
                         };
 
-                        var i = 3;
-                        for(i in data.resultados){
-                            if(data.resultados[i][15] != undefined) {
-                                data.resultados[i][15] = buscaCaracter(data.resultados[i][15]);
+                        vm.axios.post(process.env.VUE_APP_URL_API + '/resultadoexame/importarResultado', data).then(response => {
+                            if(response.data){
+                                alert('Arquivo importado com sucesso!');
                             }
-                        }
-                        // this.axios.post(process.env.VUE_APP_URL_API + '/resultadoexame/importarResultado', data).then(response => {
-                        //
-                        // });
-                    }
-                    reader.readAsText(file);
-                } else {
-                    alert('Sorry, FileReader API not supported');
-                }
-            }
 
-            function buscaCaracter(texto) {
-                if(texto != "") {
-                    for(var i = 0; i < texto.length; i++){
-                        if(texto[i] == 'º'){
-                            // console.log('º');
-                            texto = texto.split("º").join('°');
-                            console.log(texto);
-
-                        }
+                            if(!response.data) {
+                                alert('Ocorreu um erro ao importar!');
+                            }
+                        });
                     }
+                    reader.readAsText(arquivoCsv);
                 }
 
-                return texto;
+                if(!(typeof FileReader === 'function')) {
+                    alert('Arquivo não suportado!');
+                }
             }
         }
     }
