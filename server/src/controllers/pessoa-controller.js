@@ -83,15 +83,15 @@ exports.importaPessoas = (req, res, next) => {
                 Escala.findAll().then(response => {
                     const escalas = response;
                     var numeroPessoasImportadas = 0;
-
+                    var numeroPessoasNaoImportadas = 0;
                     var i = 3;
-                    for(i in data.resultados){
+                    for(i in resultados){
                         if(resultados[i][numeroColunasPessoa.hierarquia] != undefined) {
-                            resultados[i][numeroColunasPessoa.hierarquia] = Helpers.buscaCaracter(data.resultados[i][numeroColunasPessoa.hierarquia]);
+                            resultados[i][numeroColunasPessoa.hierarquia] = Helpers.buscaCaracter(resultados[i][numeroColunasPessoa.hierarquia]);
                         }
                     }
-
-                    for(var k = 2; k < resultados.length; k++) {
+                    var pessoas = [];
+                    for(var k = 2, i = 0; k < resultados.length; k++) {
                         if(resultados[k] != "") {
                             pessoa.usuario =            Helpers.getUsuarioEmail(resultados[k][numeroColunasPessoa.email]);
                             pessoa.email =              resultados[k][numeroColunasPessoa.email];
@@ -111,19 +111,27 @@ exports.importaPessoas = (req, res, next) => {
                             pessoa.idEscala =           Helpers.getIdEscala(escalas, resultados[k][numeroColunasPessoa.escala]);
 
                             if(Helpers.validaPessoa(pessoa)){
-                                var pes = Pessoa.create(pessoa).then(response => {
-                                    console.log(response);
-                                });
+                                pessoas[i] = JSON.stringify(pessoa);
+                                numeroPessoasImportadas++;
+                                i++;
+                            }
 
-                                if(pes){
-                                    numeroPessoasImportadas++;
-                                }
-
-                            }else {
-                                // console.log(pessoa);
+                            if(!Helpers.validaPessoa(pessoa)) {
+                                numeroPessoasNaoImportadas++;
                             }
                         }
                     }
+
+                    for(var i in pessoas) {
+                        pessoas[i] = JSON.parse(pessoas[i]);
+                    }
+
+                    Pessoa.bulkCreate(pessoas, { validate: true }).then(response => {
+                        res.status(200).json({
+                            numImportadas: numeroPessoasImportadas,
+                            numNaoImportadas: numeroPessoasNaoImportadas
+                        });
+                    });
                 });
             });
         });

@@ -22,6 +22,10 @@ import ImportarResultadosExames from '@/components/material/ImportarResultadosEx
 import NovoResultadoExames from '@/components/material/NovoResultadoExames';
 import TabelaResultadoExameParametros from '@/components/material/TabelaResultadoExameParametros';
 
+import ImportaPessoas from '@/components/material/ImportaPessoas';
+
+
+Vue.component('importa-pessoas', ImportaPessoas);
 Vue.component('importar-resultados-exames', ImportarResultadosExames);
 Vue.component('tabela-resultado-exame-parametros', TabelaResultadoExameParametros);
 Vue.component('novo-resultado-exame', NovoResultadoExames);

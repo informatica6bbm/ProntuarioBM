@@ -1,215 +1,217 @@
 <template>
-    <v-card>
-        <v-card-title>
-            <span class="headline">Editar Pessoa</span>
-        </v-card-title>
+    <v-dialog v-model="dialog" max-width="1000px">
+        <v-card>
+            <v-card-title>
+                <span class="headline">Editar Pessoa</span>
+            </v-card-title>
 
-        <v-card-text>
-            <v-container>
-                <v-row>
-                    <v-col cols="12" sm="6" md="6">
-                        <v-text-field
-                            v-model="pessoa.nome"
-                            :rules="[v => !!v || 'Obrigatório prencher o nome!']"
-                            label="Nome"
-                            outlined
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="6">
-                        <v-text-field
-                            v-model="pessoa.email"
-                            :rules="[v => !!v || 'Obrigatório prencher o email!']"
-                            label="E-mail"
-                            outlined
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="3">
-                        <v-text-field
-                            v-model="pessoa.matricula"
-                            :rules="[v => !!v || 'Obrigatório prencher o matrícula!']"
-                            v-mask="['######-#', '######-#-##']"
-                            label="Matrícula"
-                            outlined
-                        ></v-text-field>
-                    </v-col>
+            <v-card-text>
+                <v-container>
+                    <v-row>
+                        <v-col cols="12" sm="6" md="6">
+                            <v-text-field
+                                v-model="pessoa.nome"
+                                :rules="[v => !!v || 'Obrigatório prencher o nome!']"
+                                label="Nome"
+                                outlined
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="6">
+                            <v-text-field
+                                v-model="pessoa.email"
+                                :rules="[v => !!v || 'Obrigatório prencher o email!']"
+                                label="E-mail"
+                                outlined
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="3">
+                            <v-text-field
+                                v-model="pessoa.matricula"
+                                :rules="[v => !!v || 'Obrigatório prencher o matrícula!']"
+                                v-mask="['######-#', '######-#-##']"
+                                label="Matrícula"
+                                outlined
+                            ></v-text-field>
+                        </v-col>
 
-                    <v-col cols="12" sm="6" md="3">
-                        <v-text-field
-                            v-model="pessoa.dataNascimento"
-                            :rules="[v => !!v || 'Obrigatório prencher a data nascimento!']"
-                            v-mask="['##/##/####']"
-                            label="Data Nascimento"
-                            outlined
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="3">
-                        <v-select
-                            :items="estadosCivils"
-                            v-model="pessoa.estadoCivil"
-                            :rules="[v => !!v || 'Obrigatório prencher o estado civil!']"
-                            label="Estado Civil"
-                            outlined
-                        ></v-select>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="3">
-                        <v-text-field
-                            v-model="pessoa.dataIngresso"
-                            :rules="[v => !!v || 'Obrigatório prencher a data de ingresso!']"
-                            v-mask="['##/##/####']"
-                            label="Data Ingresso"
-                            outlined
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                            v-model="pessoa.cartaoMunicipalSus"
-                            :rules="[v => !!v || 'Obrigatório prencher o cartão municipal do SUS!']"
-                            v-mask="['######']"
-                            label="Cartão Municipal SUS"
-                            outlined
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                        <v-text-field
-                            v-model="pessoa.cartaoNacionalSus"
-                            :rules="[v => !!v || 'Obrigatório prencher o cartão nacional do SUS!']"
-                            v-mask="['### #### #### ####']"
-                            label="Cartão Nacional SUS"
-                            outlined
-                        ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                        <v-select
-                            :items="sexos"
-                            v-model="pessoa.sexo"
-                            :rules="[v => !!v || 'Obrigatório prencher o sexo!']"
-                            label="Sexo"
-                            outlined
-                        ></v-select>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                        <v-select
-                            :items="tiposSanguineo"
-                            v-model="pessoa.tipoSanguineo"
-                            :rules="[v => !!v || 'Obrigatório prencher o tipo sanguineo!']"
-                            label="Tipo Sanguineo"
-                            outlined
-                        ></v-select>
-                    </v-col>
+                        <v-col cols="12" sm="6" md="3">
+                            <v-text-field
+                                v-model="pessoa.dataNascimento"
+                                :rules="[v => !!v || 'Obrigatório prencher a data nascimento!']"
+                                v-mask="['##/##/####']"
+                                label="Data Nascimento"
+                                outlined
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="3">
+                            <v-select
+                                :items="estadosCivils"
+                                v-model="pessoa.estadoCivil"
+                                :rules="[v => !!v || 'Obrigatório prencher o estado civil!']"
+                                label="Estado Civil"
+                                outlined
+                            ></v-select>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="3">
+                            <v-text-field
+                                v-model="pessoa.dataIngresso"
+                                :rules="[v => !!v || 'Obrigatório prencher a data de ingresso!']"
+                                v-mask="['##/##/####']"
+                                label="Data Ingresso"
+                                outlined
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                                v-model="pessoa.cartaoMunicipalSus"
+                                :rules="[v => !!v || 'Obrigatório prencher o cartão municipal do SUS!']"
+                                v-mask="['######']"
+                                label="Cartão Municipal SUS"
+                                outlined
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-text-field
+                                v-model="pessoa.cartaoNacionalSus"
+                                :rules="[v => !!v || 'Obrigatório prencher o cartão nacional do SUS!']"
+                                v-mask="['### #### #### ####']"
+                                label="Cartão Nacional SUS"
+                                outlined
+                            ></v-text-field>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-select
+                                :items="sexos"
+                                v-model="pessoa.sexo"
+                                :rules="[v => !!v || 'Obrigatório prencher o sexo!']"
+                                label="Sexo"
+                                outlined
+                            ></v-select>
+                        </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-select
+                                :items="tiposSanguineo"
+                                v-model="pessoa.tipoSanguineo"
+                                :rules="[v => !!v || 'Obrigatório prencher o tipo sanguineo!']"
+                                label="Tipo Sanguineo"
+                                outlined
+                            ></v-select>
+                        </v-col>
 
-                    <v-col cols="12" sm="6" md="4">
-                        <v-select
-                            :items="lts"
-                            item-text="text"
-                            item-value="value"
-                            v-model="pessoa.lts"
-                            :rules="[v => !!v || 'Obrigatório informar se possui LTS']"
-                            label="LTS"
-                            outlined
-                        ></v-select>
-                    </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-select
+                                :items="lts"
+                                item-text="text"
+                                item-value="value"
+                                v-model="pessoa.lts"
+                                :rules="[v => !!v || 'Obrigatório informar se possui LTS']"
+                                label="LTS"
+                                outlined
+                            ></v-select>
+                        </v-col>
 
-                    <v-col cols="12" sm="6" md="4">
-                        <v-select
-                            :items="hierarquias"
-                            item-text="hierarquia"
-                            item-value="id"
-                            v-model="pessoa.idHierarquia"
-                            :rules="[v => !!v || 'Obrigatório informar Posto/Graduação!']"
-                            label="Hierarquia"
-                            outlined
-                        ></v-select>
-                    </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-select
+                                :items="hierarquias"
+                                item-text="hierarquia"
+                                item-value="id"
+                                v-model="pessoa.idHierarquia"
+                                :rules="[v => !!v || 'Obrigatório informar Posto/Graduação!']"
+                                label="Hierarquia"
+                                outlined
+                            ></v-select>
+                        </v-col>
 
-                    <v-col cols="12" sm="6" md="4">
-                        <v-select
-                            :items="obms"
-                            v-model="pessoa.idBatalhao"
-                            item-text="abreviacao"
-                            item-value="id"
-                            :rules="[v => !!v || 'Obrigatório prencher a OBM!']"
-                            label="OBM"
-                            outlined
-                        ></v-select>
-                    </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-select
+                                :items="obms"
+                                v-model="pessoa.idBatalhao"
+                                item-text="abreviacao"
+                                item-value="id"
+                                :rules="[v => !!v || 'Obrigatório prencher a OBM!']"
+                                label="OBM"
+                                outlined
+                            ></v-select>
+                        </v-col>
 
-                    <v-col cols="12" sm="6" md="4">
-                        <v-select
-                            :items="setores"
-                            item-text="setor"
-                            item-value="id"
-                            v-model="pessoa.idSetor"
-                            :rules="[v => !!v || 'Obrigatório prencher o setor!']"
-                            label="Setor"
-                            outlined
-                        ></v-select>
-                    </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-select
+                                :items="setores"
+                                item-text="setor"
+                                item-value="id"
+                                v-model="pessoa.idSetor"
+                                :rules="[v => !!v || 'Obrigatório prencher o setor!']"
+                                label="Setor"
+                                outlined
+                            ></v-select>
+                        </v-col>
 
-                    <v-col cols="12" sm="6" md="4">
-                        <v-select
-                            :items="escalas"
-                            v-model="pessoa.idEscala"
-                            item-text="escala"
-                            item-value="id"
-                            :rules="[v => !!v || 'Obrigatório prencher a escala!']"
-                            label="Escala"
-                            outlined
-                        ></v-select>
-                    </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-select
+                                :items="escalas"
+                                v-model="pessoa.idEscala"
+                                item-text="escala"
+                                item-value="id"
+                                :rules="[v => !!v || 'Obrigatório prencher a escala!']"
+                                label="Escala"
+                                outlined
+                            ></v-select>
+                        </v-col>
 
-                    <v-col cols="12" sm="6" md="4">
-                        <v-select
-                            :items="tipoPessoas"
-                            v-model="pessoa.tipoPessoa"
-                            item-text="tipo"
-                            item-value="value"
-                            :rules="[v => !!v || 'Obrigatório prencher o tipo do cadastro!']"
-                            label="Tipo usuário"
-                            outlined
-                        ></v-select>
-                    </v-col>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-select
+                                :items="tipoPessoas"
+                                v-model="pessoa.tipoPessoa"
+                                item-text="tipo"
+                                item-value="value"
+                                :rules="[v => !!v || 'Obrigatório prencher o tipo do cadastro!']"
+                                label="Tipo usuário"
+                                outlined
+                            ></v-select>
+                        </v-col>
 
-                    <v-col cols="12" sm="6" md="4">
-                        <v-file-input
-                            color="deep-purple accent-4"
-                            counter
-                            label="Foto"
-                            multiple
-                            placeholder=""
-                            prepend-icon="mdi-camera"
-                            outlined
-                            :show-size="1000"
-                            @change="setImage"
-                        >
-                            <template v-slot:selection="{ index, text }">
-                                <v-chip
-                                    v-if="index < 2"
-                                    color="deep-purple accent-4"
-                                    dark
-                                    label
-                                    small
-                                >
-                                    {{ text }}
-                                </v-chip>
-                                <span
-                                    v-else-if="index === 2"
-                                    class="overline grey--text text--darken-3 mx-2"
-                                >
-                                    +{{ foto.length - 2 }} Arquivo
-                                </span>
-                            </template>
-                        </v-file-input>
-                    </v-col>
-                </v-row>
-            </v-container>
-        </v-card-text>
+                        <v-col cols="12" sm="6" md="4">
+                            <v-file-input
+                                color="deep-purple accent-4"
+                                counter
+                                label="Foto"
+                                multiple
+                                placeholder=""
+                                prepend-icon="mdi-camera"
+                                outlined
+                                :show-size="1000"
+                                @change="setImage"
+                            >
+                                <template v-slot:selection="{ index, text }">
+                                    <v-chip
+                                        v-if="index < 2"
+                                        color="deep-purple accent-4"
+                                        dark
+                                        label
+                                        small
+                                    >
+                                        {{ text }}
+                                    </v-chip>
+                                    <span
+                                        v-else-if="index === 2"
+                                        class="overline grey--text text--darken-3 mx-2"
+                                    >
+                                        +{{ foto.length - 2 }} Arquivo
+                                    </span>
+                                </template>
+                            </v-file-input>
+                        </v-col>
+                    </v-row>
+                </v-container>
+            </v-card-text>
 
-        <v-card-actions>
-            <div class="flex-grow-1"></div>
-            <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-            <v-btn color="blue darken-1" text @click="save">Salvar</v-btn>
-        </v-card-actions>
-    </v-card>
+            <v-card-actions>
+                <div class="flex-grow-1"></div>
+                <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
+                <v-btn color="blue darken-1" text @click="save">Salvar</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
 </template>
 
 <script>
@@ -245,17 +247,33 @@
                 "FEMININO",
                 "MASCULINO"
             ],
+            snackbar: {
+                color: "",
+                text: "",
+                state: false,
+            }
         }),
-        props: [
-            'pessoa',
-            'hierarquias',
-            'obms',
-            'setores',
-            'escalas'
-        ],
+        computed: {
+            dialog: {
+                get() {
+                    return this.dialogEditar;
+                },
+                set() {
+                    this.$emit('close',false);
+                }
+            }
+        },
+        props: {
+            dialogEditar: Boolean,
+            pessoa: Object,
+            hierarquias: Array,
+            obms: Array,
+            setores: Array,
+            escalas: Array
+        },
         methods: {
             close(){
-                this.$emit('close', true);
+                this.$emit('close', "teste");
             },
             isValidEmail() {
                 var parse_email = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/gi;
@@ -304,14 +322,15 @@
                 if(this.validaCampos()){
                     this.axios.put(process.env.VUE_APP_URL_API + '/pessoa', this.pessoa).then(response => {
                         if(response.data){
-                            this.textoSnackbar = "Registro atualizado com sucesso!";
-                            this.snackbar = true;
-                            this.color = 'success';
+                            this.snackbar.color = 'success';
+                            this.snackbar.text = "Registro atualizado com sucesso!";
+                            this.snackbar.state = true;
                             this.close();
-                        }else {
-                            this.snackbar = true;
-                            this.color = 'error';
-                            this.textoSnackbar = "Ocorreu um erro ao atualizar!";
+                        }
+                        if(!response.data) {
+                            this.snackbar.color = 'error';
+                            this.snackbar.text  = "Ocorreu um erro ao atualizar!";
+                            this.snackbar.state = true;
                             this.close();
                         }
                     });
