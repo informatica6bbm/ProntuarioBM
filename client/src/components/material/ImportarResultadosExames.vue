@@ -7,6 +7,20 @@
 
             <v-card-text>
                 <v-container>
+
+                    <v-row>
+                        <v-col cols="12" sm="12" md="12">
+                            <v-alert
+                                dense
+                                outlined
+                                type="error"
+                                v-if="avisoArquivoVaziu"
+                            >
+                                Deve ser selecionado um arquivo CSV
+                            </v-alert>
+                        </v-col>
+                    </v-row>
+
                     <v-row>
                         <v-col cols="12" sm="12" md="12">
                             <v-file-input
@@ -57,6 +71,7 @@ export default {
     data: () => ({
         arquivo: null,
         resultadosExames: null,
+        avisoArquivoVaziu: false
     }),
     computed: {
         dialog: {
@@ -65,6 +80,13 @@ export default {
             },
             set() {
                 this.$emit('close',false);
+            }
+        }
+    },
+    watch: {
+        arquivo(val) {
+            if(val != null){
+                this.avisoArquivoVaziu = false;
             }
         }
     },
@@ -78,8 +100,13 @@ export default {
             this.$emit('close',false);
         },
         importaResultadosExames() {
-            const arquivoCsv = this.arquivo[0];
+            const arquivoCsv = this.arquivo != null ? this.arquivo[0] : false;
             const vm = this;
+
+            if(!arquivoCsv) {
+                this.avisoArquivoVaziu = true;
+            }
+
             if(arquivoCsv){
                 if (!arquivoCsv.type.includes('text/csv')) {
                     alert('Por favor selecione o arquivo CSV!');
@@ -95,7 +122,7 @@ export default {
                         var data = {
                             resultados: linhas
                         };
-
+                        // console.log(data.resultados[1][23]);
                         vm.axios.post(process.env.VUE_APP_URL_API + '/resultadoexame/importarResultado', data).then(response => {
                             if(response.data){
                                 alert('Arquivo importado com sucesso!');

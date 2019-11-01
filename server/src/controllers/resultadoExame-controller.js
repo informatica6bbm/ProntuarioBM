@@ -1,15 +1,10 @@
 'use strict';
 const Helpers = require("./../../helpers/helpers");
-const ResultadoExame = require('./../models/ResultadoExame');
-const ResultadoParametroExame = require('./../models/ResultadoParametroExame');
-
-const Pessoa = require('./../models/Pessoa');
-const Hierarquia = require('./../models/Hierarquia');
-const Setor = require('./../models/Setor');
-const Batalhao = require('./../models/Batalhao');
-const Escala = require('./../models/Escala');
 
 const Exame = require('./../models/Exame');
+const Pessoa = require('./../models/Pessoa');
+const ResultadoExame = require('./../models/ResultadoExame');
+const ResultadoParametroExame = require('./../models/ResultadoParametroExame');
 const ParametroExame = require('./../models/ParametroExame');
 
 exports.get = (req, res, next) => {
@@ -147,13 +142,62 @@ exports.post = (req, res, next) => {
 }
 
 exports.importaResultadosExames = (req, res, next) => {
-
-
+    const resultados = req.body.resultados;
+    const cabecalho = resultados[1];
+    const numeroColunaMatricula = Helpers.getNumeroColuna('MATRÍCULA',cabecalho);
+    const numeroColunaDataExame = Helpers.getNumeroColuna('DATA_ATENDIMENTO',cabecalho);
     Exame.findAll().then(response => {
         var exames = response;
         ParametroExame.findAll().then(response => {
             var parametros = response;
 
+            Pessoa.findAll().then(response => {
+                const pessoas = response;
+
+                for(var counterParametros in parametros){
+                    var numeroColunaParametro = null;
+
+                    for(var counterPosicaCabecalho in cabecalho){
+                        if(parametros[counterParametros].parametro === cabecalho[counterPosicaCabecalho]) {
+                            numeroColunaParametro = counterPosicaCabecalho;
+                            break;
+                        }
+                    }
+
+                    if(numeroColunaParametro != null) {
+                        var counterResultados = 2;
+                        for(counterResultados in resultados){
+                            if(resultados[counterResultados][numeroColunaParametro] !== "") {
+                                console.log(resultados[counterResultados][numeroColunaParametro]);
+                                var exame = null;
+                                for(var counterExame in exames){
+                                    if(parametros[counterParametros].idExame === exames[counterExame].id) {
+                                        exame = exames[counterExame];
+
+                                        for(var counterPessoas in pessoas) {
+                                            if(pessoas[counterPessoas].matricula === resultados[counterResultados][numeroColunaMatricula]) {
+                                                var data = {
+                                                    data: resultados[counterResultados][numeroColunaDataExame],
+                                                    idPessoa: pessoas[counterPessoas].id,
+                                                    idExame: exame.id
+                                                }
+                                                ResultadoExame.create(data).then(response => {
+                                                    console.log(response);
+                                                });
+                                            }
+                                        }
+
+                                        break;
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+
+                }
+
+            });
         });
     });
 

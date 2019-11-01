@@ -120,7 +120,7 @@ export default {
                             return linha.split(',');
                         });
                         var data = {
-                            resultados: linhas
+                            pessoas: linhas
                         };
 
                         vm.axios.post(process.env.VUE_APP_URL_API + '/pessoa/importaPessoas', data).then(response => {

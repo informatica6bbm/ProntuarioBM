@@ -32,8 +32,8 @@ exports.getAll = (req, res, next) => {
 }
 
 exports.importaPessoas = (req, res, next) => {
-    const resultados = req.body.resultados;
-    const cabecalho = resultados[1];
+    const listaPessoas = req.body.pessoas;
+    const cabecalho = listaPessoas[1];
 
     var pessoa = {
         usuario: "",
@@ -85,30 +85,30 @@ exports.importaPessoas = (req, res, next) => {
                     var numeroPessoasImportadas = 0;
                     var numeroPessoasNaoImportadas = 0;
                     var i = 3;
-                    for(i in resultados){
-                        if(resultados[i][numeroColunasPessoa.hierarquia] != undefined) {
-                            resultados[i][numeroColunasPessoa.hierarquia] = Helpers.buscaCaracter(resultados[i][numeroColunasPessoa.hierarquia]);
+                    for(i in listaPessoas){
+                        if(listaPessoas[i][numeroColunasPessoa.hierarquia] != undefined) {
+                            listaPessoas[i][numeroColunasPessoa.hierarquia] = Helpers.buscaCaracter(listaPessoas[i][numeroColunasPessoa.hierarquia]);
                         }
                     }
                     var pessoas = [];
-                    for(var k = 2, i = 0; k < resultados.length; k++) {
-                        if(resultados[k] != "") {
-                            pessoa.usuario =            Helpers.getUsuarioEmail(resultados[k][numeroColunasPessoa.email]);
-                            pessoa.email =              resultados[k][numeroColunasPessoa.email];
-                            pessoa.nome =               resultados[k][numeroColunasPessoa.nome];
-                            pessoa.matricula =          resultados[k][numeroColunasPessoa.matricula];
-                            pessoa.dataNascimento =     resultados[k][numeroColunasPessoa.dataNascimento];
-                            pessoa.estadoCivil =        resultados[k][numeroColunasPessoa.estadoCivil].toUpperCase();
-                            pessoa.dataIngresso =       resultados[k][numeroColunasPessoa.dataIngresso];
-                            pessoa.cartaoNacionalSus =  resultados[k][numeroColunasPessoa.cartaoNacionalSus];
-                            pessoa.cartaoMunicipalSus = resultados[k][numeroColunasPessoa.cartaoMunicipalSus];
-                            pessoa.sexo =               resultados[k][numeroColunasPessoa.sexo].toUpperCase();
-                            pessoa.tipoSanguineo =      resultados[k][numeroColunasPessoa.tipoSanguineo];
-                            pessoa.lts =                resultados[k][numeroColunasPessoa.lts];
-                            pessoa.idHierarquia =       Helpers.getIdHierarquia(resultados[k][numeroColunasPessoa.hierarquia], hierarquias);
-                            pessoa.idSetor =            Helpers.getIdSetor(setores, resultados[k][numeroColunasPessoa.setor]);
-                            pessoa.idBatalhao =         Helpers.getIdObm(batalhoes, resultados[k][numeroColunasPessoa.batalhao]);
-                            pessoa.idEscala =           Helpers.getIdEscala(escalas, resultados[k][numeroColunasPessoa.escala]);
+                    for(var k = 2, i = 0; k < listaPessoas.length; k++) {
+                        if(listaPessoas[k] != "") {
+                            pessoa.usuario =            Helpers.getUsuarioEmail(listaPessoas[k][numeroColunasPessoa.email]);
+                            pessoa.email =              listaPessoas[k][numeroColunasPessoa.email];
+                            pessoa.nome =               listaPessoas[k][numeroColunasPessoa.nome];
+                            pessoa.matricula =          listaPessoas[k][numeroColunasPessoa.matricula];
+                            pessoa.dataNascimento =     listaPessoas[k][numeroColunasPessoa.dataNascimento];
+                            pessoa.estadoCivil =        listaPessoas[k][numeroColunasPessoa.estadoCivil].toUpperCase();
+                            pessoa.dataIngresso =       listaPessoas[k][numeroColunasPessoa.dataIngresso];
+                            pessoa.cartaoNacionalSus =  listaPessoas[k][numeroColunasPessoa.cartaoNacionalSus];
+                            pessoa.cartaoMunicipalSus = listaPessoas[k][numeroColunasPessoa.cartaoMunicipalSus];
+                            pessoa.sexo =               listaPessoas[k][numeroColunasPessoa.sexo].toUpperCase();
+                            pessoa.tipoSanguineo =      listaPessoas[k][numeroColunasPessoa.tipoSanguineo];
+                            pessoa.lts =                listaPessoas[k][numeroColunasPessoa.lts];
+                            pessoa.idHierarquia =       Helpers.getIdHierarquia(listaPessoas[k][numeroColunasPessoa.hierarquia], hierarquias);
+                            pessoa.idSetor =            Helpers.getIdSetor(setores, listaPessoas[k][numeroColunasPessoa.setor]);
+                            pessoa.idBatalhao =         Helpers.getIdObm(batalhoes, listaPessoas[k][numeroColunasPessoa.batalhao]);
+                            pessoa.idEscala =           Helpers.getIdEscala(escalas, listaPessoas[k][numeroColunasPessoa.escala]);
 
                             if(Helpers.validaPessoa(pessoa)){
                                 pessoas[i] = JSON.stringify(pessoa);

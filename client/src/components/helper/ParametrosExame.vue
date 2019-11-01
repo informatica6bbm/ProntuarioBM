@@ -379,17 +379,16 @@
         },
         watch: {
             dialog() {
-                this.axios.get('http://localhost:3000/exame/' + this.idExame).then(response => {
+                this.axios.get(process.env.VUE_APP_URL_API + '/exame/' + this.idExame).then(response => {
                     this.exame = response.data;
                 });
 
                 this.atualizaParametros();
             },
             dialogAddParametro (val) {
-                this.axios.get('http://localhost:3000/referenciaParametroExame/getByIdParametro/' + this.editedItem.id).then(response => {
+                this.axios.get(process.env.VUE_APP_URL_API + '/referenciaParametroExame/getByIdParametro/' + this.editedItem.id).then(response => {
                     this.dessertsValoresReferencia = response.data;
                 });
-                // this.mostraTabelaValoresReferencia = false;
                 val || this.close();
             },
         },
@@ -401,7 +400,7 @@
                 this.snackbar = false;
             },
             atualizaParametros() {
-                this.axios.get('http://localhost:3000/parametroExame/getByIdExame/' + this.idExame ).then(response => {
+                this.axios.get(process.env.VUE_APP_URL_API + '/parametroExame/getByIdExame/' + this.idExame ).then(response => {
                     this.desserts = response.data;
                 });
             },
@@ -413,7 +412,7 @@
                 this.dialogAddParametro = true;
             },
             deleteItem (item) {
-                this.axios.delete('http://localhost:3000/parametroExame/' + item.id + "/delete").then(response => {
+                this.axios.delete(process.env.VUE_APP_URL_API + '/parametroExame/' + item.id + "/delete").then(response => {
                     if(response.data){
                         this.snackbar = true;
                         this.color = 'success';
@@ -442,7 +441,7 @@
                 this.snackbarValoresReferencia = false;
                 if (this.editedIndex > -1) {
                     this.editedItem.idExame = this.idExame;
-                    this.axios.put('http://localhost:3000/parametroExame', this.editedItem).then(response => {
+                    this.axios.put(process.env.VUE_APP_URL_API + '/parametroExame', this.editedItem).then(response => {
                         if(response.data){
                             this.textoSnackbar = "Registro atualizado com sucesso!";
                             this.snackbar = true;
@@ -459,7 +458,7 @@
                 } else {
                     if(this.validaCampos()){
                         this.editedItem.idExame = this.idExame;
-                        this.axios.post('http://localhost:3000/parametroExame', this.editedItem).then(response => {
+                        this.axios.post(process.env.VUE_APP_URL_API + '/parametroExame', this.editedItem).then(response => {
                             if(response.data.id){
                                 this.textoSnackbar = "Parâmetro inserida com sucesso!";
                                 this.snackbar = true;
@@ -485,7 +484,7 @@
                 this.snackbarValoresReferencia = false;
             },
             atualizaValoresReferencia() {
-                this.axios.get('http://localhost:3000/referenciaParametroExame/getByIdParametro/' + this.editedItem.id).then(response => {
+                this.axios.get(process.env.VUE_APP_URL_API + '/referenciaParametroExame/getByIdParametro/' + this.editedItem.id).then(response => {
                     this.dessertsValoresRerefencia = response.data;
 
                     for(var i = 0; i < response.data.length; i++){
@@ -501,7 +500,7 @@
                 this.dialogValoresReferencia = true;
             },
             deleteItemValorReferencia (item) {
-                this.axios.delete('http://localhost:3000/referenciaParametroExame/' + item.id + "/delete").then(response => {
+                this.axios.delete(process.env.VUE_APP_URL_API + '/referenciaParametroExame/' + item.id + "/delete").then(response => {
                     if(response.data){
                         this.textoSnackbarValoresReferencia = "Valor refência apagado com sucesso!";
                         this.snackbarValoresReferencia = true;
@@ -538,7 +537,7 @@
             saveValoresReferencia () {
                 if (this.editedIndexValoresReferencia > -1) {
                     this.editedItemValoresReferencia.idParametro = this.editedItem.id;
-                    this.axios.put('http://localhost:3000/referenciaParametroExame', this.editedItemValoresReferencia).then(response => {
+                    this.axios.put(process.env.VUE_APP_URL_API + '/referenciaParametroExame', this.editedItemValoresReferencia).then(response => {
                         if(response.data){
                             this.textoSnackbarValoresReferencia = "Registro atualizado com sucesso!";
                             this.snackbarValoresReferencia = true;
@@ -555,7 +554,7 @@
                 } else {
                     if(this.validaCamposValoresReferencia()){
                         this.editedItemValoresReferencia.idParametro = this.editedItem.id;
-                        this.axios.post('http://localhost:3000/referenciaParametroExame', this.editedItemValoresReferencia).then(response => {
+                        this.axios.post(process.env.VUE_APP_URL_API + '/referenciaParametroExame', this.editedItemValoresReferencia).then(response => {
                             if(response.data.id){
                                 this.textoSnackbarValoresReferencia = "Valor refêrencia inserido com sucesso!";
                                 this.snackbarValoresReferencia = true;
