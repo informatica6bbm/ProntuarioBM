@@ -9,6 +9,19 @@
                 <v-container>
                     <v-row>
                         <v-col cols="12" sm="12" md="12">
+                            <v-alert
+                                dense
+                                outlined
+                                type="error"
+                                v-if="avisoArquivoVaziu"
+                            >
+                                Deve ser selecionado um arquivo CSV
+                            </v-alert>
+                        </v-col>
+                    </v-row>
+
+                    <v-row>
+                        <v-col cols="12" sm="12" md="12">
                             <v-file-input
                                 color="deep-purple accent-4"
                                 counter
@@ -57,6 +70,7 @@ export default {
     data: () => ({
         arquivo: null,
         resultadosExames: null,
+        avisoArquivoVaziu: false
     }),
     computed: {
         dialog: {
@@ -65,6 +79,13 @@ export default {
             },
             set() {
                 this.$emit('close',false);
+            }
+        }
+    },
+    watch: {
+        arquivo(val) {
+            if(val != null){
+                this.avisoArquivoVaziu = false;
             }
         }
     },
@@ -78,9 +99,15 @@ export default {
             this.$emit('close',false);
         },
         importaPessoas() {
-            const arquivoCsv = this.arquivo[0];
+            const arquivoCsv = this.arquivo != null ? this.arquivo[0] : false;
             const vm = this;
+
+            if(!arquivoCsv){
+                this.avisoArquivoVaziu = true;
+            }
+
             if(arquivoCsv){
+                this.avisoArquivoVaziu = false;
                 if (!arquivoCsv.type.includes('text/csv')) {
                     alert('Por favor selecione o arquivo CSV!');
                     return;
@@ -99,6 +126,7 @@ export default {
                         vm.axios.post(process.env.VUE_APP_URL_API + '/pessoa/importaPessoas', data).then(response => {
                             if(response.data){
                                 alert('Arquivo importado com sucesso!');
+                                vm.close();
                             }
                             if(!response.data) {
                                 alert('Ocorreu um erro ao importar!');

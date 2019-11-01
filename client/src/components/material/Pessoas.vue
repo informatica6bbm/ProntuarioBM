@@ -37,6 +37,7 @@
 
                 <importa-pessoas
                     v-bind:dialogImportar="importarPessoas"
+                    @close="closeImportar"
                 ></importa-pessoas>
 
                 <div class="flex-grow-1"></div>
@@ -184,11 +185,14 @@ export default {
         importar() {
             this.importarPessoas = true;
         },
+        closeImportar() {
+            this.importarPessoas = false;
+        },
         closeEditar(snackbar) {
+            this.dialogEditar = false;
             this.snackbar.text = snackbar.text;
             this.snackbar.color = snackbar.color;
             this.snackbar.state = snackbar.state;
-            this.dialogEditar = false;
             this.initialize();
         },
         closeNovo() {
