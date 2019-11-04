@@ -122,7 +122,7 @@ export default {
                         var data = {
                             resultados: linhas
                         };
-                        // console.log(data.resultados[1][23]);
+
                         vm.axios.post(process.env.VUE_APP_URL_API + '/resultadoexame/importarResultado', data).then(response => {
                             if(response.data){
                                 alert('Arquivo importado com sucesso!');

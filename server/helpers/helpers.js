@@ -86,6 +86,8 @@ function getNumeroColuna(nomeColuna, cabecalho){
             return i;
         }
     }
+
+    return null;
 }
 
 function getIdHierarquia(abreviacao, hierarquias) {

@@ -25,36 +25,8 @@ exports.get = (req, res, next) => {
 }
 
 exports.getAll = (req, res, next) => {
-    var item = {
-        nome: "",
-        idPessoa: "",
-        data: "",
-        exame: "",
-        idExame: null,
-        parametros: []
-    };
-
-    var itemDefault = {
-        nome: "",
-        idPessoa: "",
-        data: "",
-        exame: "",
-        idExame: null,
-        parametros: []
-    };
-
-    var parametro = {
-        id: null,
-        parametro: "",
-        valor: ""
-    };
-
-    var parametroDefault = {
-        id: null,
-        parametro: "",
-        valor: ""
-    };
-
+    var item = {};
+    var parametro = {};
     ResultadoExame.findAll().then(response => {
         var resultados = response;
         ResultadoParametroExame.findAll().then(response => {
@@ -67,55 +39,51 @@ exports.getAll = (req, res, next) => {
                     Pessoa.findAll().then(response => {
                         var pessoas = response;
                         var resultadosExames = [];
+                        var contaResultadosExames = 0;
                         var i = 0;
                         var j = 0;
                         var k = 0;
                         for(i in resultados){
                             item.data = Helpers.formatDate(resultados[i].data);
-
-                            for(j in exames){
-                                if(exames[j].id == resultados[i].idExame){
-                                    item.idExame = exames[j].id;
-                                    item.exame = exames[j].exame;
+                            var contaExames = 0;
+                            for(contaExames in exames){
+                                if(exames[contaExames].id == resultados[i].idExame){
+                                    item.idExame = exames[contaExames].id;
+                                    item.exame = exames[contaExames].exame;
                                     break;
                                 }
                             }
-                            j = 0;
-                            for(j in pessoas){
-                                if(pessoas[j].id == resultados[i].idPessoa) {
-                                    item.nome = pessoas[j].nome;
-                                    item.idPessoa  = pessoas[j].id;
+                            var contaPessoas = 0;
+                            for(contaPessoas in pessoas){
+                                if(pessoas[contaPessoas].id == resultados[i].idPessoa) {
+                                    item.nome = pessoas[contaPessoas].nome;
+                                    item.idPessoa  = pessoas[contaPessoas].id;
                                 }
                             }
-                            j = 0;
-
-                            for(j in resultadoParametroExame){
-                                if(resultadoParametroExame[j].idResultadoExame == resultados[i].id && resultadoParametroExame[j].idExame ==  resultados[i].idExame) {
+                            var contaResultadosExames = 0;
+                            for(contaResultadosExames in resultadoParametroExame){
+                                if(resultadoParametroExame[contaResultadosExames].idResultadoExame == resultados[i].id && resultadoParametroExame[contaResultadosExames].idExame ==  resultados[i].idExame) {
                                     for(k in parametros){
-                                        if(parametros[k].id == resultadoParametroExame[j].idParametro) {
-                                            parametro.id =  resultadoParametroExame[j].idParametro;
+                                        if(parametros[k].id == resultadoParametroExame[contaResultadosExames].idParametro) {
+                                            parametro.id =  resultadoParametroExame[contaResultadosExames].idParametro;
                                             parametro.parametro = parametros[k].parametro;
-                                            parametro.valor = resultadoParametroExame[j].valor;
+                                            parametro.valor = resultadoParametroExame[contaResultadosExames].valor;
                                             break;
                                         }
                                     };
                                     item.parametros.push(parametro);
-                                    parametro = parametroDefault;
+                                    parametro = {};
                                 }
                             }
-
-                            resultadosExames.push(item);
-                            item = itemDefault;
-                            parametro = parametroDefault;
+                            resultadosExames[resultadosExames.length] = item;
+                            item = {};
+                            parametro = {};
                         }
-
                         res.status(200).json(resultadosExames);
                     });
                 });
             });
         });
-
-
     });
 }
 
@@ -146,6 +114,7 @@ exports.importaResultadosExames = (req, res, next) => {
     const cabecalho = resultados[1];
     const numeroColunaMatricula = Helpers.getNumeroColuna('MATRÍCULA',cabecalho);
     const numeroColunaDataExame = Helpers.getNumeroColuna('DATA_ATENDIMENTO',cabecalho);
+
     Exame.findAll().then(response => {
         var exames = response;
         ParametroExame.findAll().then(response => {
@@ -154,43 +123,31 @@ exports.importaResultadosExames = (req, res, next) => {
             Pessoa.findAll().then(response => {
                 const pessoas = response;
 
-                for(var counterParametros in parametros){
-                    var numeroColunaParametro = null;
-
-                    for(var counterPosicaCabecalho in cabecalho){
-                        if(parametros[counterParametros].parametro === cabecalho[counterPosicaCabecalho]) {
-                            numeroColunaParametro = counterPosicaCabecalho;
-                            break;
-                        }
-                    }
+                var contaParametro = 0;
+                for(contaParametro in parametros){
+                    var numeroColunaParametro = Helpers.getNumeroColuna(parametros[contaParametro].parametro.toUpperCase(),cabecalho);
 
                     if(numeroColunaParametro != null) {
-                        var counterResultados = 2;
-                        for(counterResultados in resultados){
-                            if(resultados[counterResultados][numeroColunaParametro] !== "") {
-                                console.log(resultados[counterResultados][numeroColunaParametro]);
-                                var exame = null;
-                                for(var counterExame in exames){
-                                    if(parametros[counterParametros].idExame === exames[counterExame].id) {
-                                        exame = exames[counterExame];
-
-                                        for(var counterPessoas in pessoas) {
-                                            if(pessoas[counterPessoas].matricula === resultados[counterResultados][numeroColunaMatricula]) {
-                                                var data = {
-                                                    data: resultados[counterResultados][numeroColunaDataExame],
-                                                    idPessoa: pessoas[counterPessoas].id,
-                                                    idExame: exame.id
-                                                }
-                                                ResultadoExame.create(data).then(response => {
-                                                    console.log(response);
-                                                });
+                        var contaResultados = 2;
+                        for(contaResultados in resultados){
+                            if(resultados[contaResultados][numeroColunaParametro] !== "") {
+                                if(!(resultados[contaResultados][numeroColunaParametro] == 'X') && resultados[contaResultados][numeroColunaParametro] != undefined) {
+                                    var contaPessoa = 0;
+                                    for(contaPessoa in pessoas){
+                                        if(pessoas[contaPessoa].matricula === resultados[contaResultados][numeroColunaMatricula]) {
+                                            console.log(pessoas[contaPessoa].nome + "  " + resultados[contaResultados][numeroColunaParametro] + "   " + resultados[contaResultados][numeroColunaMatricula]);
+                                            var data = {
+                                                data: resultados[contaResultados][numeroColunaDataExame],
+                                                idPessoa: pessoas[contaPessoa].id,
+                                                idExame: parametros[contaParametro].idExame
                                             }
+                                            insereResultadoExame(data).then(response => {
+                                                console.log(response);
+                                            });
+                                            break;
                                         }
-
-                                        break;
                                     }
                                 }
-
                             }
                         }
                     }
@@ -200,6 +157,10 @@ exports.importaResultadosExames = (req, res, next) => {
             });
         });
     });
+
+    async function insereResultadoExame(data) {
+        return await ResultadoExame.create(data);
+    }
 
     res.status(200).json(req.body.resultados);
 };
