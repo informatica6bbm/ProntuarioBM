@@ -5,22 +5,6 @@ const Pessoa = require('./../models/Pessoa');
 const Sha256 = require('js-sha256');
 const axios = require('axios');
 
-exports.get = (req, res, next) => {
-    // const id = req.params.id;
-    // Batalhao.findAll().then(response => {
-    //     var find = [];
-    //     var data = JSON.parse(JSON.stringify(response));
-    //     for(var i = 0; i < data.length; i++){
-    //         if(data[i].id == id) {
-    //             find = data[i] ;
-    //             break;
-    //         }
-    //     }
-    //
-    //     res.status(200).json(find);
-    // });
-}
-
 exports.post = (req, res, next) => {
     var usuario = req.body.usuario;
     var senha = req.body.senha;
@@ -54,21 +38,27 @@ exports.post = (req, res, next) => {
                                 mensage: 'Login realizado com sucesso!',
                                 token: token
                             });
-                        }else {
+                        }
+
+                        if(!response.data) {
                             res.status(200).json({
                                 response: false,
                                 mensage: 'Usuário ou senha incorreto!'
                             });
                         }
                     });
-                }else {
+                }
+
+                if(!response){
                     res.status(200).json({
                         response: false,
                         mensage: 'Ocorreu um erro durante o login!'
                     });
                 }
             });
-        }else {
+        }
+
+        if(!existeUsuario) {
             res.status(200).json({
                 response: false,
                 mensage: 'Usuário não cadastrado!'

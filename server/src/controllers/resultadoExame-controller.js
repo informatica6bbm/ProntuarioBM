@@ -115,51 +115,95 @@ exports.importaResultadosExames = (req, res, next) => {
     const numeroColunaMatricula = Helpers.getNumeroColuna('MATRÍCULA',cabecalho);
     const numeroColunaDataExame = Helpers.getNumeroColuna('DATA_ATENDIMENTO',cabecalho);
 
-    Exame.findAll().then(response => {
-        var exames = response;
+    Pessoa.findAll().then(response => {
+        const pessoas = response;
+        
         ParametroExame.findAll().then(response => {
             var parametros = response;
-
-            Pessoa.findAll().then(response => {
-                const pessoas = response;
-
-                var contaParametro = 0;
-                for(contaParametro in parametros){
-                    var numeroColunaParametro = Helpers.getNumeroColuna(parametros[contaParametro].parametro.toUpperCase(),cabecalho);
-
-                    if(numeroColunaParametro != null) {
-                        var contaResultados = 2;
-                        for(contaResultados in resultados){
-                            if(resultados[contaResultados][numeroColunaParametro] !== "") {
-                                if(!(resultados[contaResultados][numeroColunaParametro] == 'X') && resultados[contaResultados][numeroColunaParametro] != undefined) {
-                                    var contaPessoa = 0;
-                                    for(contaPessoa in pessoas){
-                                        if(pessoas[contaPessoa].matricula === resultados[contaResultados][numeroColunaMatricula]) {
-                                            console.log(pessoas[contaPessoa].nome + "  " + resultados[contaResultados][numeroColunaParametro] + "   " + resultados[contaResultados][numeroColunaMatricula]);
-                                            var data = {
-                                                data: resultados[contaResultados][numeroColunaDataExame],
-                                                idPessoa: pessoas[contaPessoa].id,
-                                                idExame: parametros[contaParametro].idExame
-                                            }
-                                            insereResultadoExame(data).then(response => {
-                                                console.log(response);
-                                            });
-                                            break;
-                                        }
+            var item = {};
+            var resultadosParametros = [];
+            var contaParametro = 0;
+            for(contaParametro in parametros){
+                var numeroColunaParametro = Helpers.getNumeroColuna(parametros[contaParametro].parametro.toUpperCase(),cabecalho);
+                if(numeroColunaParametro != null) {
+                    var contaResultados = 2;
+                    for(contaResultados in resultados){
+                        if(resultados[contaResultados][numeroColunaParametro] !== "") {
+                            if(!(resultados[contaResultados][numeroColunaParametro] == 'X') && resultados[contaResultados][numeroColunaParametro] != undefined) {
+                                var contaPessoa = 0;
+                                for(contaPessoa in pessoas){
+                                    if(pessoas[contaPessoa].matricula === resultados[contaResultados][numeroColunaMatricula]) {
+                                        item.valor = resultados[contaResultados][numeroColunaParametro];
+                                        item.idParametro = parametros[contaParametro].id;
+                                        item.idExame = parametros[contaParametro].idExame;
+                                        item.idResultadoExame = "";
+                                        item.data = resultados[contaResultados][numeroColunaDataExame];
+                                        item.idPessoa = pessoas[contaPessoa].id;
+                                        resultadosParametros.push(item);
+                                        item = {};
+                                        break;
                                     }
                                 }
                             }
                         }
                     }
-
                 }
+            }
 
-            });
+ 
+            var resultExame = {};
+            var res = [];
+            var conta = 0;
+            for(conta in resultadosParametros) {
+                var data = {
+                    data: resultadosParametros[conta].data,
+                    idPessoa: resultadosParametros[conta].idPessoa,
+                    idExame: resultadosParametros[conta].idExame
+                }
+                
+                if(res.length == 0) {
+                    data.data = data.data.split('/').reverse().join('-');
+                    res.push(data);
+                }
+                if(res.length > 0) {
+                    var contaResult = 0;
+                    for(contaResult in res){
+                        if(res[contaResult].idPessoa != data.idPessoa) {
+                            data.data = data.data.split('/').reverse().join('-');
+                            res.push(data);
+                            break;
+                        }
+                    }
+                    data = {};
+                } 
+            }
+
+            var i = 0;
+            for(var i in res){
+                ResultadoExame.create(res[i]).then(response => {
+                    if(response){
+                        // console.log(response.data);
+                        var k = 0;
+                        for(k in resultadosParametros) {
+                            if(response.idPessoa == resultadosParametros[k].idPessoa && response.idExame == resultadosParametros[k].idExame) {
+                                resultadosParametros[k].idResultadoExame = response.id;
+                                ResultadoParametroExame.create(resultadosParametros[k]).then(response => {
+                                    console.log(response.id);
+                                });
+                            }
+                        }
+                    }
+                });
+            }
+
+            console.log(res);
         });
+
     });
 
     async function insereResultadoExame(data) {
-        return await ResultadoExame.create(data);
+        let response = await ResultadoExame.create(data);
+        return response;
     }
 
     res.status(200).json(req.body.resultados);

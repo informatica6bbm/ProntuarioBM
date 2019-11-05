@@ -2,7 +2,8 @@ const app = require('../src/app');
 const http = require('http');
 const debug = require('debug')('nodestr:server');
 const express = require('express');
-
+const dotenv = require('dotenv');
+dotenv.config();
 const port = normalizePort(process.env.PORT || '3000');
 
 app.set('port', port);
