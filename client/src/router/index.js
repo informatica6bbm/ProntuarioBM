@@ -47,26 +47,54 @@ const router = new Router({
     return res;
 }
 
+async function getPessoa(){
+    var data = {
+        usuario: localStorage.getItem("usuario")
+    }
+    let res = await axios.post(process.env.VUE_APP_URL_API + "/pessoa/getPorNomeUsuario", data);
+
+    return res;
+}
+
 router.beforeEach((to, from, next) =>{
-    validAuth().then(response => {
-        var res = response.data;
-        if(to.path != '/login'){
-            if (!res) {
-                if(localStorage.getItem("tokenlogin")){
-                    localStorage.removeItem("tokenlogin");
+    getPessoa().then(response => {
+        const pessoa = response.data;
+        validAuth().then(response => {
+            var res = response.data;
+            if(to.path != '/login'){
+                if (!res) {
+                    if(localStorage.getItem("tokenlogin")){
+                        localStorage.removeItem("tokenlogin");
+                    }
+                    return next({
+                        path: '/login'
+                    });
                 }
+
+                if(res && to.path != '/prontuario' && pessoa.tipoPessoa == false){
+                    return next({
+                        path: '/prontuario'
+                    });
+                }
+
+                if(res && to.path == '/prontuario' && pessoa.tipoPessoa){
+                    return next({
+                        path: '/'
+                    });
+                }
+            }
+            
+            if(res && to.path == '/login'){
                 return next({
-                    path: '/login'
+                    path: '/'
                 });
             }
-        }
-        if(res && to.path == '/login'){
-           return next({
-               path: '/'
-           });
-       }
-       next();
+
+           next();
+        });
     });
+
+    
 });
 
 

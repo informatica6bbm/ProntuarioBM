@@ -35,5 +35,10 @@ export default [
         meta: {
             requiresAuth: true
         }
+    },
+    {
+        path: '/prontuario',
+        name: 'Prontuario',
+        view: 'Prontuario'
     }
 ]

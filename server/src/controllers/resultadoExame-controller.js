@@ -27,6 +27,7 @@ exports.get = (req, res, next) => {
 exports.getAll = (req, res, next) => {
     var item = {};
     var parametro = {};
+    item.parametros = [];
     ResultadoExame.findAll().then(response => {
         var resultados = response;
         ResultadoParametroExame.findAll().then(response => {
@@ -77,6 +78,7 @@ exports.getAll = (req, res, next) => {
                             }
                             resultadosExames[resultadosExames.length] = item;
                             item = {};
+                            item.parametros = [];
                             parametro = {};
                         }
                         res.status(200).json(resultadosExames);
@@ -149,7 +151,6 @@ exports.importaResultadosExames = (req, res, next) => {
                     }
                 }
             }
-
  
             var resultExame = {};
             var res = [];
@@ -182,7 +183,6 @@ exports.importaResultadosExames = (req, res, next) => {
             for(var i in res){
                 ResultadoExame.create(res[i]).then(response => {
                     if(response){
-                        // console.log(response.data);
                         var k = 0;
                         for(k in resultadosParametros) {
                             if(response.idPessoa == resultadosParametros[k].idPessoa && response.idExame == resultadosParametros[k].idExame) {

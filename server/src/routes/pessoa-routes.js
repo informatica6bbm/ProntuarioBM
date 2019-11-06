@@ -6,6 +6,7 @@ const controller = require('./../controllers/pessoa-controller');
 
 router.get('/',  controller.getAll);
 router.get('/:id',  controller.get);
+router.post('/getPorNomeUsuario', controller.getUsername);
 router.post('/',    controller.post);
 router.post('/importaPessoas', controller.importaPessoas);
 router.put('/',     controller.update);

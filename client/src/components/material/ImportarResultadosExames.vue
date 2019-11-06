@@ -126,6 +126,7 @@ export default {
                         vm.axios.post(process.env.VUE_APP_URL_API + '/resultadoexame/importarResultado', data).then(response => {
                             if(response.data){
                                 alert('Arquivo importado com sucesso!');
+                                vm.close();
                             }
 
                             if(!response.data) {

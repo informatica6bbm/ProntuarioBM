@@ -25,6 +25,21 @@ exports.get = (req, res, next) => {
 
 }
 
+exports.getUsername = (req, res, next) => {
+    const nomeUsuario = req.body.usuario;
+    Pessoa.findAll().then(response => {
+        var find = [];
+        var data = JSON.parse(JSON.stringify(response));
+        for(var i = 0; i < data.length; i++){
+            if(data[i].usuario.localeCompare(nomeUsuario) == 0) {
+                find = data[i] ;
+                break;
+            }
+        }
+        res.status(200).json(find);
+    });
+}
+
 exports.getAll = (req, res, next) => {
     Pessoa.findAll().then(response => {
         res.status(200).json(JSON.parse(JSON.stringify(response)));

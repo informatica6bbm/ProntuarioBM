@@ -145,7 +145,7 @@
                 token: token
             }
             localStorage.removeItem("tokenlogin");
-            this.axios.post('http://localhost:3000/login/loginoff', data).then(response => {
+            this.axios.post(process.env.VUE_APP_URL_API + '/login/loginoff', data).then(function() {
                 window.location.replace("http://localhost:8080/login");
             });
 

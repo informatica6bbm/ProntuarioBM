@@ -123,7 +123,6 @@ export default {
         initialize () {
             this.axios.get(process.env.VUE_APP_URL_API + '/resultadoExame').then(response => {
                 this.desserts = response.data;
-                // console.log(this.desserts);
             });
 
             this.axios.get(process.env.VUE_APP_URL_API + '/pessoa').then(response => {
@@ -136,6 +135,7 @@ export default {
         },
         closeImportar() {
             this.dialogImportar = false;
+            this.initialize();
         },
         closeSnackbar() {
             this.snackbar = false;
