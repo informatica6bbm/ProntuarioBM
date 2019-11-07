@@ -24,7 +24,11 @@ import TabelaResultadoExameParametros from '@/components/material/TabelaResultad
 
 import ImportaPessoas from '@/components/material/ImportaPessoas';
 
+import ExibicaoParametroExame from '@/components/material/ExibicaoParametrosExame';
+import ExibicaoResultadosExames from '@/components/material/ExibicaoResultadosExames';
 
+Vue.component('exibicao-resultados-exames', ExibicaoResultadosExames);
+Vue.component('exibicao-parametros-exame', ExibicaoParametroExame);
 Vue.component('importa-pessoas', ImportaPessoas);
 Vue.component('importar-resultados-exames', ImportarResultadosExames);
 Vue.component('tabela-resultado-exame-parametros', TabelaResultadoExameParametros);
