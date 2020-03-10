@@ -13,12 +13,34 @@ export default [
         view: 'Dashboard'
     },
     {
-        path: '/cadastros',
-        name: 'Cadastro',
-        view: 'Cadastros',
-        meta: {
-            requiresAuth: true
-        }
+        path: '/batalhoes',
+        name: 'Batalhões',
+        view: 'Cadastros/Batalhoes',
+    },
+    {
+        path: '/escalas',
+        name: 'Escalas',
+        view: 'Cadastros/Escalas',
+    },
+    {
+        path: '/exames',
+        name: 'Exames',
+        view: 'Cadastros/Exames',
+    },
+    {
+        path: '/hierarquia',
+        name: 'Hierarquia',
+        view: 'Cadastros/Hierarquia',
+    },
+    {
+        path: '/pessoas',
+        name: 'Pessoas',
+        view: 'Cadastros/Pessoas',
+    },
+    {
+        path: '/setores',
+        name: 'Setores',
+        view: 'Cadastros/Setores',
     },
     {
         path: '/resultadosExames',

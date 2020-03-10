@@ -1,7 +1,9 @@
 .DS_Store
 node_modules
-views/node_modules
-views/dist
+dist
+server/node_modules
+client/node_modules
+client/dist
 
 # Log files
 npm-debug.log*

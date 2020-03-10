@@ -1,11 +1,13 @@
 'use strict';
 
-const env = require('./../../config/env');
+require('dotenv').config();
+
+const { DB_CONNECTION, DB_HOST, DB_POST, DB_DATABASE, DB_USERNAME, DB_PASSWORD } = process.env;
 
 const Sequelize = require('sequelize');
-const sequelize = new Sequelize(env.DB_DATABASE, env.DB_USERNAME, env.DB_PASSWORD, {
-    host: env.DB_HOST,
-    dialect: env.DB_CONNECTION,
+const sequelize = new Sequelize(DB_DATABASE, DB_USERNAME, DB_PASSWORD, {
+    host: DB_HOST,
+    dialect: DB_CONNECTION,
     dialectOptions: {
         useUTC: false,
         typeCast: function (field, next) {

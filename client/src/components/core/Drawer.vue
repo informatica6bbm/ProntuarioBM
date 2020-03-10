@@ -37,18 +37,123 @@
         <v-list nav>
             <div />
 
-            <v-list-item
-            v-for="(link, i) in links"
-            :key="i"
-            :to="link.to"
-            active-class="error white--text"
-            >
-                <v-list-item-action>
-                <v-icon>{{ link.icon }}</v-icon>
-            </v-list-item-action>
 
-            <v-list-item-title v-text="link.text" />
-            </v-list-item>
+
+            <v-list-group
+              :key="'Almoxarifado'"
+              :prepend-icon="'mdi-city'"
+              no-action
+              class="menu-accordion"
+            >
+
+            <template v-slot:activator>
+              <v-list-item
+                :style="{'margin-left': '-15px'}"
+              >
+                <v-list-item-title v-text="'Cadastros'"></v-list-item-title>
+              </v-list-item>
+            </template>
+
+              <v-list-item
+                :key="'Batalhoes'"
+                :to="'/batalhoes'"
+                active-class="error white--text"
+                :style="{ 'padding-left': '40px' }"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-circle-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content
+                  :style="{ 'margin-left': '-15px' }"
+                >
+                  <v-list-item-title v-text="'Batalhões'"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item
+                :key="'Escalas'"
+                :to="'/escalas'"
+                active-class="error white--text"
+                :style="{ 'padding-left': '40px' }"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-circle-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content
+                  :style="{ 'margin-left': '-15px' }"
+                >
+                  <v-list-item-title v-text="'Escalas'"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>               
+
+
+              <v-list-item
+                :key="'Exames'"
+                :to="'/exames'"
+                active-class="error white--text"
+                :style="{ 'padding-left': '40px' }"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-circle-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content
+                  :style="{ 'margin-left': '-15px' }"
+                >
+                  <v-list-item-title v-text="'Exames'"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item
+                :key="'Hierarquia'"
+                :to="'/hierarquia'"
+                active-class="error white--text"
+                :style="{ 'padding-left': '40px' }"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-circle-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content
+                  :style="{ 'margin-left': '-15px' }"
+                >
+                  <v-list-item-title v-text="'Hierarquia'"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item
+                :key="'Pessoas'"
+                :to="'/pessoas'"
+                active-class="error white--text"
+                :style="{ 'padding-left': '40px' }"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-circle-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content
+                  :style="{ 'margin-left': '-15px' }"
+                >
+                  <v-list-item-title v-text="'Pessoas'"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>   
+
+              <v-list-item
+                :key="'Setores'"
+                :to="'/setores'"
+                active-class="error white--text"
+                :style="{ 'padding-left': '40px' }"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-circle-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content
+                  :style="{ 'margin-left': '-15px' }"
+                >
+                  <v-list-item-title v-text="'Setores'"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>   
+
+            </v-list-group>
+
+
         </v-list>
 
     </v-navigation-drawer>
