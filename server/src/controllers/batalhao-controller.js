@@ -1,5 +1,6 @@
 'use strict';
 const Helpers = require("./../../helpers/helpers");
+
 const Batalhao = require('./../models/Batalhao');
 
 exports.get = (req, res, next) => {

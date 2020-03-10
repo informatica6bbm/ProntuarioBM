@@ -35,4 +35,4 @@ INSERT INTO hierarquia(hierarquia, descricao) VALUES('CEL', 'Coronel Bombeiro Mi
 INSERT INTO escala(escala) VALUES('ADMINISTRATIVO');
 
 INSERT INTO pessoa(usuario, email,nome,matricula,dataNascimento,estadoCivil,dataIngresso,cartaoMunicipalSus, cartaoNacionalSus,sexo,tipoSanguineo,lts,tipoPessoa,idHierarquia,idSetor,idBatalhao,idEscala)
-    VALUES('6b4aux', '6b4aux@cbm.sc.gov.br', '6b4aux', '123456-7','1997-05-05', 'SOLTEIRO', '2018-01-02', '123456', '9999 9999 9999 999', 'MASCULINO', 'O+', 0, 1,1,4,6,1);
+    VALUES('6b4aux1', '6b4aux1@cbm.sc.gov.br', '6b4aux1', '123456-8','1997-05-05', 'SOLTEIRO', '2018-01-02', '123456', '9999 9999 9999 999', 'MASCULINO', 'O+', 0, 1,1,4,6,1);

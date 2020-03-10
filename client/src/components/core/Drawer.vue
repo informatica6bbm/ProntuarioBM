@@ -120,22 +120,6 @@
               </v-list-item>
 
               <v-list-item
-                :key="'Pessoas'"
-                :to="'/pessoas'"
-                active-class="error white--text"
-                :style="{ 'padding-left': '40px' }"
-              >
-                <v-list-item-icon>
-                  <v-icon>mdi-circle-outline</v-icon>
-                </v-list-item-icon>
-                <v-list-item-content
-                  :style="{ 'margin-left': '-15px' }"
-                >
-                  <v-list-item-title v-text="'Pessoas'"></v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>   
-
-              <v-list-item
                 :key="'Setores'"
                 :to="'/setores'"
                 active-class="error white--text"
@@ -148,6 +132,88 @@
                   :style="{ 'margin-left': '-15px' }"
                 >
                   <v-list-item-title v-text="'Setores'"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>   
+
+            </v-list-group>
+
+
+            <v-list-group
+              :key="'Almoxarifado'"
+              :prepend-icon="'mdi-city'"
+              no-action
+              class="menu-accordion"
+            >
+
+            <template v-slot:activator>
+              <v-list-item
+                :style="{'margin-left': '-15px'}"
+              >
+                <v-list-item-title v-text="'Pacientes'"></v-list-item-title>
+              </v-list-item>
+            </template>
+
+              <v-list-item
+                :key="'Pessoas'"
+                :to="'/pessoas'"
+                active-class="error white--text"
+                :style="{ 'padding-left': '40px' }"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-circle-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content
+                  :style="{ 'margin-left': '-15px' }"
+                >
+                  <v-list-item-title v-text="'Pacientes'"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>   
+
+              <v-list-item
+                :key="'Pessoas'"
+                :to="'/pessoas'"
+                active-class="error white--text"
+                :style="{ 'padding-left': '40px' }"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-circle-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content
+                  :style="{ 'margin-left': '-15px' }"
+                >
+                  <v-list-item-title v-text="'LTS'"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item
+                :key="'Pessoas'"
+                :to="'/pessoas'"
+                active-class="error white--text"
+                :style="{ 'padding-left': '40px' }"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-circle-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content
+                  :style="{ 'margin-left': '-15px' }"
+                >
+                  <v-list-item-title v-text="'Histórico Doenças'"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>   
+
+              <v-list-item
+                :key="'Pessoas'"
+                :to="'/pessoas'"
+                active-class="error white--text"
+                :style="{ 'padding-left': '40px' }"
+              >
+                <v-list-item-icon>
+                  <v-icon>mdi-circle-outline</v-icon>
+                </v-list-item-icon>
+                <v-list-item-content
+                  :style="{ 'margin-left': '-15px' }"
+                >
+                  <v-list-item-title v-text="'Med. controlado'"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>   
 
