@@ -33,15 +33,31 @@ export default [
         view: 'Cadastros/Hierarquia',
     },
     {
-        path: '/pessoas',
-        name: 'Pessoas',
-        view: 'Cadastros/Pessoas',
-    },
-    {
         path: '/setores',
         name: 'Setores',
         view: 'Cadastros/Setores',
     },
+    {
+        path: '/pacientes',
+        name: 'Pacientes',
+        view: 'Pacientes/Pacientes',
+    },
+    {
+        path: '/paciente/lts',
+        name: 'LTS',
+        view: 'Pacientes/Lts',
+    },
+    {
+        path: '/paciente/historicodoencas',
+        name: 'Histórico Doenças',
+        view: 'Pacientes/HistoricoDoencas',
+    },
+    {
+        path: '/paciente/medicamentocontrolado',
+        name: 'Medicamento Controlado',
+        view: 'Pacientes/MedicamentoControlado',
+    },
+
     {
         path: '/resultadosExames',
         name: 'Resultados Exames',

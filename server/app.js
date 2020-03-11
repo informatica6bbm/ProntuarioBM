@@ -8,15 +8,18 @@ const router = express.Router();
 const index = require('./src/routes/index');
 const batalhao = require('./src/routes/batalhao-routes');
 const escala = require('./src/routes/escala-routes');
-const exame = require('./src/routes/exame-routes');
 const hierarquia = require('./src/routes/hierarquia-routes');
 const setor = require('./src/routes/setor-routes');
+
+const exame = require('./src/routes/exame-routes');
 const pessoa = require('./src/routes/pessoa-routes');
 const parametroExame = require('./src/routes/parametroExame-routes');
 const referenciaParametroExame = require('./src/routes/referenciaParametroExame-routes');
 const resultadoExame = require('./src/routes/resultadoExame-routes');
 const resultadoParametroExame = require('./src/routes/resultadoParametroExame-routes');
 const login = require('./src/routes/login-routes');
+
+const lts = require('./src/routes/lts-routes');
 
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 1000000}));
@@ -43,5 +46,7 @@ app.use('/api/resultadoexame', resultadoExame);
 app.use('/api/resultadoParametroExame', resultadoParametroExame);
 app.use('/api/pessoa', pessoa);
 app.use('/api/setor', setor);
+
+app.use('/api/lts', lts);
 
 module.exports = app;

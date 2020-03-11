@@ -37,8 +37,6 @@
         <v-list nav>
             <div />
 
-
-
             <v-list-group
               :key="'Almoxarifado'"
               :prepend-icon="'mdi-city'"
@@ -84,7 +82,7 @@
                 >
                   <v-list-item-title v-text="'Escalas'"></v-list-item-title>
                 </v-list-item-content>
-              </v-list-item>               
+              </v-list-item>
 
 
               <v-list-item
@@ -133,13 +131,13 @@
                 >
                   <v-list-item-title v-text="'Setores'"></v-list-item-title>
                 </v-list-item-content>
-              </v-list-item>   
+              </v-list-item>
 
             </v-list-group>
 
 
             <v-list-group
-              :key="'Almoxarifado'"
+              :key="'Pacientes'"
               :prepend-icon="'mdi-city'"
               no-action
               class="menu-accordion"
@@ -154,8 +152,8 @@
             </template>
 
               <v-list-item
-                :key="'Pessoas'"
-                :to="'/pessoas'"
+                :key="'Pacientes'"
+                :to="'/pacientes'"
                 active-class="error white--text"
                 :style="{ 'padding-left': '40px' }"
               >
@@ -167,11 +165,11 @@
                 >
                   <v-list-item-title v-text="'Pacientes'"></v-list-item-title>
                 </v-list-item-content>
-              </v-list-item>   
+              </v-list-item>
 
               <v-list-item
-                :key="'Pessoas'"
-                :to="'/pessoas'"
+                :key="'LTS'"
+                :to="'/paciente/lts'"
                 active-class="error white--text"
                 :style="{ 'padding-left': '40px' }"
               >
@@ -186,8 +184,8 @@
               </v-list-item>
 
               <v-list-item
-                :key="'Pessoas'"
-                :to="'/pessoas'"
+                :key="'Historico Doenças'"
+                :to="'/paciente/historicodoencas'"
                 active-class="error white--text"
                 :style="{ 'padding-left': '40px' }"
               >
@@ -199,11 +197,11 @@
                 >
                   <v-list-item-title v-text="'Histórico Doenças'"></v-list-item-title>
                 </v-list-item-content>
-              </v-list-item>   
+              </v-list-item>
 
               <v-list-item
-                :key="'Pessoas'"
-                :to="'/pessoas'"
+                :key="'Medicamento Controlado'"
+                :to="'/paciente/medicamentocontrolado'"
                 active-class="error white--text"
                 :style="{ 'padding-left': '40px' }"
               >
@@ -215,7 +213,7 @@
                 >
                   <v-list-item-title v-text="'Med. controlado'"></v-list-item-title>
                 </v-list-item-content>
-              </v-list-item>   
+              </v-list-item>
 
             </v-list-group>
 
