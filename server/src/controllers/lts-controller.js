@@ -39,6 +39,7 @@ exports.getAll = (req, res, next) => {
 exports.post = (req, res, next) => {
     var idPessoa = req.body.idPessoa;
     var tipoDocumento = req.body.tipoDocumento;
+    console.log(req.body.documento.length);
     var data = {
         idPessoa: idPessoa,
         tipoDocumento: tipoDocumento,

@@ -21,21 +21,30 @@
                     </v-row>
 
                     <v-row>
-                        <v-col cols="12" sm="6" md="6">
-                            <v-text-field
-                                v-model="paciente"
-                                :rules="[v => !!v || 'Obrigatório prencher o paciente!']"
+                        <v-col cols="12" sm="12" md="12">
+                            <v-autocomplete
+                                v-model="idPaciente"
+                                :items="pacientes"
+                                hide-no-data
+                                hide-selected
+                                item-text="nome"
+                                item-value="id"
                                 label="Paciente"
+                                :rules="[v => !!v || 'Obrigatório prencher o paciente!']"
                                 outlined
-                            ></v-text-field>
+                            ></v-autocomplete>
                         </v-col>
-                        <v-col cols="12" sm="6" md="6">
-                            <v-text-field
+                    </v-row>
+
+                    <v-row>
+                        <v-col cols="12" sm="12" md="12">
+                            <v-autocomplete
                                 v-model="tipoDocumento"
-                                :rules="[v => !!v || 'Obrigatório prencher o tipo de documento!']"
+                                :items="tiposDocumentos"
                                 label="Tipo Documento"
+                                :rules="[v => !!v || 'Obrigatório prencher o tipo documento!']"
                                 outlined
-                            ></v-text-field>
+                            ></v-autocomplete>
                         </v-col>
                     </v-row>
 
@@ -78,7 +87,7 @@
             <v-card-actions>
                 <div class="flex-grow-1"></div>
                 <v-btn color="blue darken-1" text @click="close">Cancelar</v-btn>
-                <v-btn color="blue darken-1" text @click="importaPessoas">Importar</v-btn>
+                <v-btn color="blue darken-1" text @click="salvar">Salvar</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -88,12 +97,15 @@
 export default {
     data: () => ({
         arquivo: null,
-        paciente: null,
+        idPaciente: null,
         tipoDocumento: null,
         pacientes: [],
         tiposDocumentos: ['Atestado', 'Licença Tratamento Saúde'],
         avisoArquivoVaziu: ""
     }),
+    created() {
+        this.initialize();
+  },
     computed: {
         dialog: {
             get() {
@@ -124,6 +136,17 @@ export default {
         },
         close() {
             this.$emit('close',false);
+        },
+        salvar() {
+            console.log(this.arquivo.length);
+            var data = {
+                paciente: this.paciente,
+                tipoDocumento: this.tipoDocumento,
+                documento: this.arquivo
+            };
+            this.axios.post(process.env.VUE_APP_URL_API + '/lts', data).then(response => {
+                console.log(response.data);
+            });
         },
         importaPessoas() {
             const arquivoCsv = this.arquivo != null ? this.arquivo[0] : false;
