@@ -58,7 +58,7 @@
                                 multiple
                                 outlined
                                 :show-size="1000"
-                                v-model="arquivo"
+                                @change="setPdfBase64"
                             >
                                 <template v-slot:selection="{ index, text }">
                                         <v-chip
@@ -138,57 +138,42 @@ export default {
             this.$emit('close',false);
         },
         salvar() {
-            console.log(this.arquivo.length);
+            // console.log(this.arquivo.length);
             var data = {
                 paciente: this.paciente,
                 tipoDocumento: this.tipoDocumento,
                 documento: this.arquivo
             };
             this.axios.post(process.env.VUE_APP_URL_API + '/lts', data).then(response => {
-                console.log(response.data);
+                // console.log(response.data);
+                response.data = null;
             });
         },
-        importaPessoas() {
-            const arquivoCsv = this.arquivo != null ? this.arquivo[0] : false;
-            const vm = this;
+        setPdfBase64(event) {
+            const file = event[0];
+            const extensao = file.name.split('.').pop().toLowerCase();
+            console.log(file.name.split('.').pop().toLowerCase());
+            // if (!file.type.includes('pdf.*')) {
+            //     alert('Por favor selecione a foto!');
+            //     return;
+            // }
 
-            if(!arquivoCsv){
-                this.avisoArquivoVaziu = true;
+            if(extensao == 'pdf') {
+
             }
 
-            if(arquivoCsv){
-                this.avisoArquivoVaziu = false;
-                if (!arquivoCsv.type.includes('text/csv')) {
-                    alert('Por favor selecione o arquivo CSV!');
-                    return;
-                }
+            if(typeof FileReader === 'function') {
+                const reader = new FileReader();
 
-                if (typeof FileReader === 'function') {
-                    const reader = new FileReader();
-                    reader.onload = function() {
-                        const linhas = reader.result.split("\n").map(function(linha) {
-                            return linha.split(',');
-                        });
-                        var data = {
-                            pessoas: linhas
-                        };
-
-                        vm.axios.post(process.env.VUE_APP_URL_API + '/lts', data).then(response => {
-                            if(response.data){
-                                alert('Arquivo importado com sucesso!');
-                                vm.close();
-                            }
-                            if(!response.data) {
-                                alert('Ocorreu um erro ao importar!');
-                            }
-                        });
-                    }
-                    reader.readAsText(arquivoCsv);
+                reader.onload = (event) => {
+                    // this.imgSrc = event.target.result;
+                    console.log(event.target.result);
+                    // this.pessoa.foto = this.imgSrc;
                 }
-
-                if(!(typeof FileReader === 'function')) {
-                    alert('Arquivo não suportado!');
-                }
+                reader.readAsDataURL(file);
+            }
+            if(!(typeof FileReader === 'function')) {
+                alert('Sorry, FileReader API not supported');
             }
         }
     }

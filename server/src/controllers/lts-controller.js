@@ -39,6 +39,7 @@ exports.getAll = (req, res, next) => {
 exports.post = (req, res, next) => {
     var idPessoa = req.body.idPessoa;
     var tipoDocumento = req.body.tipoDocumento;
+    var documento = req.body.documento;
     console.log(req.body.documento.length);
     var data = {
         idPessoa: idPessoa,
@@ -47,7 +48,7 @@ exports.post = (req, res, next) => {
     };
 
     Lts.create(data).then(response => {
-        res.status(200).json(response);
+        res.status(200).json(documento);
     });
 }
 
