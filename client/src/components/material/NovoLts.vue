@@ -55,7 +55,6 @@
                                 counter
                                 label="Arquivo CSV"
                                 prepend-icon="mdi-package-up"
-                                multiple
                                 outlined
                                 :show-size="1000"
                                 @change="setPdfBase64"
@@ -99,6 +98,7 @@ export default {
         arquivo: null,
         idPaciente: null,
         tipoDocumento: null,
+        documento: null,
         pacientes: [],
         tiposDocumentos: ['Atestado', 'Licença Tratamento Saúde'],
         avisoArquivoVaziu: ""
@@ -142,39 +142,36 @@ export default {
             var data = {
                 paciente: this.paciente,
                 tipoDocumento: this.tipoDocumento,
-                documento: this.arquivo
+                documento: this.documento
             };
             this.axios.post(process.env.VUE_APP_URL_API + '/lts', data).then(response => {
-                // console.log(response.data);
-                response.data = null;
+                // response.data = null;
+                console.log(response.data);
             });
         },
         setPdfBase64(event) {
             const file = event[0];
-            const extensao = file.name.split('.').pop().toLowerCase();
-            console.log(file.name.split('.').pop().toLowerCase());
-            // if (!file.type.includes('pdf.*')) {
-            //     alert('Por favor selecione a foto!');
-            //     return;
-            // }
+            console.log(file);
+            if(event[0]) {
+                var extensao = file.name.split('.').pop().toLowerCase();
 
-            if(extensao == 'pdf') {
+                if(extensao == 'pdf' || extensao == 'png' || extensao == 'jpeg') {
+                    console.log(extensao);
 
-            }
-
-            if(typeof FileReader === 'function') {
-                const reader = new FileReader();
-
-                reader.onload = (event) => {
-                    // this.imgSrc = event.target.result;
-                    console.log(event.target.result);
-                    // this.pessoa.foto = this.imgSrc;
+                    if(typeof FileReader === 'function') {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            console.log(event.target.result);
+                            this.documento = event.target.result;
+                        }
+                        // reader.readAsDataURL(file);
+                    }
+                    if(!(typeof FileReader === 'function')) {
+                        alert('Sorry, FileReader API not supported');
+                    }
                 }
-                reader.readAsDataURL(file);
             }
-            if(!(typeof FileReader === 'function')) {
-                alert('Sorry, FileReader API not supported');
-            }
+
         }
     }
 }

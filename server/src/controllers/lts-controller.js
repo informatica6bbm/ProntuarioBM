@@ -2,6 +2,7 @@
 const Helpers = require("./../../helpers/helpers");
 
 const Lts = require('./../models/Lts');
+const Documento = require('./../models/Documento');
 const Pessoa = require('./../models/Pessoa');
 
 exports.get = (req, res, next) => {
@@ -40,7 +41,9 @@ exports.post = (req, res, next) => {
     var idPessoa = req.body.idPessoa;
     var tipoDocumento = req.body.tipoDocumento;
     var documento = req.body.documento;
+
     console.log(req.body.documento.length);
+    
     var data = {
         idPessoa: idPessoa,
         tipoDocumento: tipoDocumento,
