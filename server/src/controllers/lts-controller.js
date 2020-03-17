@@ -42,17 +42,25 @@ exports.post = (req, res, next) => {
     var tipoDocumento = req.body.tipoDocumento;
     var documento = req.body.documento;
 
-    console.log(req.body.documento.length);
-    
-    var data = {
-        idPessoa: idPessoa,
-        tipoDocumento: tipoDocumento,
+    // console.log(req.body.documento);
+
+    var documento = {
+        documento: documento,
         createdAt: Helpers.getDataHoraAtual()
     };
 
-    Lts.create(data).then(response => {
-        res.status(200).json(documento);
+    Documento.create(documento).then(response => {
+        var lts = {
+            idPessoa: idPessoa,
+            tipoDocumento: tipoDocumento,
+            idDocumento: response.id,
+            createdAt: Helpers.getDataHoraAtual()
+        };
+        Lts.create(lts).then(response => {
+            res.status(200).json(response.data);
+        });
     });
+
 }
 
 exports.update = (req, res, next) => {

@@ -40,10 +40,15 @@ const Lts = sequelize.define('lts', {
         type: Sequelize.STRING,
         allowNull: false
     },
-    nomeDocumento: {
-        type: Sequelize.STRING,
-        allowNull: true
-    }
+    idDocumento: {
+        type: Sequelize.INTEGER,
+        references: {
+            model: {
+                tableName: 'documento'
+            },
+            key: 'id'
+        }
+    },
 },
 {
   charset: 'utf8',

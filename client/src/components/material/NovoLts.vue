@@ -55,6 +55,7 @@
                                 counter
                                 label="Arquivo CSV"
                                 prepend-icon="mdi-package-up"
+                                multiple
                                 outlined
                                 :show-size="1000"
                                 @change="setPdfBase64"
@@ -145,14 +146,13 @@ export default {
                 documento: this.documento
             };
             this.axios.post(process.env.VUE_APP_URL_API + '/lts', data).then(response => {
-                // response.data = null;
                 console.log(response.data);
             });
         },
         setPdfBase64(event) {
             const file = event[0];
-            console.log(file);
-            if(event[0]) {
+
+            if(file) {
                 var extensao = file.name.split('.').pop().toLowerCase();
 
                 if(extensao == 'pdf' || extensao == 'png' || extensao == 'jpeg') {
@@ -164,7 +164,7 @@ export default {
                             console.log(event.target.result);
                             this.documento = event.target.result;
                         }
-                        // reader.readAsDataURL(file);
+                        reader.readAsDataURL(file);
                     }
                     if(!(typeof FileReader === 'function')) {
                         alert('Sorry, FileReader API not supported');
