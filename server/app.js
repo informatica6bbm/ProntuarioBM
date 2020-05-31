@@ -21,6 +21,12 @@ const login = require('./src/routes/login-routes');
 
 const lts = require('./src/routes/lts-routes');
 
+const historicoDoenca = require('./src/routes/historicoDoenca-routes');
+const doencasHistorico = require('./src/routes/doencasHistorico-routes');
+
+const usuarioMedicamentoControlado = require('./src/routes/usuarioMedicamentoControlado-routes');
+const medicamentoControlado = require('./src/routes/medicamentoControlado-routes');
+
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 1000000}));
 
@@ -48,5 +54,11 @@ app.use('/api/pessoa', pessoa);
 app.use('/api/setor', setor);
 
 app.use('/api/lts', lts);
+
+app.use('/api/historicoDoenca', historicoDoenca);
+app.use('/api/doencasHistorico', doencasHistorico);
+
+app.use('/api/usuarioMedicamentoControlado', usuarioMedicamentoControlado);
+app.use('/api/medicamentoControlado', medicamentoControlado);
 
 module.exports = app;

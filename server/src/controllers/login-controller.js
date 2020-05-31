@@ -31,22 +31,28 @@ exports.post = (req, res, next) => {
         if(existeUsuario) {
             Login.create(data).then(response => {
                 if(response){
-                    axios.get('http://localhost:9000?usuario=' + usuario + '&' + 'passwd=' + senha).then(response => {
-                        if(response.data){
-                            res.status(200).json({
-                                response: true,
-                                mensage: 'Login realizado com sucesso!',
-                                token: token
-                            });
-                        }
-
-                        if(!response.data) {
-                            res.status(200).json({
-                                response: false,
-                                mensage: 'Usuário ou senha incorreto!'
-                            });
-                        }
+                    res.status(200).json({
+                        response: true,
+                        mensage: 'Login realizado com sucesso!',
+                        token: token
                     });
+                    // axios.get('http://localhost:9000?usuario=' + usuario + '&' + 'passwd=' + senha).then(response => {
+
+                    //     if(response.data){
+                    //         res.status(200).json({
+                    //             response: true,
+                    //             mensage: 'Login realizado com sucesso!',
+                    //             token: token
+                    //         });
+                    //     }
+
+                    //     if(!response.data) {
+                    //         res.status(200).json({
+                    //             response: false,
+                    //             mensage: 'Usuário ou senha incorreto!'
+                    //         });
+                    //     }
+                    // });
                 }
 
                 if(!response){
