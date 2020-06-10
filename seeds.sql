@@ -35,4 +35,4 @@ INSERT INTO hierarquia(hierarquia, descricao, createdAt, updatedAt) VALUES('CEL'
 INSERT INTO escala(escala, createdAt, updatedAt) VALUES('ADMINISTRATIVO', '2020-05-29', '2020-05-29');
 
 INSERT INTO pessoa(usuario, email,nome,matricula,dataNascimento,estadoCivil,dataIngresso,cartaoMunicipalSus, cartaoNacionalSus,sexo,tipoSanguineo,lts, foto,tipoPessoa,idHierarquia,idSetor,idBatalhao,idEscala, createdAt, updatedAt)
-    VALUES('6b4aux', '6b4aux@cbm.sc.gov.br', '6b4aux', '123456-8','1997-05-05', 'SOLTEIRO', '2018-01-02', '123456', '9999 9999 9999 999', 'MASCULINO', 'O+', 1, '', 1,1,4,6,1, '2020-05-29', '2020-05-29');
+    VALUES('fabricio', 'fabricio@cbm.sc.gov.br', 'Fabricio Mocellin', '123456-8','1997-05-05', 'SOLTEIRO', '2018-01-02', '123456', '9999 9999 9999 999', 'MASCULINO', 'O+', 1, '', 0,1,4,6,1, '2020-05-29', '2020-05-29');

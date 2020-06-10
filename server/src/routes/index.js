@@ -5,10 +5,10 @@ const router = express.Router();
 const shell = require('shelljs');
 
 router.get('/', (req, res, next) => {
-    res.status(200).send({
-        title: "Prontuario BM API",
-        version: "0.0.1"
+    res.get('/', (req, res, next) => {
+        res.sendFile('index.html');
     });
 });
 
 module.exports = router;
+

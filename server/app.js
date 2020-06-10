@@ -30,6 +30,9 @@ const medicamentoControlado = require('./src/routes/medicamentoControlado-routes
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true, parameterLimit: 1000000}));
 
+app.set('view engine', 'html');
+app.use(express.static('./public'));
+
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -39,8 +42,7 @@ app.use(function(req, res, next) {
     next();
  });
 
-
-app.use('/api', index);
+app.use('/', index);
 app.use('/api/batalhao', batalhao);
 app.use('/api/escala', escala);
 app.use('/api/exame', exame);

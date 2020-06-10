@@ -1,11 +1,19 @@
 <template>
+    <div style="margin-bottom: 30px;">
+        <v-container>
+            <v-row>
+                <v-col cols="12" sm="12" md="12" >
+                    <app-bar-prontuario />
+                </v-col>
+            </v-row>
+        </v-container>
+
     <v-card
         class="mx-auto"
         max-width="95%"
         min-height="98vh"
         outlined
-
-        :style="{'margin-left': '2.5%', 'margin-rigth': '2.5%', 'margin-top': '10px' }"
+        :style="{'margin-left': '2.5%', 'margin-rigth': '2.5%', 'margin-top': '10px', 'margin-bottom': '0px;' }"
     >
         <v-container>
             <v-row>
@@ -104,10 +112,16 @@
             </v-row>
         </v-container>
     </v-card>
+    </div>
 </template>
 
 <script>
+    import AppBarProntuario from '@/components/core/AppBarProntuario';
+
     export default {
+        components: {
+            'app-bar-prontuario': AppBarProntuario,
+        },
         computed: {
 
         },
@@ -145,7 +159,7 @@
                             }
                         }
                     }]
-                ]
+                ],
             },
             peso: {
                 data: {
@@ -239,7 +253,8 @@
                         }
                     }]
                 ]
-            }
+            },
+            exames: [],
         }),
         methods: {
             initialize() {
@@ -250,6 +265,11 @@
                 this.axios.post(process.env.VUE_APP_URL_API + "/pessoa/getPorNomeUsuario", data).then(response => {
                     this.usuario = response.data;
                 });
+            },
+            getExames() {
+                /*this.axios.get(process.env.VUE_APP_URL_API + "/pessoa/getPorNomeUsuario", data).then(response => {
+                    this.usuario = response.data;
+                });*/
             }
         },
         watch: {
