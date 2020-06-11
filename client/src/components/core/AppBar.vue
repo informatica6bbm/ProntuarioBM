@@ -146,7 +146,7 @@
             }
             localStorage.removeItem("tokenlogin");
             this.axios.post(process.env.VUE_APP_URL_API + '/login/loginoff', data).then(function() {
-                window.location.replace("http://localhost:8080/login");
+                window.location.replace(process.env.VUE_APP_URL);
             });
 
         }
