@@ -5,6 +5,10 @@ const Pessoa = require('./../models/Pessoa');
 const Sha256 = require('js-sha256');
 const axios = require('axios');
 
+require('dotenv').config();
+
+const { SERVER_LOGIN_URL } = process.env;
+
 exports.post = (req, res, next) => {
     var usuario = req.body.usuario;
     var senha = req.body.senha;
@@ -31,28 +35,23 @@ exports.post = (req, res, next) => {
         if(existeUsuario) {
             Login.create(data).then(response => {
                 if(response){
-                    res.status(200).json({
-                        response: true,
-                        mensage: 'Login realizado com sucesso!',
-                        token: token
+                    axios.get(SERVER_LOGIN_URL + '?usuario=' + usuario + '&' + 'passwd=' + senha).then(response => {
+
+                        if(response.data){
+                            res.status(200).json({
+                                response: true,
+                                mensage: 'Login realizado com sucesso!',
+                                token: token
+                            });
+                        }
+
+                        if(!response.data) {
+                            res.status(200).json({
+                                response: false,
+                                mensage: 'Usuário ou senha incorreto!'
+                            });
+                        }
                     });
-                    // axios.get('http://localhost:9000?usuario=' + usuario + '&' + 'passwd=' + senha).then(response => {
-
-                    //     if(response.data){
-                    //         res.status(200).json({
-                    //             response: true,
-                    //             mensage: 'Login realizado com sucesso!',
-                    //             token: token
-                    //         });
-                    //     }
-
-                    //     if(!response.data) {
-                    //         res.status(200).json({
-                    //             response: false,
-                    //             mensage: 'Usuário ou senha incorreto!'
-                    //         });
-                    //     }
-                    // });
                 }
 
                 if(!response){
