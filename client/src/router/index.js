@@ -51,7 +51,7 @@ async function getPessoa(){
     var data = {
         usuario: localStorage.getItem("usuario")
     }
-    let res = await axios.post(process.env.VUE_APP_URL_API + "/pessoa/getPorNomeUsuario", data);
+    let res = await axios.post("/pessoa/getPorNomeUsuario", data);
 
     return res;
 }
